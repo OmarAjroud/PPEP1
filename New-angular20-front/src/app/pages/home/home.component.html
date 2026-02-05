@@ -1,0 +1,70 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-android2 me-2"></i>ATFP
+        </a>
+        <div class="d-flex text-white align-items-center">
+            <span class="me-3" *ngIf="userStore.user()">Bienvenue</span>
+            <button class="btn btn-outline-light btn-sm" (click)="logout()">Déconnexion</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <!-- Header Image -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <img src="assets/images/atfp.png" class="img-fluid" alt="ATFP Logo" style="max-height: 150px;">
+        </div>
+    </div>
+
+    <!-- Menu Grid (Replacing FAB) -->
+    <div class="row g-4 justify-content-center">
+
+        <!-- Choix Offre -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 shadow-sm hover-card" routerLink="/choixoffre" style="cursor: pointer;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-book fs-1 text-dark mb-2"></i>
+                    <h5 class="card-title">العروض</h5>
+                    <small class="text-muted">Offers</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details (Profile) -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 shadow-sm hover-card" routerLink="/details" style="cursor: pointer;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-person fs-1 text-primary mb-2"></i>
+                    <h5 class="card-title">ملفي</h5>
+                    <small class="text-muted">My Profile</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard (Notifications) -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 shadow-sm hover-card" routerLink="/dashboard" style="cursor: pointer;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-bell-fill fs-1 text-danger mb-2"></i>
+                    <h5 class="card-title">إشعارات</h5>
+                    <small class="text-muted">Notifications</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offre (My Applications) -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 shadow-sm hover-card" routerLink="/offre" style="cursor: pointer;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-journal-text fs-1 text-danger mb-2"></i>
+                    <h5 class="card-title">ترشحاتي</h5>
+                    <small class="text-muted">My Applications</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,170 @@
+ion-title {
+    font-size: smaller;
+    text-transform: uppercase;
+    color: white !important;
+    direction: rtl;
+    text-align: right;
+}
+
+h2,
+ion-list-header>p {
+    font-family: unique;
+    color: dodgerblue;
+    font-size: 120%;
+
+}
+
+ion-list {
+    font-family: hacentunisia;
+    direction: rtl;
+    text-align: right;
+}
+
+H2,
+ion-label {
+    font-family: hasanalgeria;
+}
+
+textarea {
+    direction: rtl;
+    text-align: right;
+    margin: 0px !important;
+    padding: 3px !important;
+    scrollbar-color: orange;
+    border-color: floralwhite;
+    border-radius: 2px;
+    font-family: hacentunisialight !important;
+
+}
+
+ion-icon {
+    zoom: 1.2;
+}
+
+ion-grid,
+ion-row,
+ion-col {
+    direction: rtl;
+    text-align: right;
+    font-family: hacentunisialight !important;
+
+}
+
+.ordre {
+    font-family: agency !important;
+}
+
+ion-title,
+ion-badge {
+    font-family: hacentunisialight !important;
+}
+
+.specialite {
+    background-color: #36A1B3 !important;
+    border-radius: 3px;
+    font-family: unique !important;
+    padding: 5px !important;
+}
+
+.specialite1 {
+    background-color: #36A1B3 !important;
+    border-radius: 3px;
+    font-family: sansation !important;
+    padding: 5px !important;
+    color: white !important;
+    font-weight: normal !important;
+}
+
+.date1 {
+    background-color: #FFCC00 !important;
+    border-radius: 3px;
+    font-family: hacenalgeria !important;
+    padding: 5px !important;
+}
+
+.important1 {
+    background-color: #003966 !important;
+    border-radius: 3px;
+    font-family: arial !important;
+    padding: 5px !important;
+    color: white !important;
+
+}
+
+.important11 {
+    background-color: #003966 !important;
+    border-radius: 8px;
+    font-family: sansation !important;
+    padding: 5px !important;
+    color: white !important;
+
+}
+
+ion-grid>ion-row {
+    margin: 5px;
+    padding: 0px;
+    border-radius: 7px;
+    border: 1px solid dodgerblue;
+    font-size: 12pt !important;
+}
+
+ion-col div ion-badge {
+    font-size: small;
+}
+
+.option1 {
+    --color: red;
+    --color-hover: #362419;
+}
+
+.hidden {
+    display: none;
+}
+
+ion-select-option {
+    ion-label {
+        white-space: normal !important;
+
+    }
+
+    color: red !important;
+}
+
+
+
+.smalltext {
+    font-size: smaller !important;
+}
+
+.popover-wrapper .popover-content {
+    position: relative !important;
+    margin: 2 auto !important;
+    left: auto !important;
+    top: auto !important;
+    text-align: right !important;
+    direction: rtl !important;
+    font-size: 12px !important;
+}
+
+
+
+::ng-deep .wider-popover {
+    --padding: 2px auto;
+    --width: 300px !important;
+    text-align: right !important;
+    direction: rtl !important;
+    overflow: scroll;
+}
+
+ion-select ion-radio {
+    --color: #a61134;
+    --color-checked: #4550f5;
+    overflow: scroll !important;
+    --font-size: 14px !important;
+}
+
+ion-select::part(placeholder),
+ion-select::part(text) {
+    white-space: normal !important;
+    --color: red !important;
+}

@@ -1,0 +1,258 @@
+$button-md-border-radius: 8px;
+
+ion-button {
+  color: white;
+  font-family: "unique" !important;
+  text-align: center;
+  font-size: smaller !important;
+}
+
+
+
+ion-label:lang(fr) {
+  font-size: 12px !important;
+  color: orangered !important;
+  font-family: "mistral" !important;
+  text-align: left;
+  direction: ltr;
+  letter-spacing: 1px;
+  border-radius: 3px;
+
+}
+
+ion-input:lang(ar) {
+  font-size: 16px !important;
+  color: #111 !important;
+  font-family: hacenalgeria !important;
+  text-align: right;
+  direction: rtl;
+  text-transform: capitalize;
+  border-radius: 3px;
+
+}
+
+
+ion-input:lang(fr) {
+  font-size: 13px !important;
+  color: #111 !important;
+  font-family: sansation !important;
+  text-align: left;
+  direction: ltr;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  border-radius: 3px;
+
+}
+
+alert {
+  color: #222;
+}
+
+ion-title {
+  text-transform: hacenalgeria !important;
+  color: white !important;
+  font-size: smaller;
+  direction: rtl !important;
+  text-align: right !important;
+  font-language-override: 'ar' !important;
+
+}
+
+ion-content,
+ion-form {
+  direction: "rtl" !important;
+  text-align: "right" !important;
+}
+
+ion-title,
+ion-badge {
+  font-family: unique !important;
+}
+
+ion-item,
+.boutons {
+  direction: 'ltr' !important;
+  text-align: right !important;
+  margin: 5px;
+}
+
+ion-item:lang(ar) {
+  direction: 'rtl' !important;
+  text-align: 'right' !important;
+  font-family: hacenalgeria !important;
+  margin: 5px;
+}
+
+ion-item:lang(fr) {
+
+  text-align: 'left' !important;
+  direction: ltr !important;
+  font-family: sansation !important;
+  margin: 5px;
+
+}
+
+ion-input {
+  color: #333;
+}
+
+ion-icon {
+  margin: 0px 3px !important;
+  color: darkorange;
+  font-size: 12px !important;
+}
+
+.s {
+  font-size: 14px !important;
+}
+
+ion-select,
+ion-select-option,
+div.zoneerreur {
+  direction: 'rtl' !important;
+  text-align: right !important;
+  font-family: hacenalgeria !important;
+  margin: 15px;
+}
+
+div.zoneerreur {
+  border-radius: 5px;
+  font-family: hacenalgeria !important;
+
+}
+
+#ExtraitDeNaissance {
+  position: absolute;
+  opacity: 0;
+}
+
+form {
+  border: 1px dashed dark;
+  border-radius: 3px;
+  margin: 3px;
+}
+
+ion-card-header,
+ion-card-title {
+  direction: rtl !important;
+  text-align: right;
+  font-family: unique !important;
+  color: orangered !important;
+}
+
+ion-badge {
+  font-family: sansation !important;
+  font-size: 14px;
+}
+
+.b {
+  margin-left: 300px !important;
+  padding: 2px 50px !important;
+}
+
+div {
+  font-size: 10px !important;
+  font-family: unique !important;
+
+}
+
+ion-select {
+  font-family: "unique" !important;
+  font-size: 10px;
+  color: #111;
+}
+
+ion-select.number,
+ion-datetime {
+  font-family: sansation !important;
+  font-size: 12px;
+
+}
+
+ion-icon {
+  color: white;
+  font-weight: bold;
+}
+
+#file1 {
+  min-height: 10px !important;
+}
+
+.mathmoun {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+ion-datetime {
+
+  --background: gray !important;
+  --title-color: green !important;
+  --placeholder-color: orangered;
+  color: var(--ion-color-danger) !important;
+  --cancel-text-color: orange;
+  font-weight: 700;
+  --background: white;
+  --ion-color-base: #1a475f !important;
+  --ion-color-step-150: #eef5fa;
+}
+
+ion-datetime button {
+  font-weight: bold;
+  background: grey;
+}
+
+ion-input {
+  font-size: large !important;
+}
+
+ion-label {
+  color: #222;
+  font-family: hacen !important;
+}
+
+#file1,
+ion-label {
+  font-size: 16px !important;
+  font-weight: 100 !important;
+  color: #444 white !important;
+  text-align: right;
+  padding: 1px 5px !important;
+  direction: rtl;
+  border-radius: 3px !important;
+}
+
+#file1 {
+  font-family: hacentunisia !important;
+}
+
+.popover-wrapper .popover-content {
+  position: relative !important;
+  margin: 2 auto !important;
+  left: auto !important;
+  top: auto !important;
+  text-align: right !important;
+  direction: rtl !important;
+  font-size: 12px !important;
+}
+
+
+
+::ng-deep .wider-popover {
+  --padding: 2px auto;
+  --width: 300px !important;
+  text-align: right !important;
+  direction: rtl !important;
+  overflow: scroll;
+}
+
+ion-select ion-radio {
+  --color: #a61134;
+  --color-checked: #4550f5;
+  overflow: scroll !important;
+  --font-size: 14px !important;
+}
+
+ion-select::part(placeholder),
+ion-select::part(text) {
+  white-space: normal !important;
+  --color: red !important;
+}

@@ -1,0 +1,96 @@
+<ion-header lang="ar">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>ترشحاتي
+
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-list>
+    <ion-list-header>
+      <p>
+        <ion-icon name="book" color="danger"> </ion-icon>
+        <ion-badge color="danger">
+          قائمة ترشحاتي
+        </ion-badge>
+      </p>
+    </ion-list-header>
+  </ion-list>
+
+
+
+
+  <ion-grid>
+    <ion-row *ngFor="let off of offres" color="light">
+      <ion-row>
+
+        <!--
+      <ion-col size="1">
+        <div class='ordre'>
+          {{off.ordre}}</div>
+      </ion-col>
+-->
+        <ion-col>
+          <div class='etat'>
+            <ion-badge color="{{off.couleur}}">{{off.etat}}</ion-badge>
+          </div>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+
+        <ion-col>
+          <div class="diplome">{{off.diplome}}
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <ion-row>
+
+            <ion-col>
+              <div class="specialite">
+
+                {{off.specialite}}
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div>
+                {{off.centre}} </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-row>
+          <ion-col>المبيت : <ion-badge color=danger> {{off.hebergement}}</ion-badge> </ion-col>
+          <ion-col>المنحة : <ion-badge color=success> {{off.bourse}}</ion-badge></ion-col>
+          <ion-col> بداية التكوين :</ion-col>
+          <ion-col>
+            <ion-badge color="warning">{{off.debutformation}}</ion-badge>
+          </ion-col>
+
+        </ion-row>
+      </ion-row>
+      <ion-row>
+        <ion-col id="colspace"></ion-col>
+        <ion-col>
+
+          <ion-button *ngIf="tester(off.etatnumerique)" type="button" color="danger" (click)="verifier(off.id)">تأكيد
+          </ion-button></ion-col>
+        <ion-col>
+          <ion-button *ngIf="tester1(off.etatnumerique)" type="button" color="success" (click)="verifier1(off.idoffre)">
+            تأكيد المسودة
+          </ion-button></ion-col><ion-col>
+
+          <ion-button *ngIf="tester1(off.etatnumerique)" type="button" color="danger" (click)="verifier2(off.idoffre)">
+            حذف المسودة
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+</ion-content>

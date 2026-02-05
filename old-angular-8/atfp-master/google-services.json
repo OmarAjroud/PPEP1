@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "211219236850",
+    "firebase_url": "https://atfp-dffb4.firebaseio.com",
+    "project_id": "atfp-dffb4",
+    "storage_bucket": "atfp-dffb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211219236850:android:f9afd29c8ea9594e064d6b",
+        "android_client_info": {
+          "package_name": "com.atfp.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211219236850-lgtsu9fc7fhpma4dh68l4avhjcf8qu1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTv05TSWmEfPjk1eszLdqy6nRyIMPtoAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211219236850-lgtsu9fc7fhpma4dh68l4avhjcf8qu1i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "211219236850-cgnoi7d85o0lo9nvpmf52v24ivh3cnlm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.atfp.notification"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

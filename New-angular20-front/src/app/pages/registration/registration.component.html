@@ -1,0 +1,145 @@
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-4">
+        <a class="btn btn-outline-secondary me-3" routerLink="/home"><i class="bi bi-arrow-left"></i> Retour</a>
+        <h2 class="mb-0">Inscription / التسجيل</h2>
+    </div>
+
+    <!-- Stepper Indicators -->
+    <div class="position-relative m-4">
+        <div class="progress" style="height: 1px;">
+            <div class="progress-bar" role="progressbar" [style.width.%]="(currentStep / 5) * 100" aria-valuenow="50"
+                aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="d-flex justify-content-between position-relative" style="top: -12px;">
+            <button type="button" class="btn btn-sm rounded-pill" [class.btn-primary]="currentStep >= 1"
+                [class.btn-secondary]="currentStep < 1">1</button>
+            <button type="button" class="btn btn-sm rounded-pill" [class.btn-primary]="currentStep >= 2"
+                [class.btn-secondary]="currentStep < 2">2</button>
+            <button type="button" class="btn btn-sm rounded-pill" [class.btn-primary]="currentStep >= 3"
+                [class.btn-secondary]="currentStep < 3">3</button>
+            <button type="button" class="btn btn-sm rounded-pill" [class.btn-primary]="currentStep >= 4"
+                [class.btn-secondary]="currentStep < 4">4</button>
+            <button type="button" class="btn btn-sm rounded-pill" [class.btn-primary]="currentStep >= 5"
+                [class.btn-secondary]="currentStep < 5">5</button>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form [formGroup]="regForm" (ngSubmit)="onSubmit()">
+
+                <!-- STEP 1: BASIC INFO -->
+                <div *ngIf="currentStep === 1">
+                    <h4 class="card-title mb-4">معطيات أساسية (Infos de base)</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">الاسم (Prénom Arabe)</label>
+                            <input type="text" class="form-control" formControlName="prenomAr"
+                                [class.is-invalid]="regForm.get('prenomAr')?.invalid && regForm.get('prenomAr')?.touched">
+                            <div class="invalid-feedback">Required / Arabic only</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">اللقب (Nom Arabe)</label>
+                            <input type="text" class="form-control" formControlName="nomAr"
+                                [class.is-invalid]="regForm.get('nomAr')?.invalid && regForm.get('nomAr')?.touched">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CIN</label>
+                            <input type="text" class="form-control" formControlName="cin" maxlength="8"
+                                placeholder="00000000"
+                                [class.is-invalid]="regForm.get('cin')?.invalid && regForm.get('cin')?.touched">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Délivrée le (Date)</label>
+                            <input type="date" class="form-control" formControlName="livreeLe">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: BIRTH DETAILS -->
+                <div *ngIf="currentStep === 2">
+                    <h4 class="card-title mb-4">معطيات مضمون الولادة (Naissance)</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Numéro d'inscription (عدد الرسم)</label>
+                            <input type="text" class="form-control" formControlName="numInscription">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Année de naissance</label>
+                            <select class="form-select" formControlName="anneeNaissance">
+                                <option *ngFor="let y of years" [value]="y">{{y}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Gouvernorat (Birth)</label>
+                            <select class="form-select" formControlName="govBread" (change)="onBirthGovChange()">
+                                <option *ngFor="let g of govs" [value]="g.id">{{g.libelle_Ar}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Municipalité</label>
+                            <select class="form-select" formControlName="munBread">
+                                <option *ngFor="let m of municipalitiesBirth" [value]="m.id">{{m.libelle_Ar}}</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Extrait de Naissance (Scan)</label>
+                            <input type="file" class="form-control" (change)="onFileChange($event)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: PERSONAL INFO -->
+                <div *ngIf="currentStep === 3">
+                    <h4 class="card-title mb-4">معطيات شخصية (Personnel)</h4>
+                    <!-- Abbreviated for brevity, normally includes all fields -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Date de Naissance</label>
+                            <input type="date" class="form-control" formControlName="dateNaissance">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" formControlName="email">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" formControlName="password">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: EDUCATION -->
+                <div *ngIf="currentStep === 4">
+                    <h4 class="card-title mb-4">التعليم (Education)</h4>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" formControlName="hasPreviousTraining"
+                            id="prevTrainingCheck">
+                        <label class="form-check-label" for="prevTrainingCheck">
+                            J'ai déjà suivi une formation professionnelle (Previous Training)
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 5: PREVIOUS TRAINING -->
+                <div *ngIf="currentStep === 5">
+                    <h4 class="card-title mb-4">التكوين المهني السابق (Previous Training)</h4>
+                    <!-- Fields for prev training -->
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-secondary" *ngIf="currentStep > 1"
+                        (click)="prevStep()">Précédent (&lt;)</button>
+                    <button type="button" class="btn btn-primary" *ngIf="currentStep < 5" (click)="nextStep()">Suivant
+                        (&gt;)</button>
+                    <button type="submit" class="btn btn-success" *ngIf="currentStep === 5">Confirmer
+                        Inscription</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+@font-face {
+    font-family: "vogue";
+    src: url("./Vogue.ttf");
+    }
+
+    @font-face {
+        font-family: "agencycollege";
+        src: url("./agencycollege.ttf");
+        }
+    @font-face {
+        font-family: "agency";
+        src: url("./agency.ttf");
+        }
+        @font-face {
+            font-family: "sansation";
+            src: url("./sansation.ttf");
+            }
+
+                   @font-face {
+            font-family: "hasan";
+            src: url("./Hacen.ttf");
+            }
+                       @font-face {
+            font-family: "hasanalgeria";
+            src: url("./HacenAlgeria.ttf");
+            }
+
+                          @font-face {
+            font-family: "unique";
+            src: url("./unique.otf");
+            }
+                            @font-face {
+            font-family: "blueberry";
+            src: url("./Blueberry.otf");
+            }
+                        @font-face {
+            font-family: "tommy";
+            src: url("./tommy.otf");
+            }
+                           @font-face {
+            font-family: "roman";
+            src: url("./roman.ttf");
+            }
+                               @font-face {
+            font-family: "mistral";
+            src: url("./Misstral.ttf");
+            }
+                                           @font-face {
+            font-family: "hacentunisia";
+            src: url("./HacenTunisia_0.ttf");
+            }
+
+                                                 @font-face {
+            font-family: "hacentunisialight";
+            src: url("./HacenTunisiaLt_0.ttf");
+            }
+                                        @font-face {
+            font-family: "hacentunisiabold";
+            src: url("./HacenTunisiaBold_0.ttf");
+            }
+
+p,table,hgroup,td,th{font-family: sansation !important;}
+   td{
+       border-radius: 3px !important;
+       border:none;
+
+   }         
+   table{    border:none;
+border-collapse: separate;
+}
+
+th{font-family: agency !important;
+border: none;
+border-radius: 5px !important;
+}
+ tr:odd > td {
+    background-color:#e3f2fd !important;
+ }
+ td{
+     font-weight: 600 !important;
+ }
+ button, .page-item{
+     font-family: agency !important;
+     
+ }
+ @media only screen and (max-width : 600px) {
+    table{
+        font-size:8pt; 
+    
+ }}
+ .nav-title{font-family: sansation !important;
+font-weight: bold !important;
+}
+.nav-link,label,h4 {font-family: agency !important;
+text-transform: capitalize !important;
+
+font-size: smaller !important;}
+
+app-sidebar-nav-link .nav-link, app-sidebar-nav-link a
+{font-family: sansation !important;
+    text-transform: uppercase !important;
+    font-size: smaller !important;
+    letter-spacing: 1px !important;
+
+}

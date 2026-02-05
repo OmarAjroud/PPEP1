@@ -1,0 +1,56 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Connexion ATFP</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+                        <!-- Username Input -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Identifiant (CIN / Matricule)</label>
+                            <input type="text" id="username" class="form-control" formControlName="username"
+                                [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                            <div class="invalid-feedback">
+                                L'identifiant est requis.
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" id="password" class="form-control" formControlName="password"
+                                [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                            <div class="invalid-feedback">
+                                Le mot de passe est requis.
+                            </div>
+                        </div>
+
+                        <!-- Error Alert -->
+                        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                            {{ errorMessage }}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || isLoading">
+                                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span>
+                                Se connecter
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">Agence Tunisienne de la Formation Professionnelle</small>
+                    <div class="mt-2">
+                        <a routerLink="/inscription" class="text-decoration-none">Créer un compte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

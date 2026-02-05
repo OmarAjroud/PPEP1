@@ -1,0 +1,536 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>تحرير الملف الشخصي </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img *ngIf="g.sexe" name="image" src="./../../assets/images/user.png" />
+    <img *ngIf="!g.sexe" name="image" src="./../../assets/images/userf.png" />
+
+
+
+    <ion-card-header>
+      <ion-card-subtitle>
+      </ion-card-subtitle>
+      <ion-card-title>
+        <ion-badge color="danger"></ion-badge>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+
+      <ion-item href="#" class="activated">
+        <ion-icon name="key" slot="start" color="dark"></ion-icon>
+        <ion-label>رقم التسجيل</ion-label>
+        <ion-badge color="dark" class="special">{{g.username}}</ion-badge>
+
+      </ion-item>
+
+      <ion-item href="#" class="activated">
+        <ion-icon name="person" slot="start" color="warning"></ion-icon>
+        <ion-label>اللقب</ion-label>
+        <ion-badge color="dark">{{g.nom}}</ion-badge>
+
+      </ion-item>
+
+      <ion-item href="#" class="activated">
+        <ion-icon name="person" slot="start" color="warning"></ion-icon>
+        <ion-label>الاسم</ion-label>
+        <ion-badge color="dark">{{g.prenom}}</ion-badge>
+
+      </ion-item>
+
+
+
+
+
+      <ion-item href="#" class="activated">
+        <ion-icon name="mail-open" slot="start" color="danger"></ion-icon>
+        <ion-label></ion-label>
+        <ion-badge color="primary" class="sansation">{{g.email}}</ion-badge>
+
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-button type="button" color="danger" (click)="closebulletin()" *ngIf="bulletinaffichage"
+    style=" float:right !important">
+    <ion-icon name="close"></ion-icon>
+    إخفاء بطاقة الأعداد
+  </ion-button>
+  <ion-button type="button" color="success" (click)="afficherbulletin()" *ngIf="!bulletinaffichage"
+    style=" float:right !important">
+    <ion-icon name="open"></ion-icon>
+    عرض
+    بطاقة الأعداد
+  </ion-button>
+  <br>
+  <ion-button type="button" color="danger" (click)="closedonnees()" *ngIf="donneesperso"
+    style=" float:right !important">
+    <ion-icon name="close"></ion-icon>
+    إخفاء
+    تحيين المعطيات الشخصية
+  </ion-button>
+  <ion-button type="button" color="success" (click)="afficherdonnees()" *ngIf="!donneesperso"
+    style=" float:right !important">
+    <ion-icon name="open"></ion-icon>
+    عرض
+    تحيين المعطيات الشخصية </ion-button>
+  <br><br>
+  <p></p>
+  <form *ngIf="bulletinaffichage" #f="ngForm" (ngSubmit)="onSubmit(f.value)" novalidate>
+
+
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger"><ion-icon name="thermometer"></ion-icon></ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          <ion-badge color="danger">إستمارة الأعداد</ion-badge>
+
+
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">تقنية :
+              </ion-label>
+              <ion-input type="number" required ngControl="note1" name="note1" [(ngModel)]="note1"
+                (ionBlur)="checknote1 = testernote(note1,0)">
+              </ion-input>
+              <div *ngIf="!checknote1" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">فرنسية :
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note2" name="note2" [(ngModel)]="note2"
+                (ionBlur)="checknote2 = testernote(note2,1)">
+              </ion-input>
+              <div *ngIf="!checknote2" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">الإنجليزية :
+
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note3" name="note3" [(ngModel)]="note3"
+                (ionBlur)="checknote3 = testernote(note3,2)">
+              </ion-input>
+              <div *ngIf="!checknote3" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">الرياضيات :
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note4" name="note4" [(ngModel)]="note4"
+                (ionBlur)="checknote4 = testernote(note4,3)">
+              </ion-input>
+              <div *ngIf="!checknote4" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">فيزياء :
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note5" name="note5" [(ngModel)]="note5"
+                (ionBlur)="checknote5 = testernote(note5,4)">
+              </ion-input>
+              <div *ngIf="!checknote5" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">الإعلامية :
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note6" name="note6" [(ngModel)]="note6"
+                (ionBlur)="checknote6 = testernote(note6,5)">
+              </ion-input>
+              <div *ngIf="!checknote6" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">إقتصادو تصرف :
+
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note7" name="note7" [(ngModel)]="note7"
+                (ionBlur)="checknote7 = testernote(note7,6)">
+              </ion-input>
+              <div *ngIf="!checknote7" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">العلوم الطبيعية :
+
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note9" name="note9" [(ngModel)]="note9"
+                (ionBlur)="checknote9 = testernote(note9,13)">
+              </ion-input>
+              <div *ngIf="!checknote9" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">المعدل العام لآخر سنة :
+
+
+              </ion-label>
+              <ion-input type="number" required ngControl="note8" name="note8" [(ngModel)]="note8"
+                (ionBlur)="checknote8 = testernote(note8,12)">
+              </ion-input>
+              <div *ngIf="!checknote8" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الصحيحة !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+
+
+              <ion-radio-group value="{{etablissement}}">
+
+                <ion-list-header>
+
+                  <ion-label>
+                    المؤسسة التربوية :
+
+                  </ion-label>
+                </ion-list-header>
+                <ion-row><ion-col> <ion-item>
+
+                      <ion-label>عمومي</ion-label>
+                      <ion-radio slot="start" value="0" name="retablissement" (click)="changeretab('0')"></ion-radio>
+
+                    </ion-item><ion-item>
+
+                      <ion-label>خاص</ion-label>
+                      <ion-radio slot="start" value="1" name="retablissement" (click)="changeretab('1')"></ion-radio>
+                    </ion-item></ion-col></ion-row>
+              </ion-radio-group>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar" dir="RTL">
+
+              <ion-list>
+
+                <ion-radio-group value="{{discipline}}">
+
+                  <ion-list-header>
+                    <ion-label>
+                      السلوك:
+                    </ion-label>
+                  </ion-list-header>
+                  <ion-row><ion-col> <ion-item>
+                        <ion-label>لا يوجد طرد أو غياب</ion-label>
+                        <ion-radio slot="start" value="0" name="rdiscipline"
+                          (click)="changediscipline('0')"></ion-radio>
+                      </ion-item></ion-col></ion-row>
+                  <ion-row><ion-col><ion-item>
+                        <ion-label> طرد أو غياب</ion-label>
+                        <ion-radio slot="end" value="1" name="rdiscipline" (click)="changediscipline('1')"></ion-radio>
+                      </ion-item></ion-col></ion-row>
+                </ion-radio-group>
+              </ion-list>
+            </ion-item>
+
+
+          </ion-col>
+        </ion-row>
+        <ion-row><ion-col>
+            <ion-item>
+              <ion-list>
+                <ion-item>
+                  <ion-label position="floating">
+                    المستوى الدراسي*
+                  </ion-label>
+                  <ion-select name="NiveauScolaire" [(ngModel)]="NiveauScolaire"
+                    (ionChange)="changerniveauscolaire(NiveauScolaire)">
+                    <ion-select-option *ngFor="let n of niveaux" value="{{n.id}}">{{n.libelle_Ar}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+
+            </ion-item>
+          </ion-col></ion-row>
+
+
+        <ion-row><ion-col>
+            <ion-item>
+              <ion-list>
+                <ion-item>
+                  <ion-label position="floating">
+                    سنة الحصول على شهادة : *
+                  </ion-label>
+                  <ion-select name="Annediplome" [(ngModel)]="Annediplome" (ionChange)="changeranne(Annediplome)">
+                    <ion-select-option *ngFor="let n of anneediplome"
+                      value="{{n.id}}">{{n.libelle_Ar}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+
+            </ion-item>
+          </ion-col></ion-row>
+        <ion-row><ion-col>
+            <ion-item>
+              <ion-list>
+                <ion-item>
+                  <ion-label position="floating">
+                    الشعبة :
+                  </ion-label>
+                  <ion-select name="sectionScolaire" [(ngModel)]="sectionscoliaire"
+                    (ionChange)="changersectionscoliare(sectionscoliaire)">
+                    <ion-select-option *ngFor="let n of sections" value="{{n.id}}">{{n.libelle_Ar}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+
+            </ion-item>
+          </ion-col></ion-row>
+        <ion-row><ion-col><ion-item lang="ar">
+
+              <input type="file" accept="image/*" id="bulletinhtml" name="bulletinhtml" [(ngModel)]="bulletinhtml"
+                (change)="changeListener($event)" />
+              <label for="bulletinhtml" ion-button><span id="file1">اختر ملف</span>
+                <ion-icon name="camera"></ion-icon>
+                <ion-icon name="document"></ion-icon>
+                <div *ngIf="bulletinok" class="mathmoun btn btn-success">
+                  {{nommathmoun}} :
+                  بطاقة أعداد مقبولة
+                </div>
+
+                <div *ngIf="bulletinnotok" class="mathmoun btn btn-danger">
+                  {{taillebulletin}} : بطاقة أعداد غير مقبولة </div>
+              </label>
+            </ion-item></ion-col></ion-row>
+        <!-- <ion-row>
+          <ion-col>
+            <ion-item>
+
+              <ion-label position="floating">رقم بطاقة <br>التعريف الوطنية</ion-label>
+              <ion-input type="text" required ngControl="cin" name="cin" maxlength="8" minlength="0"
+                (ionBlur)="checkcin(cin)" [(ngModel)]="cin" placeholder="00000000">
+              </ion-input>
+              <div *ngIf="cininvalide" class="zoneerreur btn btn-danger">8 أرقام
+              </div>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">صدرت في*</ion-label>
+
+              <!--    
+                <ion-input type="date" required ngControl="livreeLe" name="livreeLe" value=""></ion-input>-->
+        <!-- <ion-datetime name="livreeLe" displayFormat="MM DD YYYY" placeholder="MM DD YYYY" required
+          [(ngModel)]="livreeLe" mode="ios" color="orange" pickerFormat="DD MMMM YYYY" cancel-text="إلغاء الاختيار"
+          done-text="تاكيد" presentation="date" prefer-wheel="false" show-clear-button="true">
+
+
+        </ion-datetime> -->
+      </ion-card-content>
+    </ion-card>
+
+
+
+    <span class="boutons">
+
+      <ion-button type="reset" color="danger">
+        <ion-icon name="arrow-back"></ion-icon>
+        إلغاء
+      </ion-button>
+      <ion-button type="button" color="dark" (click)="updatebulletin()">
+        <ion-icon name="refresh"></ion-icon>
+        تحديث
+      </ion-button>
+
+
+
+    </span>
+  </form>
+  <img *ngIf="urlbulletin" [src]="urlbulletin">
+  <img *ngIf="imagetoshow" [src]="imagetoshow">
+
+
+  <!----------------------------------------------------donnes personnelles --------------------------------------------------------------- -->
+  <p></p>
+
+  <form *ngIf="donneesperso" #f="ngForm" (ngSubmit)="onSubmit1(f.value)" novalidate>
+
+
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger"><ion-icon name="person"></ion-icon></ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          <ion-badge color="danger">
+            المعطيات الشخصية
+
+          </ion-badge>
+
+
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-row><ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                <ion-icon name="at"></ion-icon>
+                البريد الإلكتروني*
+              </ion-label>
+              <ion-input type="email" required name="adresseemail" [(ngModel)]="adresseemail"
+                (ionBlur)="checkmailH(adresseemail)" lang="fr">
+              </ion-input>
+              <div *ngIf="emailincorrecte" class="zoneerreur btn btn-danger">
+                هذا البريد الإلكتروني غير صحيح
+              </div>
+
+              <div *ngIf="emailutilise" class="zoneerreur btn btn-danger">
+                هذا البريد الإلكتروني مستخدم من قبل </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                الهاتف الجوال*
+              </ion-label>
+              <ion-input type="text" required ngControl="TelMobile" name="TelMobile" maxlength="8" minlength="8"
+                #telmobile (ionBlur)="checktelmobile(TelMobile)" [(ngModel)]="TelMobile" maxlength="8" minlength="8"
+                value="{{g.tel}}">
+              </ion-input>
+              <div *ngIf=" telmobileinvalide" class="zoneerreur btn btn-danger">
+                هذا الحقل ليس متكون من 8 أرقام
+              </div>
+
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                العنوان*
+              </ion-label>
+              <ion-input type="text" required ngControl="Adresse" name="Adresse" [(ngModel)]="Adresse">
+
+              </ion-input>
+            </ion-item></ion-col>
+        </ion-row>
+        <ion-row><ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                الرقم البريدي*
+              </ion-label>
+              <ion-input type="text" required ngControl="CodePostal" name="CodePostal"
+                (ionBlur)="checkcodepostal(CodePostal)" [(ngModel)]="CodePostal" maxlength="4" minlength="4">
+              </ion-input>
+              <div *ngIf="codepostal" class="zoneerreur btn btn-danger">
+                هذا الحقل ليس متكون من أرقام
+              </div>
+            </ion-item></ion-col>
+        </ion-row>
+
+      </ion-card-content></ion-card>
+    <span class="boutons">
+
+      <ion-button type="reset" color="danger">
+        <ion-icon name="arrow-back"></ion-icon>
+        إلغاء
+      </ion-button>
+      <ion-button type="button" color="dark" (click)="updatepersonnel(adresseemail,TelMobile,Adresse,CodePostal)">
+        <ion-icon name="refresh"></ion-icon>
+        تحديث
+      </ion-button>
+
+
+
+    </span>
+  </form>
+
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-header lang="ar">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>تسجيل الدخول </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content dir="rtl" lang="ar">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)" novalidate>
+    <ion-item>
+      <ion-label position="floating">رقم التسجيل أو البريد الالكتروني</ion-label>
+      <ion-input type="text" required ngControl="username" name="username" [(ngModel)]="login">
+
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">كلمة السر</ion-label>
+      <ion-input ngControl="password" name="password" type="password" [(ngModel)]="password" color="dark">
+      </ion-input>
+    </ion-item>
+    <div class="boutons">
+      <ion-button type="submit" color="dark">
+        <ion-icon name="log-in"></ion-icon>
+
+        تسجيل الدخول
+
+      </ion-button>
+
+      <ion-button type="button" color="primary" routerLink="/inscription">
+        <ion-icon name="person-add"></ion-icon>
+
+        التسجيل في منظومة التكوين المهني
+      </ion-button>
+
+      <ion-button type="button" color="primary" (click)="open()">
+        <ion-icon name="person-add"></ion-icon>
+
+        التسجيل في منظومة التكوين المهني<br>
+        عن طريق الموقع
+      </ion-button>
+
+    </div>
+  </form>
+
+
+
+
+</ion-content>

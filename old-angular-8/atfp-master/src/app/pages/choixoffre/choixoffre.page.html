@@ -1,0 +1,243 @@
+<ion-header lang="ar">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      العروض
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-badge color="danger">*لك الحق في إختيار ثلاث عروض كحد أقصى
+        </ion-badge>
+      </ion-card-subtitle>
+      <ion-card-title>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <!--
+      <ion-row>
+        <ion-col>
+          <ion-list>
+
+            <ion-label position="floating">
+              الولاية*
+            </ion-label>
+
+            <ion-select [(ngModel)]="selectedCodeValue" name="Gouvernorat" required>
+              <ion-select-option *ngFor="let g of govs" value="{{g.id}}">
+                {{g.libelle_Ar}}
+              </ion-select-option>
+            </ion-select>
+
+          </ion-list>
+
+        </ion-col>
+      </ion-row>
+      !-->
+      <form>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-label position="floating">
+                الشهادة
+
+              </ion-label>
+              <ion-select interface="popover" [(ngModel)]="ancienneFormationDiplomef" name="ancienneFormationDiplomef"
+                id="ancienneFormationDiplomef" (ionChange)="cherchersaf(ancienneFormationDiplomef)"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+
+
+                <ion-select-option *ngFor="let df of diplomesf" value="{{df.id}}">{{df.libelle_Ar}}</ion-select-option>
+              </ion-select>
+            </ion-list>
+
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-label position="floating">
+                الاختصاص
+
+              </ion-label>
+              <ion-select interface="popover" name="specialitesAncienneFormationModel"
+                [(ngModel)]="specialitesAncienneFormationModel"
+                (ionChange)="cherchercentrespec(specialitesAncienneFormationModel)"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let saf of spcialitescoloairesaf" value="{{saf.id}}">
+                  {{saf.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-list>
+
+
+          </ion-col>
+        </ion-row>
+
+
+
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-label position=" floating">
+                مركز
+
+              </ion-label>
+              <ion-select interface="popover" name="CentreAncienneFormationModel"
+                [(ngModel)]="CentreAncienneFormationModel" class="select-full-width text-wrap"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+
+                <ion-select-option *ngFor="let centre of centresspec" value="{{centre.id}}" class="option1"
+                  class="select-option-full-width">
+                  {{centre.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-list>
+
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+
+            <ion-button color="success" class="b"
+              (click)="afficheroffre(specialitesAncienneFormationModel,CentreAncienneFormationModel)"
+              *ngIf="specialitesAncienneFormationModel!=undefined||CentreAncienneFormationModel!=undefined">
+              <ion-icon name="checkmark"></ion-icon>
+
+              حفظ ومتابعة
+
+            </ion-button>
+            <ion-button type="reset" color="danger" (click)="initialiser()"> إعادة البحث </ion-button>
+
+          </ion-col>
+        </ion-row>
+      </form>
+
+
+
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+    <ion-list-header>
+      <p>
+        <ion-icon name="book" color="danger"> </ion-icon>
+        <ion-badge color="danger">
+          قائمة العروض </ion-badge>
+      </p>
+    </ion-list-header>
+  </ion-list>
+
+
+
+
+  <ion-grid>
+
+
+    <ion-badge
+      *ngIf="afficherOffre && affiche && (specialitesAncienneFormationModel!=undefined||CentreAncienneFormationModel!=undefined)"
+      color="primary">
+      هناك {{nombreOffre}} عرض
+    </ion-badge>
+    <ion-row *ngFor="let off of offres" color="dark">
+      <ion-row>
+        <ion-col> <ion-badge color=info>{{off.specialite}} </ion-badge></ion-col></ion-row>
+
+      <ion-row> <ion-col> <ion-badge color=success>{{off.centre}}</ion-badge></ion-col></ion-row>
+      <ion-row class="smalltext">
+        <ion-col><ion-button (click)="affichageoffrecomplet(off.id)" color="danger"> <ion-badge color=danger>توضيح
+              العرض</ion-badge></ion-button>
+        </ion-col>
+        <ion-col><ion-button (click)="cacheroffrecomplet(off.id)" color="success"> <ion-badge color=success>تقليص
+              العرض</ion-badge></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row id="{{off.id}}" class="hidden">
+        <ion-row>
+          <!--
+      <ion-col size="1">
+        <div class='ordre'>
+          {{off.ordre}}</div>
+      </ion-col>
+
+        <ion-col>
+          <div class='etat'>
+            <ion-badge color={{off.couleur}}>{{off.etat}}</ion-badge>
+          </div>
+
+          <ion-button *ngIf="tester(off.etatnumerique)" type="button" color="danger" (click)="verifier(off.id)">تأكيد
+          </ion-button>
+        </ion-col>
+
+-->
+          <ion-col>
+            <div>{{off.diplome}}
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <ion-row>
+
+              <ion-col>
+                <div class="specialite">
+
+                  {{off.specialite}}
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div>
+                  {{off.centre}} </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="specialite1">{{off.session}} </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>المبيت : <ion-badge color=warning> {{off.foyer}}</ion-badge>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>عدد الأماكن
+            <ion-badge color=danger> : {{off.nbplaces}}</ion-badge>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            بداية التكوين : <div class="date1"> {{off.debutformation}}
+            </div>
+          </ion-col>
+          <ion-col>
+            إنتهاءه: <div class="date1"> {{off.finformation}}
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            الرجاء الطلب قبل :<div class="important11">{{off.delaisvalidation}} </div>
+          </ion-col>
+
+        </ion-row>
+        <ion-button color="primary" class="b" (click)="choisircandidature(off.id)"
+          *ngIf="specialitesAncienneFormationModel!=undefined||CentreAncienneFormationModel!=undefined">
+          <ion-icon name="checkmark"></ion-icon>
+
+          إختر العرض
+        </ion-button>
+      </ion-row>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

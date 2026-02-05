@@ -1,0 +1,42 @@
+$button-md-border-radius: 8px;
+ion-button {
+    color:white;
+    font-family:"unique" !important;
+text-align:center;
+font-size:smaller !important;
+  }
+  ion-label{
+
+    color:royalblue;
+    font-family:"unique" !important;
+    text-align:right;
+    direction : rtl;
+  }
+  alert{
+color:#222;
+  }
+ion-title {
+   text-transform: hacenalgeria !important;
+   color:white !important; 
+   font-size:smaller;
+   direction : rtl !important;
+      text-align:right !important;
+  }
+ion-content , ion-form{
+  direction:"rtl" !important;
+  text-align:"right" !important;
+}
+  ion-title,ion-badge { font-family: unique !important;}
+ion-item,.boutons{
+  direction:'rtl' !important;
+  text-align:right !important;
+  margin:15px;
+}
+ion-input{
+  font-size:small;
+  color:grey !important;
+font-family:agency;
+direction: 'ltr' !important;
+text-align:'left ' !important;
+}
+ion-icon{margin-left:3px !important; color:darkorange;font-size:smaller !important;}

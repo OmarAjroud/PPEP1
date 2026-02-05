@@ -1,0 +1,110 @@
+ion-title {
+    font-size: smaller;
+    text-transform: uppercase;
+    color: white !important;
+    direction: rtl;
+    text-align: right;
+}
+
+h2,
+ion-list-header>p {
+    font-family: unique;
+    color: dodgerblue;
+    font-size: 120%;
+
+}
+
+ion-list {
+    font-family: hacentunisia;
+    direction: rtl;
+    text-align: right;
+}
+
+*,
+H2,
+ion-label {
+    font-family: hasanalgeria;
+}
+
+textarea {
+    direction: rtl;
+    text-align: right;
+    margin: 0px !important;
+    padding: 3px !important;
+    scrollbar-color: orange;
+    border-color: floralwhite;
+    border-radius: 2px;
+    font-family: hacentunisialight !important;
+
+}
+
+ion-icon {
+    zoom: 1.2;
+}
+
+ion-grid,
+ion-row,
+ion-col {
+    direction: rtl;
+    text-align: right;
+    font-family: hacentunisialight !important;
+
+}
+
+.ordre {
+    font-family: agency !important;
+}
+
+ion-title,
+ion-badge {
+    font-family: hacentunisialight !important;
+}
+
+.specialite {
+    background-color: dodgerblue !important;
+    color: white;
+    border-radius: 3px;
+    font-family: unique !important;
+    padding: 5px !important;
+}
+
+.diplome {
+    background-color: grey;
+    color: white;
+    font-weight: bolder;
+    border-radius: 3px;
+    font-family: unique !important;
+    padding: 5px !important;
+}
+
+ion-grid>ion-row {
+    margin: 5px;
+    padding: 0px;
+    border-radius: 7px;
+    border: 1px solid dodgerblue;
+    font-size: 12pt !important;
+}
+
+ion-col div ion-badge {
+    font-size: small;
+}
+
+.date1 {
+    background-color: #FFCC00 !important;
+    border-radius: 3px;
+    font-family: hacenalgeria !important;
+    padding: 5px !important;
+}
+
+ion-badge[color="warning"] {
+    color: black !important;
+}
+
+.ion-color-warning {
+    font-weight: bold !important;
+    color: black;
+}
+
+#colspace {
+    width: 200px !important ;
+}

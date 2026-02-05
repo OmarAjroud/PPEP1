@@ -1,0 +1,652 @@
+<ion-header lang="ar">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>تسجيل </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content dir="rtl" lang="ar">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)" novalidate>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger">1</ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          معطيات أساسية</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!--
+        <ion-row>
+
+          <ion-col>
+            <ion-item lang="fr">
+              <ion-label position="floating"> Nom</ion-label>
+              <ion-input type="text" required ngControl="nom" name="nom" [(ngModel)]="nom" (ionBlur)="checknomfr(nom)"
+                lang="fr" class="fr">
+              </ion-input>
+              <div *ngIf="nomfrinvalide" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الفرنسية !
+              </div>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item lang="fr">
+              <ion-label position="floating">Prénom
+              </ion-label>
+              <ion-input type="text" required ngControl="prenom" name="prenom" [(ngModel)]="prenom"
+                (ionBlur)="checkprenomfr(prenom)" lang="fr" class="fr">
+              </ion-input>
+              <div *ngIf="prenomfrinvalide" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات الفرنسية !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+-->
+
+        <ion-row>
+          <ion-col size="6">
+            <ion-item lang="ar">
+              <ion-label position="floating">الاسم*</ion-label>
+              <ion-input type="text" required ngControl="prenom" name="prenomAr" [(ngModel)]="prenomAr"
+                (ionBlur)="checkprenomA(prenomAr)">
+              </ion-input>
+              <div *ngIf="prenomAincorrecte" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات بالعربية !
+              </div>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">اللقب*</ion-label>
+              <ion-input type="text" required ngControl="nomAr" name="nomAr" [(ngModel)]="nomAr"
+                (ionBlur)="checknomA(nomAr)">
+              </ion-input>
+              <div *ngIf="nomAincorrecte" class="zoneerreur btn btn-danger">
+                الرجاء إدخال البيانات بالعربية !
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+
+              <ion-label position="floating">رقم بطاقة <br>التعريف الوطنية</ion-label>
+              <ion-input type="text" required ngControl="cin" name="cin" maxlength="8" minlength="0"
+                (ionBlur)="checkcin(cin)" [(ngModel)]="cin" placeholder="00000000">
+              </ion-input>
+              <div *ngIf="cininvalide" class="zoneerreur btn btn-danger">8 أرقام
+              </div>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">صدرت في*</ion-label>
+
+              <!--    <ion-input type="date" required ngControl="livreeLe" name="livreeLe" value=""></ion-input>-->
+              <ion-datetime name="livreeLe" displayFormat="MM DD YYYY" placeholder="MM DD YYYY" required
+                [(ngModel)]="livreeLe" mode="ios" color="orange" pickerFormat="DD MMMM YYYY"
+                cancel-text="إلغاء الاختيار" done-text="تاكيد" presentation="date" prefer-wheel="false"
+                show-clear-button="true"
+                monthNames="[جَانْفِي,فَيفْرِي,مَارْسْ,أَفْرِيلْ,مَايْ,جوَانْ,جوِيلْيِة,أُوتْ,سَبْتَمْبَرُ,أُكْتُوبَرُ,نُوفَمْبَرُ,دِيسَمْبَرُ ]">
+
+              </ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-button color="success" class="b" (click)="affichercard2()" *ngIf="!card2 && ( card2 == undefined ) && (nomAr != '' ) && ( prenomAr !='')&&
+     !nomAincorrecte && !prenomAincorrecte && (livreeLe && !cininvalide&&cin!=null || !livreeLe && cininvalide==undefined || !livreeLe && cin==null) && nomAincorrecte!==undefined &&
+      prenomAincorrecte!==undefined">
+      <ion-icon name="checkmark"></ion-icon>
+      حفظ ومتابعة
+    </ion-button>
+
+
+
+
+    <ion-card *ngIf="card2 && card2!==undefined &&
+     !nomAincorrecte && !prenomAincorrecte &&  (livreeLe && !cininvalide&&cin!=null || !livreeLe && cininvalide==undefined || !livreeLe && cin==null) && nomAincorrecte!==undefined &&
+      prenomAincorrecte!==undefined">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger">2</ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>معطيات مضمون الولادة
+
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">عدد الرسم*</ion-label>
+              <ion-input type="text" required ngControl="NumInscription" name="NumInscription"
+                [(ngModel)]="NumInscription" (ionBlur)="checkcodebirth(NumInscription)" maxlength=5 minlength=1>
+              </ion-input>
+              <div *ngIf="codeinvalide" class="zoneerreur btn btn-danger">
+                رمز غير صالح
+              </div>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-label position="floating">سنة الميلاد*
+
+            </ion-label>
+            <ion-select [(ngModel)]="Annee" name="Annee" required interface="action-sheet" class="number">
+              <ion-select-option *ngFor="let a of anneebirth" value="{{a.id}}">
+                {{a.id}}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-label position="floating">
+                الولاية*
+              </ion-label>
+              <ion-select [(ngModel)]="s1" name="selectCode1" required (ionChange)="chercherm(s1)">
+                <ion-select-option *ngFor="let g1 of govs" value="{{g1.id}}">
+                  {{g1.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-list>
+
+          </ion-col>
+          <ion-col>
+            <ion-list>
+              <ion-label position="floating">الدائرة<br> البلدية*
+              </ion-label>
+              <ion-select [(ngModel)]="mm" name="Municipalite" required
+                (ionChange)="checkbirth(NumInscription,mm,Annee)">
+                <ion-select-option *ngFor="let m of municipalites" value="{{m.id}}">
+                  {{m.libelle_Ar}}
+
+                </ion-select-option>
+              </ion-select>
+              <div *ngIf="naissanceincorrecte" class="zoneerreur btn btn-danger">
+                تحقق من ولادتك: السنة ، الرمز والبلدية
+              </div>
+
+            </ion-list>
+
+          </ion-col>
+        </ion-row>
+        <ion-item lang="ar">
+
+          <input type="file" accept="image/*" id="ExtraitDeNaissance" name="ExtraitDeNaissance"
+            [(ngModel)]="ExtraitDeNaissance" (change)="changeListener($event)" />
+          <label for="ExtraitDeNaissance" ion-button><span id="file1">اختر ملف</span>
+            <ion-icon name="camera"></ion-icon>
+            <ion-icon name="document"></ion-icon>
+            <div *ngIf="mathmounmagboul" class="mathmoun btn btn-success">
+              {{nommathmoun}} : مضمون مقبول </div>
+
+            <div *ngIf="mathmounnonmagboul" class="mathmoun btn btn-danger">
+              {{taillemathmoun}} : مضمون غير مقبول </div>
+          </label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-button color="success" class="b" (click)="affichercard3()" *ngIf="!card3 && card3==undefined && card2 && !codeinvalide &&
+    !naissanceincorrecte && ExtraitDeNaissance && codeinvalide!==undefined &&
+    naissanceincorrecte!==undefined && ExtraitDeNaissance!==undefined">
+      <ion-icon name="checkmark"></ion-icon>
+
+      حفظ ومتابعة
+
+    </ion-button>
+
+    <ion-card *ngIf="card3 && card3!==undefined && !codeinvalide && 
+    !naissanceincorrecte && ExtraitDeNaissance &&codeinvalide!==undefined && 
+    naissanceincorrecte!==undefined && ExtraitDeNaissance!==undefined">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger">3</ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          معطيات شخصية
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">
+                تاريخ الولادة*
+
+              </ion-label>
+              <!--<ion-input type="date" required ngControl="DateNaissance" name="DateNaissance" value=""> </ion-input>-->
+              <ion-datetime displayFormat="DD MM YYYY" required [(ngModel)]="DateNaissance" name="DateNaissance"
+                type="date" mode="ios" color="orange" pickerFormat="DD MMMM YYYY" cancel-text="إلغاء الاختيار"
+                done-text="تاكيد" presentation="date" prefer-wheel="true" show-clear-button="true"
+                max="{{maxdatebirth}}"
+                monthNames="[جَانْفِي,فَيفْرِي,مَارْسْ,أَفْرِيلْ,مَايْ,جوَانْ,جوِيلْيِة,أُوتْ,سَبْتَمْبَرُ,أُكْتُوبَرُ,نُوفَمْبَرُ,دِيسَمْبَرُ ]">
+
+                ></ion-datetime>
+
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-radio-group value="male">
+
+              <ion-list-header>
+                <ion-label>
+                  الجنس*
+                </ion-label>
+              </ion-list-header>
+
+
+              <ion-label>ذكر</ion-label>
+              <ion-radio slot="start" value="male" name="genre" (click)="selected2('male')"></ion-radio>
+
+
+
+              <ion-label>أنثى</ion-label>
+              <ion-radio slot="start" value="female" name="genre" (click)="selected2('female')"></ion-radio>
+
+            </ion-radio-group>
+
+          </ion-col>
+        </ion-row>
+        <ion-item lang="ar">
+          <ion-label position="floating">
+            العنوان*
+          </ion-label>
+          <ion-input type="text" required ngControl="Adresse" name="Adresse" [(ngModel)]="Adresse">
+
+          </ion-input>
+        </ion-item>
+        <ion-item lang="ar">
+          <ion-label position="floating">
+            الرقم البريدي*
+          </ion-label>
+          <ion-input type="text" required ngControl="CodePostal" name="CodePostal"
+            (ionBlur)="checkcodepostal(CodePostal)" [(ngModel)]="CodePostal" maxlength="4" minlength="4">
+          </ion-input>
+          <div *ngIf="codepostal" class="zoneerreur btn btn-danger">
+            هذا الحقل ليس متكون من أرقام
+          </div>
+        </ion-item>
+        <ion-row>
+          <ion-col>
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                الهاتف القار </ion-label>
+              <ion-input type="text" required ngControl="TelFixe" name="TelFixe" (ionBlur)="checktelfix(TelFix)" #telfix
+                value="" [(ngModel)]="TelFix" maxlength="8" minlength="8">
+              </ion-input>
+              <div *ngIf="telfixinvalide" class="zoneerreur btn btn-danger">
+                هذا الحقل ليس متكون من 8 أرقام
+              </div>
+
+            </ion-item>
+          </ion-col>
+          <ion-col>
+
+            <ion-item lang="ar">
+              <ion-label position="floating">
+                الهاتف الجوال*
+              </ion-label>
+              <ion-input type="text" required ngControl="TelMobile" name="TelMobile" maxlength="8" minlength="8"
+                #telmobile (ionBlur)="checktelmobile(TelMobile)" [(ngModel)]="TelMobile" maxlength="8" minlength="8">
+              </ion-input>
+              <div *ngIf="telmobileinvalide" class="zoneerreur btn btn-danger">
+                هذا الحقل ليس متكون من 8 أرقام
+              </div>
+
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+
+              <ion-label position="floating">
+                الولاية*
+              </ion-label>
+
+              <ion-select interface="popover" [(ngModel)]="selectedCodeValue" name="Gouvernorat" required
+                (ionChange)="chercherdelegation(selectedCodeValue)" class="select-full-width text-wrap"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let g of govs" value="{{g.id}}">
+                  {{g.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+
+            </ion-list>
+
+          </ion-col>
+          <ion-col>
+            <ion-list>
+
+              <ion-label position="floating">
+                المعتمدية*
+              </ion-label>
+              <ion-select interface="popover" [(ngModel)]="del1" name="Delegation" class="select-full-width text-wrap"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}" required>
+                <ion-select-option *ngFor="let d of delegations1" value="{{d.id}}">
+                  {{d.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+
+            </ion-list>
+
+          </ion-col>
+        </ion-row>
+
+        <ion-item lang="ar">
+          <ion-label position="floating">
+            <ion-icon name="at"></ion-icon>
+            البريد الإلكتروني*
+          </ion-label>
+          <ion-input type="email" required name="email" [(ngModel)]="email1" (ionBlur)="checkmailH(email1)" lang="fr">
+          </ion-input>
+          <div *ngIf="emailincorrecte" class="zoneerreur btn btn-danger">
+            هذا البريد الإلكتروني غير صحيح
+          </div>
+
+          <div *ngIf="emailutilise" class="zoneerreur btn btn-danger">
+            هذا البريد الإلكتروني مستخدم من قبل </div>
+        </ion-item>
+
+        <ion-item lang="ar">
+          <ion-row>
+            <ion-col>
+
+              <ion-label position="floating">كلمة السر*</ion-label>
+              <ion-input type="password" required ngControl="first" name="first" [(ngModel)]="first">
+              </ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-label position="floating">
+                إعادة كلمة السر*
+
+              </ion-label>
+              <ion-input type="password" required ngControl="second" name="second" [(ngModel)]="second"
+                (ionBlur)="checksecond(second,first)" (ionFocus)="checksecond1()">
+              </ion-input>
+              <div *ngIf="secondincorrecte" class="zoneerreur btn btn-danger">
+                الرجاء إدخال نفس كلمات السر </div>
+            </ion-col>
+          </ion-row>
+
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button color="success" class="b" (click)="affichercard4()" *ngIf="!card4 && card4==undefined && card3 && DateNaissance && 
+    DateNaissance!==undefined && Adresse && Adresse!==undefined && !codepostal 
+    && codepostal!==undefined  && !telmobileinvalide && telmobileinvalide!==undefined
+    && del1 && del1!==undefined && !emailincorrecte && emailincorrecte!==undefined && !emailutilise 
+    && emailutilise !== undefined && first && first!==undefined  && !secondincorrecte 
+    && secondincorrecte!==undefined">
+      <ion-icon name="checkmark"></ion-icon>
+
+      حفظ ومتابعة
+
+    </ion-button>
+
+    <ion-card *ngIf="card4 && card4!==undefined && DateNaissance && 
+    DateNaissance!==undefined && Adresse && Adresse!==undefined && !codepostal 
+    && codepostal!==undefined  && !telmobileinvalide && telmobileinvalide!==undefined
+    && del1 && del1!==undefined && !emailincorrecte && emailincorrecte!==undefined && !emailutilise 
+    && emailutilise !== undefined && first && first!==undefined  && !secondincorrecte 
+    && secondincorrecte!==undefined">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger">4</ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          تعليم/التكوين المهني </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                المستوى الدراسي*
+              </ion-label>
+              <ion-select interface="popover" name="NiveauScolaire" [(ngModel)]="ancienneFormationNiveau"
+                class="select-full-width text-wrap" [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let n of niveaux" value="{{n.id}}">{{n.libelle_Ar}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                الشهادة
+              </ion-label>
+              <ion-select interface="popover" name="deplome" [(ngModel)]="ancienneFormationDiplome"
+                class="select-full-width text-wrap" [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let d of diplomes" value="{{d.id}}">{{d.libelle_Ar}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                الاختصاص
+
+              </ion-label>
+              <ion-select interface="popover" name="speciality" id="specF" [(ngModel)]="specF"
+                class="select-full-width text-wrap" [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let spec of spcialitescoloaires" value="{{spec.id}}">{{spec.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+        <ion-item lang="ar">
+          <ion-label position="floating">المؤسسة*</ion-label>
+          <ion-input type="text" required ngControl="ُEtablissement" name="etablisment" [(ngModel)]="Etablissement">
+
+          </ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-list>
+            <ion-radio-group value="public">
+
+              <ion-list-header>
+                <ion-label>نوع المؤسسة*
+                </ion-label>
+              </ion-list-header>
+              <ion-row>
+                <ion-item>
+                  <ion-label class="s">عمومية</ion-label>
+                  <ion-radio slot="start" value="public" name="etablismenttype" (click)="selected1('public')">
+                  </ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="s">خاصة</ion-label>
+                  <ion-radio slot="start" value="private" name="etablismenttype" (click)="selected1('private')">
+                  </ion-radio>
+                </ion-item>
+              </ion-row>
+            </ion-radio-group>
+
+          </ion-list>
+        </ion-item>
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                سنة الخروج *
+              </ion-label>
+              <ion-select interface="popover" [(ngModel)]="anp" name="AnneeAbandonScolaire" required class="number">
+                <ion-select-option *ngFor="let a1 of annee" value="{{a1.id}}">
+                  {{a1.id}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+
+
+
+
+        <ion-item>
+          <ion-list>
+            <ion-radio-group value="no">
+
+              <ion-list-header>
+                <ion-label>
+                  درست التدريب المهني من قبل
+                </ion-label>
+              </ion-list-header>
+              <ion-row>
+                <ion-item>
+                  <ion-label class="s">نعم</ion-label>
+                  <ion-checkbox slot="start" value="ok" name="formation" [(ngModel)]="formation"></ion-checkbox>
+                </ion-item>
+
+              </ion-row>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-card *ngIf="formation && formation!==undefined && anp">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-badge color="danger">5</ion-badge>
+        </ion-card-subtitle>
+        <ion-card-title>
+          التكوين المهني السابق </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                الشهادة
+
+              </ion-label>
+              <ion-select interface="popover" [(ngModel)]="ancienneFormationDiplomef" name="ancienneFormationDiplomef"
+                id="ancienneFormationDiplomef" (ionChange)="cherchersaf(ancienneFormationDiplomef)"
+                class="select-full-width text-wrap" [interfaceOptions]="{'cssClass': 'wider-popover'}">
+
+
+                <ion-select-option *ngFor="let df of diplomesf" value="{{df.id}}">{{df.libelle_Ar}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                الاختصاص
+
+              </ion-label>
+              <ion-select interface="popover" name="specialitesAncienneFormationModel"
+                [(ngModel)]="specialitesAncienneFormationModel"
+                (ionChange)="cherchercentrespec(specialitesAncienneFormationModel)" class="select-full-width text-wrap"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let saf of spcialitescoloairesaf" value="{{saf.id}}">
+                  {{saf.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                مركز
+
+              </ion-label>
+              <ion-select interface="popover" name="CentreAncienneFormationModel"
+                [(ngModel)]="CentreAncienneFormationModel" class="select-full-width text-wrap"
+                [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let centre of centresspec" value="{{centre.id}}">{{centre.libelle_Ar}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">
+                سنة الانتهاء
+
+              </ion-label>
+              <ion-select interface="popover" [(ngModel)]="anp1" name="anneefinformation" required class="number"
+                class="select-full-width text-wrap" [interfaceOptions]="{'cssClass': 'wider-popover'}">
+                <ion-select-option *ngFor="let a of annee" value="{{a.id}}">
+                  {{a.id}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <span class="boutons" *ngIf="card4 && card4!==undefined">
+      <ion-button type="submit" color="dark">
+        <ion-icon name="log-in"></ion-icon>
+
+        التسجيل في منظومة التكوين المهني
+
+      </ion-button>
+
+
+
+    </span>
+  </form>
+
+
+
+
+</ion-content>

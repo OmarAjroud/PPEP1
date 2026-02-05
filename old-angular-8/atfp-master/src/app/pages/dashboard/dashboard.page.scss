@@ -1,0 +1,51 @@
+ion-title {
+    font-size:smaller;
+   text-transform: hacenalgeria !important;
+   color:white !important; direction : rtl;
+      text-align:right;
+  }
+
+  h2,ion-list-header>p{
+                   font-family:unique;
+                  color:dodgerblue;
+
+  }
+  
+  ion-list-header>p{
+                  
+                  font-size:120% !important;
+
+  }
+
+  ion-list{
+            font-family: unique;
+      direction : rtl;
+      text-align:right;
+  }
+  ion-title,ion-badge { font-family: hacentunisia !important;}
+
+  textarea{
+      direction :rtl;
+      text-align : right;
+      margin: 0px !important;
+      padding : 3px !important  ;
+      scrollbar-color: orange;
+      border:none;
+      border-radius:5px;
+      font-family:unique !important;
+      color:#222;
+      background-color:white !important;
+  }
+  ion-icon{
+      zoom:1.5;
+  }
+  presAlert{
+      text-align:right;
+      direction : rtl  important;
+      font-family: hacentunisia !important;
+  }
+ion-item{
+    padding:0px;
+    margin:4px;
+   
+}

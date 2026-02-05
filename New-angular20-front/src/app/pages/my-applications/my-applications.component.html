@@ -1,0 +1,62 @@
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-4">
+        <a class="btn btn-outline-secondary me-3" routerLink="/home"><i class="bi bi-arrow-left"></i> Retour</a>
+        <h2 class="mb-0">Mes Candidatures (My Applications)</h2>
+    </div>
+
+    <!-- List -->
+    <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && applications.length === 0" class="alert alert-info text-center">
+        Aucune candidature trouvée.
+    </div>
+
+    <div class="row g-4" *ngIf="!isLoading && applications.length > 0">
+        <div class="col-12" *ngFor="let app of applications">
+            <div class="card shadow-sm border-start border-5"
+                [ngClass]="{'border-success': !isDraft(app.etatnumerique), 'border-warning': isDraft(app.etatnumerique)}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge mb-2"
+                                [ngClass]="{'bg-success': !isDraft(app.etatnumerique), 'bg-warning text-dark': isDraft(app.etatnumerique)}">
+                                {{app.etat}}
+                            </span>
+                            <h5 class="card-title text-primary mb-0">{{app.specialite}}</h5>
+                            <small class="text-muted">{{app.centre}}</small>
+                        </div>
+                        <span class="badge bg-secondary">{{app.session}}</span>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <small class="text-muted d-block"><strong>Diplôme:</strong> {{app.diplome}}</small>
+                            <small class="text-muted d-block"><strong>Début:</strong> {{app.debutformation}}</small>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block"><strong>Hébergement:</strong> <span
+                                    class="badge bg-info text-dark">{{app.hebergement}}</span></small>
+                            <small class="text-muted d-block"><strong>Bourse:</strong> <span
+                                    class="badge bg-info text-dark">{{app.bourse}}</span></small>
+                        </div>
+                    </div>
+
+                    <!-- Actions for Drafts -->
+                    <div class="d-flex justify-content-end gap-2" *ngIf="isDraft(app.etatnumerique)">
+                        <button class="btn btn-success btn-sm" (click)="confirmDraft(app.idoffre || app.id)">
+                            <i class="bi bi-check-lg me-1"></i> Confirmer
+                        </button>
+                        <button class="btn btn-danger btn-sm" (click)="deleteDraft(app.idoffre || app.id)">
+                            <i class="bi bi-trash me-1"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

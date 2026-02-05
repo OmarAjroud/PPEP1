@@ -1,0 +1,141 @@
+<ion-app>
+
+
+  <ion-toolbar color="light">
+
+
+
+    <ion-button color="light" routerLink="/home" *ngIf="connecte">
+      <ion-icon color="secondary" name="home" (click)="close()"></ion-icon>
+
+    </ion-button>
+
+
+
+
+
+    <ion-button color="light" routerLink="/login" tooltip="I'm a tooltip below a button" positionV="bottom" arrow
+      *ngIf="!connecte">
+      <span>تسجيل الدخول </span>
+      <ion-icon color="secondary" name="log-in"></ion-icon>
+
+    </ion-button>
+    <ion-button color="light" routerLink="/logout" tooltip="Authentification" navTooltip *ngIf="connecte"><span></span>
+      <ion-icon color="danger" name="log-out"></ion-icon>
+
+    </ion-button>
+    <ion-button color="light" routerLink="/inscription" *ngIf="!connecte"><span>
+
+        تسجيل في المنظومة
+      </span>
+      <ion-icon color="success" name="person-add"></ion-icon>
+    </ion-button>
+
+
+    <!-- <ion-button color="light" routerLink="/details" *ngIf="connecte"><span>الملف</span>
+      <ion-icon color="secondary" name="person"></ion-icon>
+
+    </ion-button> -->
+
+    <ion-button color="light" routerLink="/dashboard" *ngIf="connecte">
+      <!-- <span>إشعارات</span> -->
+      <ion-icon color="danger" name="notifications"></ion-icon>
+
+    </ion-button>
+    <!-- <ion-button color="light" routerLink="/offre" *ngIf="connecte">
+      <span>ترشحات المستخدم</span>
+      <ion-icon color="danger" name="book"></ion-icon>
+
+    </ion-button> -->
+
+
+    <!-- <ion-button color="light" routerLink="/choixoffre" *ngIf="connecte">
+      <span> قائمة العروض</span>
+      <ion-icon color="success" name="list"></ion-icon>
+
+    </ion-button> -->
+
+    <ion-button color="light" (click)="openEnd()" *ngIf="connecte"><span>قائمة الاختيارات</span>
+      <ion-icon color="danger" name="list"></ion-icon>
+
+    </ion-button>
+
+
+    <ion-button color="light" (click)="exit()" color="dark">
+      <ion-icon color="danger" name="close"></ion-icon>
+
+    </ion-button>
+
+
+
+  </ion-toolbar>
+
+  <ion-content class="ion-padding">
+
+
+
+
+    <ion-menu side="end" type="overlay" menuId="custom" class="my-custom-menu">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title color="white">
+            <ion-icon name="exit" (click)="close()" color="danger"></ion-icon>
+            اختيارات
+          </ion-title>
+
+
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item routerLink="/login" routerDirection="forward" (click)="close()">
+            <ion-icon name="log-in" color="secondary"></ion-icon> تسجيل الدخول
+          </ion-item>
+          <ion-item routerLink="/dashboard" routerDirection="forward" (click)="close()">
+            <ion-icon name="notifications" color="danger"></ion-icon> إشعارات المستخدم
+          </ion-item>
+          <ion-item routerLink="/details" routerDirection="forward" (click)="close()">
+            <ion-icon name="person" color="secondary"></ion-icon> تحرير الملف الشخصي
+          </ion-item>
+          <ion-item routerLink="/offre" routerDirection="forward" (click)="close()">
+            <ion-icon name="book" color="danger"></ion-icon>
+            ترشحات المستخدم
+          </ion-item>
+
+          <ion-item routerLink="/inscription" routerDirection="forward" (click)="close()">
+            <ion-icon name="person-add" color="success"></ion-icon> التسجيل عن بعد
+          </ion-item>
+          <ion-item routerLink="/choixoffre" routerDirection="forward" (click)="close()">
+            <ion-icon name="book" color="black"></ion-icon>
+            قائمة العروض
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-content>
+
+  <ion-footer>
+    <ion-toolbar color="light">
+
+      <ion-button (click)="openfacebook()" color="light">
+        <ion-icon name="logo-facebook" class="iconfacebook" color="primary"></ion-icon>الصفحة<br> الرسمية
+      </ion-button>
+
+      <ion-button (click)="opensite()" color="light">
+        <ion-icon name="globe" class="iconsitetritux" color=secondary></ion-icon>موقع <br>التسجيل
+      </ion-button>
+
+      <ion-button (click)="opensiteatfp()" color="light">
+        <ion-icon name="globe" class="iconsiteatfp" color="secondary"></ion-icon>موقع <br>الوكالة
+      </ion-button>
+
+
+    </ion-toolbar>
+  </ion-footer>
+
+
+
+
+</ion-app>

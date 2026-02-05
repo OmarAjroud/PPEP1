@@ -1,0 +1,8 @@
+{
+  "name": "atfp",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

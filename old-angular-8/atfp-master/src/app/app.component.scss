@@ -1,0 +1,90 @@
+ion-title {
+  font-size: smaller;
+  text-transform: uppercase;
+  font-family: "hacentunisialight";
+}
+
+ion-icon {
+  font-size: 20px !important;
+  margin: 1px 2px !important;
+}
+
+.taille {
+  min-height: 50px;
+  min-width: 50px;
+}
+
+* {
+  color: var(--text-color--light);
+}
+
+ion-button {
+  margin: 1px;
+  padding: 1px 1px !important;
+  ;
+}
+
+ion-button span {
+
+  font-family: "hacen" !important;
+  font-size: 10px;
+  color: #111 !important;
+}
+
+ion-footer,
+title {
+  color: white !important;
+}
+
+span {
+  font-size: 12px;
+  font-family: hacenalgeria !important;
+  margin: 2px auto;
+  color: floralwhite;
+}
+
+ion-menu {
+  color: doodgerblue !important;
+  text-align: right;
+  direction: rtl;
+  font-family: "unique";
+}
+
+ion-toolbar {
+  background-color: #111 !important;
+}
+
+
+ion-item {
+  font-size: 11pt;
+
+  color: #003966 !important;
+  text-align: right;
+  direction: rtl;
+  font-family: "unique" !important;
+  background: #36A1B3 !important;
+  font-weight: lighter !important;
+}
+
+ion-list ion-icon {
+  font-size: 20px;
+  margin: 5px !important;
+}
+
+ion-footer ion-icon {
+  font-size: 12pt !important;
+  color: red !important;
+}
+
+
+ion-footer ion-button {
+  color: transparent !important;
+  padding: 1px !important;
+  margin: 1px 15px !important;
+  position: relative;
+  float: right !important;
+  font-size: 8pt !important;
+  font-family: unique !important;
+  width: 90px;
+
+}

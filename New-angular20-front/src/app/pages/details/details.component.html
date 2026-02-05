@@ -1,0 +1,99 @@
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-4">
+        <a class="btn btn-outline-secondary me-3" routerLink="/home"><i class="bi bi-arrow-left"></i> Retour</a>
+        <h2 class="mb-0">Mon Profil (profile)</h2>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && profile">
+
+        <!-- Info Card -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Informations Personnelles</h5>
+                <button class="btn btn-sm btn-light" (click)="editMode = !editMode">
+                    <i class="bi bi-pencil"></i> Modifier
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="!editMode">
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Nom & Prénom (Ar)</small>
+                        <strong>{{profile.credential?.nomAr}} {{profile.credential?.prenomAr}}</strong>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">CIN</small>
+                        <strong>{{profile.credential?.cin}}</strong>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Adresse</small>
+                        <strong>{{profile.donnee?.Adresse}}</strong>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Code Postal</small>
+                        <strong>{{profile.donnee?.CodePostal}}</strong>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Téléphone</small>
+                        <strong>{{profile.donnee?.TelMobile}}</strong>
+                    </div>
+                </div>
+
+                <!-- Edit Form -->
+                <form *ngIf="editMode" (ngSubmit)="updateInfo()">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" class="form-control" [(ngModel)]="editData.adresse" name="adresse">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Code Postal</label>
+                            <input type="text" class="form-control" [(ngModel)]="editData.codePostal" name="codePostal">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Téléphone (Mobile)</label>
+                            <input type="text" class="form-control" [(ngModel)]="editData.telMobile" name="telMobile">
+                        </div>
+                        <div class="col-12 text-end mt-3">
+                            <button type="button" class="btn btn-secondary me-2"
+                                (click)="editMode = false">Annuler</button>
+                            <button type="submit" class="btn btn-success">Enregistrer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Account Card -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Compte</h5>
+                <button class="btn btn-sm btn-light" (click)="editEmailMode = !editEmailMode">
+                    <i class="bi bi-pencil"></i> Modifier Email
+                </button>
+            </div>
+            <div class="card-body">
+                <div *ngIf="!editEmailMode">
+                    <small class="text-muted d-block">Email</small>
+                    <strong>{{profile.credential?.email}}</strong>
+                </div>
+
+                <form *ngIf="editEmailMode" (ngSubmit)="updateEmail()">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" [(ngModel)]="newEmail" name="email"
+                            placeholder="Nouvel Email">
+                        <button class="btn btn-success" type="submit">Mettre à jour</button>
+                        <button class="btn btn-secondary" type="button" (click)="editEmailMode = false">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

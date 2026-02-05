@@ -1,0 +1,84 @@
+<!--
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      <ion-icon name="logo-android"></ion-icon>
+
+      <span>Agence Tunisienne de la Formation Professionnelle </span>
+
+    </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+-->
+<ion-content>
+
+  <ion-img src="./assets/images/atfp.png"></ion-img>
+
+  <!-- 
+  <br>
+  <ion-item>
+    <ion-badge slot="start" color="light">objet</ion-badge>
+    <ion-label>
+      {{subject}}
+    </ion-label>
+    <ion-badge slot="end" color="light">
+      <ion-button (click)="deletemsg()" color="danger">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-badge>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating">{{msgH}}</ion-label>
+    <ion-textarea></ion-textarea>
+  </ion-item>
+
+
+  <br>
+  <ion-item>
+    <ion-badge slot="start" color="light">TOKEN</ion-badge>
+    <ion-label>{{tk}}</ion-label>
+    <ion-badge slot="end" color="light">
+      <ion-button color="danger" (click)="deletetoken()">
+        <ion-icon name="close"></ion-icon>
+
+      </ion-button>
+    </ion-badge>
+  </ion-item>
+-->
+
+  <ion-fab vertical="center" horizontal="center" slot="fixed">
+    <ion-fab-button class="boutonprincipal" id="boutonclick" (click)="afficherimage()">
+      <ion-icon name="menu"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button class="boutontop" data-desc="العروض" routerLink="/choixoffre">
+        <ion-icon name="book" title=offre color="dark"></ion-icon>
+
+      </ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="bottom">
+      <ion-fab-button class="boutonbottom" data-desc="ملفي " routerLink="/details">
+        <ion-icon name="person" title="enter" color="primary"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="start">
+      <ion-fab-button class="boutongauche" data-desc="إشعارات" routerLink="/dashboard">
+        <ion-icon name="notifications-outline" color="danger"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="end">
+      <ion-fab-button class="boutonright" data-desc="ترشحاتي " routerLink="/offre">
+        <ion-icon name="book" color="danger"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-img id="imageclick" src="./assets/images/manclick.png" *ngIf="handvisible"></ion-img>
+
+  <!--
+  <ion-button color="light" (click)="presentAlert()">
+    <ion-icon color="danger" name="notifications-outline"></ion-icon>
+
+  </ion-button>-->
+</ion-content>
