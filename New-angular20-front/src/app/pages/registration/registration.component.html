@@ -38,18 +38,35 @@
                             <label class="form-label">الاسم (Prénom Arabe)</label>
                             <input type="text" class="form-control" formControlName="prenomAr"
                                 [class.is-invalid]="regForm.get('prenomAr')?.invalid && regForm.get('prenomAr')?.touched">
-                            <div class="invalid-feedback">Required / Arabic only</div>
+                            <div *ngIf="regForm.get('prenomAr')?.hasError('required')" class="invalid-feedback">
+                                champ obligatoire / إجباري
+                            </div>
+                            <div *ngIf="regForm.get('prenomAr')?.hasError('notArabic')" class="invalid-feedback">
+                                Texte en arabe uniquement / نص بالعربية فقط
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">اللقب (Nom Arabe)</label>
                             <input type="text" class="form-control" formControlName="nomAr"
                                 [class.is-invalid]="regForm.get('nomAr')?.invalid && regForm.get('nomAr')?.touched">
+                            <div *ngIf="regForm.get('nomAr')?.hasError('required')" class="invalid-feedback">
+                                champ obligatoire / إجباري
+                            </div>
+                            <div *ngIf="regForm.get('nomAr')?.hasError('notArabic')" class="invalid-feedback">
+                                Texte en arabe uniquement / نص بالعربية فقط
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">CIN</label>
                             <input type="text" class="form-control" formControlName="cin" maxlength="8"
                                 placeholder="00000000"
                                 [class.is-invalid]="regForm.get('cin')?.invalid && regForm.get('cin')?.touched">
+                            <div *ngIf="regForm.get('cin')?.hasError('required')" class="invalid-feedback">
+                                champ obligatoire / إجباري
+                            </div>
+                            <div *ngIf="regForm.get('cin')?.hasError('invalidCin')" class="invalid-feedback">
+                                8 chiffres / 8 أرقام
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Délivrée le (Date)</label>
@@ -64,11 +81,16 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Numéro d'inscription (عدد الرسم)</label>
-                            <input type="text" class="form-control" formControlName="numInscription">
+                            <input type="text" class="form-control" formControlName="numInscription"
+                                (blur)="checkBirthDetails()"
+                                [class.is-invalid]="(regForm.get('numInscription')?.invalid && regForm.get('numInscription')?.touched) || !isBirthDetailsValid">
+                            <div *ngIf="!isBirthDetailsValid" class="invalid-feedback">
+                                {{ birthDetailsErrorMsg }}
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Année de naissance</label>
-                            <select class="form-select" formControlName="anneeNaissance">
+                            <select class="form-select" formControlName="anneeNaissance" (change)="checkBirthDetails()">
                                 <option *ngFor="let y of years" [value]="y">{{y}}</option>
                             </select>
                         </div>
@@ -80,7 +102,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Municipalité</label>
-                            <select class="form-select" formControlName="munBread">
+                            <select class="form-select" formControlName="munBread" (change)="checkBirthDetails()">
                                 <option *ngFor="let m of municipalitiesBirth" [value]="m.id">{{m.libelle_Ar}}</option>
                             </select>
                         </div>
@@ -92,21 +114,110 @@
                 </div>
 
                 <!-- STEP 3: PERSONAL INFO -->
+                <!-- STEP 3: PERSONAL INFO -->
                 <div *ngIf="currentStep === 3">
                     <h4 class="card-title mb-4">معطيات شخصية (Personnel)</h4>
-                    <!-- Abbreviated for brevity, normally includes all fields -->
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Date de Naissance</label>
-                            <input type="date" class="form-control" formControlName="dateNaissance">
+                            <input type="date" class="form-control" formControlName="dateNaissance"
+                                [class.is-invalid]="regForm.get('dateNaissance')?.invalid && regForm.get('dateNaissance')?.touched">
+                            <div class="invalid-feedback">Date requise / التاريخ مطلوب</div>
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">Genre</label>
+                            <select class="form-select" formControlName="genre"
+                                [class.is-invalid]="regForm.get('genre')?.invalid && regForm.get('genre')?.touched">
+                                <option value="male">Homme (ذكر)</option>
+                                <option value="female">Femme (أنثى)</option>
+                            </select>
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" class="form-control" formControlName="adresse"
+                                [class.is-invalid]="regForm.get('adresse')?.invalid && regForm.get('adresse')?.touched">
+                            <div class="invalid-feedback">Adresse requise / العنوان مطلوب</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Code Postal</label>
+                            <input type="text" class="form-control" formControlName="codePostal" maxlength="4"
+                                [class.is-invalid]="regForm.get('codePostal')?.invalid && regForm.get('codePostal')?.touched">
+                            <div *ngIf="regForm.get('codePostal')?.hasError('required')" class="invalid-feedback">
+                                Obligatoire
+                            </div>
+                            <div *ngIf="regForm.get('codePostal')?.hasError('pattern')" class="invalid-feedback">
+                                4 chiffres / 4 أرقام
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tél Mobile</label>
+                            <input type="text" class="form-control" formControlName="telMobile" maxlength="8"
+                                [class.is-invalid]="regForm.get('telMobile')?.invalid && regForm.get('telMobile')?.touched">
+                            <div *ngIf="regForm.get('telMobile')?.hasError('required')" class="invalid-feedback">
+                                Obligatoire
+                            </div>
+                            <div *ngIf="regForm.get('telMobile')?.hasError('pattern')" class="invalid-feedback">
+                                8 chiffres / 8 أرقام
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tél Fixe</label>
+                            <input type="text" class="form-control" formControlName="telFixe" maxlength="8"
+                                [class.is-invalid]="regForm.get('telFixe')?.invalid && regForm.get('telFixe')?.touched">
+                            <div *ngIf="regForm.get('telFixe')?.hasError('pattern')" class="invalid-feedback">
+                                8 chiffres / 8 أرقام
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Gouvernorat (Adresse)</label>
+                            <select class="form-select" formControlName="govAddress" (change)="onAddressGovChange()"
+                                [class.is-invalid]="regForm.get('govAddress')?.invalid && regForm.get('govAddress')?.touched">
+                                <option *ngFor="let g of govs" [value]="g.id">{{g.libelle_Ar}}</option>
+                            </select>
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Délégation</label>
+                            <select class="form-select" formControlName="delAddress"
+                                [class.is-invalid]="regForm.get('delAddress')?.invalid && regForm.get('delAddress')?.touched">
+                                <option *ngFor="let d of delegations" [value]="d.id">{{d.libelle_Ar}}</option>
+                            </select>
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+
+                        <div class="col-md-12">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" formControlName="email">
+                            <input type="email" class="form-control" formControlName="email" (blur)="checkEmail()"
+                                [class.is-invalid]="regForm.get('email')?.invalid && regForm.get('email')?.touched">
+                            <div *ngIf="regForm.get('email')?.hasError('required')" class="invalid-feedback">
+                                Email obligatoire
+                            </div>
+                            <div *ngIf="regForm.get('email')?.hasError('email')" class="invalid-feedback">
+                                Email invalide
+                            </div>
+                            <div *ngIf="regForm.get('email')?.hasError('emailTaken')" class="invalid-feedback">
+                                Email déjà utilisé / مسجل من قبل
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" formControlName="password">
+                            <input type="password" class="form-control" formControlName="password"
+                                [class.is-invalid]="regForm.get('password')?.invalid && regForm.get('password')?.touched">
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Confirmer mot de passe</label>
+                            <input type="password" class="form-control" formControlName="confirmPassword"
+                                [class.is-invalid]="regForm.get('confirmPassword')?.invalid && regForm.get('confirmPassword')?.touched">
+                            <div *ngIf="regForm.get('confirmPassword')?.hasError('required')" class="invalid-feedback">
+                                Obligatoire
+                            </div>
+                            <div *ngIf="regForm.errors?.['mismatch'] && regForm.get('confirmPassword')?.touched"
+                                class="invalid-feedback d-block">
+                                Mots de passe ne correspondent pas / كلمات المرور غير متطابقة
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,7 +225,38 @@
                 <!-- STEP 4: EDUCATION -->
                 <div *ngIf="currentStep === 4">
                     <h4 class="card-title mb-4">التعليم (Education)</h4>
-                    <div class="form-check mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Niveau Scolaire</label>
+                            <select class="form-select" formControlName="niveauScolaire"
+                                [class.is-invalid]="regForm.get('niveauScolaire')?.invalid && regForm.get('niveauScolaire')?.touched">
+                                <option *ngFor="let n of niveaux" [value]="n.id">{{n.libelle_Ar}}</option>
+                            </select>
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Etablissement</label>
+                            <input type="text" class="form-control" formControlName="etablissement"
+                                [class.is-invalid]="regForm.get('etablissement')?.invalid && regForm.get('etablissement')?.touched">
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Type Etablissement</label>
+                            <select class="form-select" formControlName="typeEtablissement"
+                                [class.is-invalid]="regForm.get('typeEtablissement')?.invalid && regForm.get('typeEtablissement')?.touched">
+                                <option value="public">Public</option>
+                                <option value="prive">Privé</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Année Abandon</label>
+                            <input type="number" class="form-control" formControlName="anneeAbandon"
+                                [class.is-invalid]="regForm.get('anneeAbandon')?.invalid && regForm.get('anneeAbandon')?.touched">
+                            <div class="invalid-feedback">Obligatoire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3 mt-3">
                         <input class="form-check-input" type="checkbox" formControlName="hasPreviousTraining"
                             id="prevTrainingCheck">
                         <label class="form-check-label" for="prevTrainingCheck">
@@ -126,7 +268,35 @@
                 <!-- STEP 5: PREVIOUS TRAINING -->
                 <div *ngIf="currentStep === 5">
                     <h4 class="card-title mb-4">التكوين المهني السابق (Previous Training)</h4>
-                    <!-- Fields for prev training -->
+                    <div class="alert alert-info" *ngIf="!regForm.get('hasPreviousTraining')?.value">
+                        Vous n'avez pas coché "Formation précédente" à l'étape 4. Vous pouvez ignorer cette étape.
+                        (You didn't check "Previous Training" in step 4. You can skip this step.)
+                    </div>
+                    <div class="row g-3" [class.opacity-50]="!regForm.get('hasPreviousTraining')?.value">
+                        <div class="col-md-6">
+                            <label class="form-label">Diplôme Obtenu</label>
+                            <select class="form-select" formControlName="prevDiplome" (change)="onDiplomeChange()">
+                                <option *ngFor="let d of diplomes" [value]="d.id">{{d.libelle_Ar}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Spécialité</label>
+                            <select class="form-select" formControlName="prevSpecialite"
+                                (change)="onPrevSpecialityChange()">
+                                <option *ngFor="let s of specialites" [value]="s.id">{{s.libelle_Ar}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Centre de Formation</label>
+                            <select class="form-select" formControlName="prevCentre">
+                                <option *ngFor="let c of centres" [value]="c.id">{{c.libelle_Ar}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Année de Fin</label>
+                            <input type="text" class="form-control" formControlName="prevAnneeFin">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Buttons -->

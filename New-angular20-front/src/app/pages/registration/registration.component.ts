@@ -21,6 +21,11 @@ export class RegistrationComponent implements OnInit {
     currentStep = 1;
     isLoading = false;
 
+    // Validation Flags
+    isEmailAvailable = true;
+    isBirthDetailsValid = true;
+    birthDetailsErrorMsg = '';
+
     // Lists for Dropdowns
     years: number[] = [];
     govs: any[] = [];
@@ -162,6 +167,60 @@ export class RegistrationComponent implements OnInit {
         return password.value === confirm.value ? null : { mismatch: true };
     }
 
+    // --- Backend Checks ---
+
+    checkEmail() {
+        const email = this.regForm.get('email')?.value;
+        if (email && this.regForm.get('email')?.valid) {
+            this.api.checkEmail(email).subscribe({
+                next: (res) => {
+                    // Logic from legacy: if data.exist is true, email is taken
+                    if (res && res.exist) {
+                        this.isEmailAvailable = false;
+                        this.regForm.get('email')?.setErrors({ emailTaken: true });
+                    } else {
+                        this.isEmailAvailable = true;
+                        // clear error if it was only emailTaken
+                        if (this.regForm.get('email')?.hasError('emailTaken')) {
+                            this.regForm.get('email')?.setErrors(null);
+                        }
+                    }
+                },
+                error: (err) => {
+                    console.error('Error checking email', err);
+                    // Optionally handle error (assume valid or block?)
+                    // For now, let's assume valid but log error
+                }
+            });
+        }
+    }
+
+    checkBirthDetails() {
+        const num = this.regForm.get('numInscription')?.value;
+        const annee = this.regForm.get('anneeNaissance')?.value;
+        const mun = this.regForm.get('munBread')?.value;
+
+        if (num && annee && mun) {
+            this.api.checkIdentifiant(Number(annee), Number(num), mun).subscribe({
+                next: (res) => {
+                    // Logic from legacy: if data.exist is true, it means birth details ALREADY REGISTERED?
+                    // Legacy: "checkIdentifiant... if(data.exist) { ... naissanceincorrecte = true ... }"
+                    // So if exist -> ERROR (Already registered).
+                    if (res && res.exist) {
+                        this.isBirthDetailsValid = false;
+                        this.birthDetailsErrorMsg = 'هذا المضمون مسجل مسبقاً (Déjà inscrit)';
+                    } else {
+                        this.isBirthDetailsValid = true;
+                        this.birthDetailsErrorMsg = '';
+                    }
+                },
+                error: (err) => {
+                    console.error('Error checking birth details', err);
+                }
+            });
+        }
+    }
+
     // --- Navigation ---
     nextStep() {
         if (this.validateStep(this.currentStep)) {
@@ -174,9 +233,53 @@ export class RegistrationComponent implements OnInit {
     }
 
     validateStep(step: number): boolean {
-        // We can check validity of specific controls here
-        // minimal check for now
-        return true;
+        let fields: string[] = [];
+
+        switch (step) {
+            case 1:
+                fields = ['nomAr', 'prenomAr', 'cin', 'livreeLe'];
+                break;
+            case 2:
+                fields = ['numInscription', 'anneeNaissance', 'govBread', 'munBread', 'fileExtract'];
+                // Extra check for birth details
+                if (!this.isBirthDetailsValid) {
+                    return false;
+                }
+                break;
+            case 3:
+                fields = ['dateNaissance', 'genre', 'adresse', 'codePostal', 'telFixe', 'telMobile', 'govAddress', 'delAddress', 'email', 'password', 'confirmPassword'];
+                // Extra check for email
+                if (!this.isEmailAvailable) {
+                    return false;
+                }
+                break;
+            case 4:
+                fields = ['niveauScolaire', 'etablissement', 'typeEtablissement', 'anneeAbandon'];
+                break;
+            case 5:
+                // Add fields here if validation is required for the last step
+                break;
+        }
+
+        let isValid = true;
+        for (const field of fields) {
+            const control = this.regForm.get(field);
+            if (control && control.invalid) {
+                control.markAsTouched();
+                isValid = false;
+            }
+        }
+
+        // Trigger backend checks if step is valid but we haven't checked yet?
+        // Better trigger checks on blur or change, but here we enforce.
+        if (step === 2 && isValid) {
+            // If we rely on stored flag, we assume user triggered change.
+            // If manual check needed:
+            // this.checkBirthDetails(); // This is async, might need to block nextStep or use Promise/Observable
+            // For this MVP, we rely on the user triggering changes (added (change) in HTML)
+        }
+
+        return isValid;
     }
 
     // --- Submit ---

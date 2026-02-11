@@ -3,11 +3,13 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class CustomValidators {
 
     // Checks if text contains Arabic characters: /[\u0600-\u06FF]/
+    // Checks if text contains Arabic characters: /[\u0600-\u06FF]/
+    // STRICT: ^[\u0600-\u06FF\s]+$
     static isArabic(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
             if (!control.value) return null;
-            const arregex = /[\u0600-\u06FF]/;
-            const valid = arregex.test(String(control.value).toLowerCase());
+            const arregex = /^[\u0600-\u06FF\s]+$/;
+            const valid = arregex.test(String(control.value));
             return valid ? null : { notArabic: true };
         };
     }
