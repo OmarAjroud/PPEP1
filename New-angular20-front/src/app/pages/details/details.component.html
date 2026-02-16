@@ -25,23 +25,23 @@
                 <div class="row" *ngIf="!editMode">
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block">Nom & Prénom (Ar)</small>
-                        <strong>{{profile.credential?.nomAr}} {{profile.credential?.prenomAr}}</strong>
+                        <strong>{{profile.credential.nomAr}} {{profile.credential.prenomAr}}</strong>
                     </div>
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block">CIN</small>
-                        <strong>{{profile.credential?.cin}}</strong>
+                        <strong>{{profile.credential.cin}}</strong>
                     </div>
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block">Adresse</small>
-                        <strong>{{profile.donnee?.Adresse}}</strong>
+                        <strong>{{profile.donnee.Adresse}}</strong>
                     </div>
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block">Code Postal</small>
-                        <strong>{{profile.donnee?.CodePostal}}</strong>
+                        <strong>{{profile.donnee.CodePostal}}</strong>
                     </div>
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block">Téléphone</small>
-                        <strong>{{profile.donnee?.TelMobile}}</strong>
+                        <strong>{{profile.donnee.TelMobile}}</strong>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
             <div class="card-body">
                 <div *ngIf="!editEmailMode">
                     <small class="text-muted d-block">Email</small>
-                    <strong>{{profile.credential?.email}}</strong>
+                    <strong>{{profile.credential.email}}</strong>
                 </div>
 
                 <form *ngIf="editEmailMode" (ngSubmit)="updateEmail()">

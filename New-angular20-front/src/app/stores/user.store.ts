@@ -1,12 +1,20 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ProfileModel } from '../models/profile.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserStore {
+    private platformId = inject(PLATFORM_ID);
+
     // State Signals
-    readonly token = signal<string | null>(localStorage.getItem('usertoken'));
-    readonly user = signal<any | null>(null); // Replace 'any' with ProfileModel when linked
+    // Initialize token only if in browser
+    readonly token = signal<string | null>(
+        isPlatformBrowser(this.platformId) ? localStorage.getItem('usertoken') : null
+    );
+
+    readonly user = signal<ProfileModel | null>(null);
 
     // Computed Signals
     readonly isAuthenticated = computed(() => !!this.token());
@@ -14,11 +22,13 @@ export class UserStore {
     constructor() {
         // Effect to auto-save token changes to LocalStorage
         effect(() => {
-            const currentToken = this.token();
-            if (currentToken) {
-                localStorage.setItem('usertoken', currentToken);
-            } else {
-                localStorage.removeItem('usertoken');
+            if (isPlatformBrowser(this.platformId)) {
+                const currentToken = this.token();
+                if (currentToken) {
+                    localStorage.setItem('usertoken', currentToken);
+                } else {
+                    localStorage.removeItem('usertoken');
+                }
             }
         });
     }
@@ -28,14 +38,15 @@ export class UserStore {
         this.token.set(token);
     }
 
-    setUser(user: any) {
+    setUser(user: ProfileModel) {
         this.user.set(user);
     }
 
     logout() {
         this.token.set(null);
         this.user.set(null);
-        localStorage.clear();
-        // window.location.reload(); // Legacy app did this, but in Angular we should router.navigate(['/login'])
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.clear();
+        }
     }
 }

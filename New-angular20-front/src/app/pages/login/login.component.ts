@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ApiService } from '../../services/api.service';
-import { UserStore } from '../../stores/user.store';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -14,9 +13,8 @@ import { UserStore } from '../../stores/user.store';
 })
 export class LoginComponent {
     private fb = inject(FormBuilder);
-    private api = inject(ApiService);
+    private authService = inject(AuthService);
     private router = inject(Router);
-    private userStore = inject(UserStore);
 
     errorMessage = '';
     isLoading = false;
@@ -35,13 +33,10 @@ export class LoginComponent {
                 password: this.loginForm.value.password!
             };
 
-            this.api.login(creds).subscribe({
+            this.authService.login(creds).subscribe({
                 next: (response) => {
                     this.isLoading = false;
                     if (response.token) {
-                        // Save token to Store (automagically saves to localStorage)
-                        this.userStore.setToken(response.token);
-
                         // Navigate to Home
                         this.router.navigate(['/home']);
                     } else {

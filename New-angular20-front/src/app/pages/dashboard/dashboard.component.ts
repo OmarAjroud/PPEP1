@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { NotificationModel } from '../../models/notification.model';
 
 @Component({
     selector: 'app-dashboard',
@@ -11,8 +12,8 @@ import { RouterModule } from '@angular/router';
     styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-    api = inject(ApiService);
-    notifications: any[] = [];
+    private api = inject(ApiService);
+    notifications: NotificationModel[] = [];
     isLoading = true;
 
     ngOnInit() {

@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CustomValidators } from '../../validators/custom.validators';
+import { ProfileModel } from '../../models/profile.model';
 
 @Component({
     selector: 'app-registration',
@@ -289,19 +290,124 @@ export class RegistrationComponent implements OnInit {
             return;
         }
 
+        // Final Validation Check (in case user skipped steps somehow)
+        if (!this.isEmailAvailable || !this.isBirthDetailsValid) {
+            alert('Veuillez vérifier les erreurs dans le formulaire (Email ou extrait de naissance).');
+            return;
+        }
+
         this.isLoading = true;
-        // Map Form to API Model (Legacy ProfileModel structure)
-        // Note: This mapping needs to match what backend expects.
-        // Based on legacy `onSubmit` logic.
 
-        // We send this to ApiService.registerCandidate(this.regForm.value) 
-        // BUT we need to construct the complex object.
-        // For MVP, lets log it first.
+        // Map Form to ProfileModel
+        const formVal = this.regForm.value;
+        const profile = new ProfileModel();
 
-        console.log('Form Data', this.regForm.value);
+        // 1. Credentials
+        profile.credential.nomAr = formVal.nomAr!;
+        profile.credential.prenomAr = formVal.prenomAr!;
+        profile.credential.email = formVal.email!;
+        profile.credential.cin = formVal.cin!;
+        profile.credential.deliveredAt = formVal.livreeLe!;
+        profile.credential.plainPassword.first = formVal.password!;
+        profile.credential.plainPassword.second = formVal.confirmPassword!;
 
-        // TODO: Finalize the complex object mapping in the next step
-        // once UI is confirmed.
-        this.isLoading = false;
+        // 2. Extrait
+        profile.extrait.NumInscription = Number(formVal.numInscription);
+        profile.extrait.Annee = Number(formVal.anneeNaissance);
+        profile.extrait.Municipalite = formVal.munBread!;
+        if (formVal.fileExtract) {
+            profile.extrait.ExtraitDeNaissance = formVal.fileExtract;
+        }
+
+        // 3. Donnee (Personal Data)
+        profile.donnee.Genre = formVal.genre!;
+        profile.donnee.Adresse = formVal.adresse!;
+        profile.donnee.CodePostal = Number(formVal.codePostal);
+        profile.donnee.TelMobile = Number(formVal.telMobile);
+        profile.donnee.TelFixe = formVal.telFixe!;
+        profile.donnee.Gouvernorat = formVal.govAddress!;
+        profile.donnee.Delegation = formVal.delAddress!;
+        profile.donnee.DateNaissance = formVal.dateNaissance!;
+
+        // 4. Formation (Education)
+        profile.formation.NiveauScolaire = formVal.niveauScolaire!;
+        profile.formation.Etablissement = formVal.etablissement!;
+        profile.formation.TypeEtablissement = formVal.typeEtablissement!;
+        profile.formation.AnneeAbandonScolaire = formVal.anneeAbandon!;
+        profile.formation.speciality = formVal.specialite!;
+        profile.formation.deplome = formVal.diplome!;
+
+        // 5. Ancienne Formation
+        if (formVal.hasPreviousTraining) {
+            profile.ancienneFormation.diplome = Number(formVal.prevDiplome);
+            profile.ancienneFormation.Specialite = Number(formVal.prevSpecialite);
+            profile.ancienneFormation.Centre = Number(formVal.prevCentre);
+            profile.ancienneFormation.anneeFin = Number(formVal.prevAnneeFin);
+        }
+
+        // Convert to FormData
+        const formData = this.createFormData(profile);
+
+        this.api.registerCandidate(formData).subscribe({
+            next: (response) => {
+                this.isLoading = false;
+                alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+                this.router.navigate(['/login']);
+            },
+            error: (err) => {
+                console.error(err);
+                this.isLoading = false;
+                alert("Une erreur s'est produite lors de l'inscription.");
+            }
+        });
+    }
+
+    private createFormData(profile: ProfileModel): FormData {
+        const formData = new FormData();
+
+        // Credential
+        formData.append('candidate[nomAr]', profile.credential.nomAr);
+        formData.append('candidate[prenomAr]', profile.credential.prenomAr);
+        formData.append('candidate[email]', profile.credential.email);
+        formData.append('candidate[cin]', profile.credential.cin || '');
+        formData.append('candidate[livreeLe]', profile.credential.deliveredAt || '');
+        formData.append('candidate[plainPassword][first]', profile.credential.plainPassword.first);
+        formData.append('candidate[plainPassword][second]', profile.credential.plainPassword.second);
+
+        // Extrait
+        formData.append('extrais[NumInscription]', String(profile.extrait.NumInscription));
+        formData.append('extrais[Annee]', String(profile.extrait.Annee));
+        formData.append('extrais[Municipalite]', profile.extrait.Municipalite);
+        if (profile.extrait.ExtraitDeNaissance) {
+            formData.append('extrais[ExtraitDeNaissance]', profile.extrait.ExtraitDeNaissance);
+        }
+
+        // Donnee
+        formData.append('donnee_personnelle[Genre]', profile.donnee.Genre);
+        formData.append('donnee_personnelle[Adresse]', profile.donnee.Adresse);
+        formData.append('donnee_personnelle[CodePostal]', String(profile.donnee.CodePostal));
+        formData.append('donnee_personnelle[TelMobile]', String(profile.donnee.TelMobile));
+        formData.append('donnee_personnelle[TelFixe]', profile.donnee.TelFixe || '');
+        formData.append('donnee_personnelle[DateNaissance]', profile.donnee.DateNaissance);
+        formData.append('donnee_personnelle[Gouvernorat]', profile.donnee.Gouvernorat);
+        formData.append('donnee_personnelle[Delegation]', profile.donnee.Delegation);
+
+        // Formation
+        formData.append('formation[NiveauScolaire]', profile.formation.NiveauScolaire);
+        formData.append('formation[Etablissement]', profile.formation.Etablissement);
+        formData.append('formation[TypeEtablissement]', profile.formation.TypeEtablissement);
+        formData.append('formation[AnneeAbandonScolaire]', profile.formation.AnneeAbandonScolaire);
+        if (profile.formation.speciality) formData.append('formation[speciality]', profile.formation.speciality);
+        if (profile.formation.deplome) formData.append('formation[deplome]', profile.formation.deplome);
+
+        // Ancienne Formation
+        if (profile.ancienneFormation.Specialite) {
+            formData.append('ancienne_formation[Specialite]', String(profile.ancienneFormation.Specialite));
+            formData.append('ancienne_formation[diplome]', String(profile.ancienneFormation.diplome));
+            formData.append('ancienne_formation[Centre]', String(profile.ancienneFormation.Centre));
+            formData.append('ancienne_formation[anneeFin]', String(profile.ancienneFormation.anneeFin));
+        }
+
+        return formData;
     }
 }

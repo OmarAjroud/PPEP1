@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
+import { OffreModel } from '../../models/offre.model';
 
 @Component({
     selector: 'app-offer-search',
@@ -25,7 +26,7 @@ export class OfferSearchComponent implements OnInit {
     selectedCentre: string = '';
 
     // Results
-    offers: any[] = [];
+    offers: OffreModel[] = [];
     isLoading = false;
     hasSearched = false;
 
@@ -81,10 +82,10 @@ export class OfferSearchComponent implements OnInit {
         });
     }
 
-    apply(offerId: string) {
+    apply(offerId: number) {
         if (!confirm('Voulez-vous postuler à cette offre ? (Are you sure you want to apply?)')) return;
 
-        this.api.applyToOffer(offerId).subscribe({
+        this.api.applyToOffer(offerId.toString()).subscribe({
             next: () => {
                 alert('Candidature réussie ! (Application Successful)');
             },

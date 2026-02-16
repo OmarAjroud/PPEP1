@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Using Template-driven for simple edits
+import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
+import { ProfileModel } from '../../models/profile.model';
 
 @Component({
     selector: 'app-details',
@@ -14,7 +15,9 @@ import { RouterModule } from '@angular/router';
 export class DetailsComponent implements OnInit {
     api = inject(ApiService);
 
-    profile: any = null;
+
+
+    profile: ProfileModel | null = null;
     isLoading = true;
 
     // Edit Models

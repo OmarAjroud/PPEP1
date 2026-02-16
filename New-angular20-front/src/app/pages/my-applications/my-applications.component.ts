@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
+import { OffreModel } from '../../models/offre.model';
 
 @Component({
     selector: 'app-my-applications',
@@ -12,7 +13,7 @@ import { RouterModule } from '@angular/router';
 })
 export class MyApplicationsComponent implements OnInit {
     api = inject(ApiService);
-    applications: any[] = [];
+    applications: OffreModel[] = [];
     isLoading = true;
 
     ngOnInit() {
@@ -33,19 +34,13 @@ export class MyApplicationsComponent implements OnInit {
         });
     }
 
-    // Helpers to check status (Legacy logic: tester, tester1)
-    canConfirm(etatNumerique: number): boolean {
-        // Legacy: tester(off.etatnumerique) -> checks if state allows confirmation
-        // Assuming logic: if state is draft (0?) or something specific.
-        // For now, let's assume specific codes from backend context or just check if 'brouillon'
-        // Legacy TS logic wasn't fully visible but let's assume 0 or 1.
-        // Let's implement generic logic: if it mentions 'brouillon' (Draft) in text or code 0
-        return etatNumerique === 0; // Placeholder, adjust if needed
+    // Helpers to check status
+    canConfirm(etatNumerique: number | undefined): boolean {
+        return (etatNumerique || 0) === 0;
     }
 
-    isDraft(etatNumerique: number): boolean {
-        // Legacy: tester1 -> confirm draft / delete draft
-        return etatNumerique === 0;
+    isDraft(etatNumerique: number | undefined): boolean {
+        return (etatNumerique || 0) === 0;
     }
 
     // Actions
@@ -54,10 +49,10 @@ export class MyApplicationsComponent implements OnInit {
     // AuthService.approuvercandidaturebrouillon (Validate Many) ?
     // AuthService.supprimercandidaturebrouillon (Delete Draft) -> I have this one!
 
-    confirmDraft(offerId: string) {
+    confirmDraft(offerId: string | number) {
         if (!confirm('Confirmer cette candidature ?')) return;
 
-        const payload = { candidatures: [offerId] }; // Wrapping as expected by legacy backend
+        const payload = { candidatures: [String(offerId)] }; // Wrapping as expected by legacy backend
         this.api.validateDrafts(payload).subscribe({
             next: () => {
                 alert('Candidature confirmée');
@@ -67,10 +62,10 @@ export class MyApplicationsComponent implements OnInit {
         });
     }
 
-    deleteDraft(offerId: string) {
+    deleteDraft(offerId: string | number) {
         if (!confirm('Supprimer ce brouillon ?')) return;
 
-        this.api.deleteDraft(offerId).subscribe({
+        this.api.deleteDraft(String(offerId)).subscribe({
             next: () => {
                 alert('Brouillon supprimé');
                 this.loadApplications();

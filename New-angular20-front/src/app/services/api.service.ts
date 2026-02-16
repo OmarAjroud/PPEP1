@@ -11,15 +11,7 @@ export class ApiService {
     private http = inject(HttpClient);
     private apiUrl = environment.apiUrl;
 
-    // Helper to get headers (Legacy app used localStorage)
-    private getHeaders(): HttpHeaders {
-        const token = localStorage.getItem('usertoken');
-        let headers = new HttpHeaders();
-        if (token) {
-            headers = headers.set('Authorization', 'Bearer ' + token);
-        }
-        return headers;
-    }
+
 
     // 1. Login
     login(credentials: { username: string, password: string }): Observable<any> {
@@ -29,7 +21,7 @@ export class ApiService {
 
     // 2. Get User Profile
     getUserProfile(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/api/candidate/profile`, { headers: this.getHeaders() });
+        return this.http.get(`${this.apiUrl}/api/candidate/profile`);
     }
 
     // 3. Update Personal Info (FormData)
@@ -38,24 +30,24 @@ export class ApiService {
         formData.append('donnee_personnelle[TelMobile]', tel);
         formData.append('donnee_personnelle[CodePostal]', codepostal);
         formData.append('donnee_personnelle[Adresse]', adresse);
-        return this.http.post(`${this.apiUrl}/api/profile/updateDonneepersonnel`, formData, { headers: this.getHeaders() });
+        return this.http.post(`${this.apiUrl}/api/profile/updateDonneepersonnel`, formData);
     }
 
     // 4. Update Email
     updateEmail(email: string): Observable<any> {
         const formData = new FormData();
         formData.append('Cridential[email]', email); // Note: 'Cridential' typo preserved from legacy code API
-        return this.http.post(`${this.apiUrl}/api/profile/updateCredential`, formData, { headers: this.getHeaders() });
+        return this.http.post(`${this.apiUrl}/api/profile/updateCredential`, formData);
     }
 
     // 5. Get Notifications
     getNotifications(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/api/notifications`, { headers: this.getHeaders() });
+        return this.http.get(`${this.apiUrl}/api/notifications`);
     }
 
     // 6. Get History (Historique)
     getApplicationHistory(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/api/candidate/candidatures/historique`, { headers: this.getHeaders() });
+        return this.http.get(`${this.apiUrl}/api/candidate/candidatures/historique`);
     }
 
     // 7. Get Governorates (Public)
@@ -74,7 +66,7 @@ export class ApiService {
         if (centre) params = params.set('centre_refIn', centre);
         if (keyword) params = params.set('lowerOffre', keyword);
 
-        return this.http.post(`${this.apiUrl}/api/offres`, null, { headers: this.getHeaders(), params });
+        return this.http.post(`${this.apiUrl}/api/offres`, null, { params });
     }
 
     // 9. Create Candidature (Apply)
@@ -85,7 +77,6 @@ export class ApiService {
         const params = new HttpParams().set('candidature[offre]', offerId);
 
         return this.http.post(`${this.apiUrl}/api/candidate/candidature/create`, formData, {
-            headers: this.getHeaders(),
             params: params
         });
     }
@@ -93,12 +84,12 @@ export class ApiService {
     // 10. Confirm Drafts (Validate Many)
     validateDrafts(candidatureObj: any): Observable<any> {
         // Legacy sends { candidatures: [id1, id2] } wrapped in 'Candidature' object structure
-        return this.http.post(`${this.apiUrl}/api/candidate/candidature/validateMany`, JSON.stringify(candidatureObj), { headers: this.getHeaders() });
+        return this.http.post(`${this.apiUrl}/api/candidate/candidature/validateMany`, JSON.stringify(candidatureObj));
     }
 
     // 11. Delete Draft
     deleteDraft(offerId: string): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/api/candidate/candidature/offre/${offerId}`, { headers: this.getHeaders() });
+        return this.http.delete(`${this.apiUrl}/api/candidate/candidature/offre/${offerId}`);
     }
 
     // --- REGISTRATION / INSCRIPTION ENDPOINTS ---
