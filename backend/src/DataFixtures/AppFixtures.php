@@ -2,103 +2,130 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Candidature;
-use App\Entity\Offre;
+use App\Entity\Centre;
+use App\Entity\Delegation;
+use App\Entity\Diplome;
+use App\Entity\Gouvernorat;
+use App\Entity\Municipalite;
+use App\Entity\NiveauScolaire;
+use App\Entity\Specialite;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private UserPasswordHasherInterface $hasher;
-
-    public function __construct(UserPasswordHasherInterface $hasher)
-    {
-        $this->hasher = $hasher;
-    }
+    public function __construct(private UserPasswordHasherInterface $hasher) {}
 
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
+        // 1. Data Source (JSON)
+        $jsonPath = __DIR__ . '/../../var/data/tunisia.json';
+        if (!file_exists($jsonPath)) {
+            echo "Warning: tunisia.json not found. Falling back to simple seed.\n";
+            // Fallback content...
+            return;
+        }
 
-        // Users
-        $users = [];
+        $data = json_decode(file_get_contents($jsonPath), true);
+        $govEntities = [];
+
+        // 2. Load Location Data
+        foreach ($data as $govData) {
+            $govName = $govData['governorate'];
+            $g = new Gouvernorat();
+            $g->setLibelle($govName);
+            $manager->persist($g);
+            $govEntities[$govName] = $g;
+
+            if (isset($govData['delegations'])) {
+                foreach ($govData['delegations'] as $delData) {
+                    $delName = $delData['name'];
+                    $d = new Delegation();
+                    $d->setLibelle($delName);
+                    $d->setGouvernorat($g);
+                    $manager->persist($d);
+
+                    if (isset($delData['municipalities'])) {
+                        foreach ($delData['municipalities'] as $munName) {
+                            $m = new Municipalite();
+                            $m->setLibelle($munName);
+                            $m->setGouvernorat($g);
+                            $m->setDelegation($d);
+                            $manager->persist($m);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Niveaux Scolaire
+        $niveaux = ['9eme annee', '1ere annee secondaire', '2eme annee secondaire', '3eme annee secondaire', 'Baccalaureat', 'Niveau Universitaire'];
+        foreach ($niveaux as $nom) {
+            $n = new NiveauScolaire();
+            $n->setLibelle($nom);
+            $manager->persist($n);
+        }
+
+        // 4. Diplomes
+        $diplomes = ['CAP', 'BTP', 'BTS'];
+        $diplomeEntities = [];
+        foreach ($diplomes as $nom) {
+            $d = new Diplome();
+            $d->setLibelle($nom);
+            $manager->persist($d);
+            $diplomeEntities[$nom] = $d;
+        }
+
+        // 5. Specialites
+        $specs = [
+            'Informatique' => 'BTS',
+            'Comptabilite' => 'BTS',
+            'Mecanique' => 'BTP',
+            'Electricite' => 'BTP',
+            'Soudure' => 'CAP',
+            'Couture' => 'CAP',
+            'Cuisine' => 'CAP',
+            'Patisserie' => 'BTP',
+            'Reseaux' => 'BTS',
+            'Developpement' => 'BTS'
+        ];
+        $specEntities = [];
+        foreach ($specs as $nom => $dipName) {
+            $s = new Specialite();
+            $s->setLibelle($nom);
+            $s->setDiplome($diplomeEntities[$dipName]);
+            $manager->persist($s);
+            $specEntities[] = $s;
+        }
+
+        // 6. Centres
+        if (isset($govEntities['Ariana'])) {
+            $centre = new Centre();
+            $centre->setNom('CSF Ariana');
+            $centre->setGouvernorat($govEntities['Ariana']);
+            $centre->addSpecialite($specEntities[0]); // Info
+            $centre->addSpecialite($specEntities[8]); // Reseaux
+            $manager->persist($centre);
+        }
         
-        // Admin
+        if (isset($govEntities['Tunis'])) {
+            $centre = new Centre();
+            $centre->setNom('CSF Tunis');
+            $centre->setGouvernorat($govEntities['Tunis']);
+            $centre->addSpecialite($specEntities[9]); // Dev
+            $manager->persist($centre);
+        }
+
+        // 7. Users
         $admin = new User();
-        $admin->setEmail('admin@admin.com')
-              ->setRoles(['ROLE_ADMIN'])
-              ->setPassword($this->hasher->hashPassword($admin, 'password'))
-              ->setNom('Admin')
-              ->setPrenom('System');
+        $admin->setEmail('admin@admin.com');
+        $admin->setPassword($this->hasher->hashPassword($admin, 'password'));
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setNom('Admin');
+        $admin->setPrenom('User');
         $manager->persist($admin);
-        $users[] = $admin;
-
-        // User
-        $user = new User();
-        $user->setEmail('user@user.com')
-             ->setRoles(['ROLE_USER'])
-             ->setPassword($this->hasher->hashPassword($user, 'password'))
-             ->setNom('User')
-             ->setPrenom('Test');
-        $manager->persist($user);
-        $users[] = $user;
-
-        // Random Users
-        for ($i = 0; $i < 10; $i++) {
-            $u = new User();
-            $u->setEmail($faker->unique()->email())
-              ->setRoles(['ROLE_USER'])
-              ->setPassword($this->hasher->hashPassword($u, 'password'))
-              ->setNom($faker->lastName())
-              ->setPrenom($faker->firstName())
-              ->setCin($faker->numerify('########')) // 8 digits
-              ->setTelMobile(substr($faker->phoneNumber(), 0, 20))
-              ->setAdresse($faker->address())
-              ->setCodePostal(substr($faker->postcode(), 0, 10));
-            $manager->persist($u);
-            $users[] = $u;
-        }
-
-        // Offers
-        $offres = [];
-        for ($i = 0; $i < 10; $i++) {
-            $offre = new Offre();
-            $offre->setSpecialite($faker->jobTitle())
-                  ->setCentre($faker->company())
-                  ->setDiplome($faker->randomElement(['CAP', 'BTP', 'BTS']))
-                  ->setDebutformation($faker->dateTimeBetween('now', '+6 months'))
-                  ->setFinformation($faker->dateTimeBetween('+6 months', '+2 years'))
-                  ->setNbplaces($faker->numberBetween(10, 30))
-                  ->setFoyer($faker->randomElement(['Oui', 'Non']))
-                  ->setHebergement($faker->randomElement(['Oui', 'Non']))
-                  ->setBourse($faker->randomElement(['Oui', 'Non']))
-                  ->setEtat('Ouvert')
-                  ->setEtatnumerique(1)
-                  ->setSession($faker->year() . '/' . ($faker->year() + 1))
-                  ->setCode($faker->bothify('??####'));
-            $manager->persist($offre);
-            $offres[] = $offre;
-        }
-
-        // Candidatures
-        for ($i = 0; $i < 5; $i++) {
-            $candidature = new Candidature();
-            $userForCand = $faker->randomElement($users);
-            $offreForCand = $faker->randomElement($offres);
-            
-            // Avoid logic errors if user already applied? (Unique constraint might exist, but Entity doesn't show it explicitly in attributes unless in repository or hidden)
-            // For now, simpler random assignment.
-            
-            $candidature->setUser($userForCand)
-                        ->setOffre($offreForCand)
-                        ->setEtat('En attente')
-                        ->setEtatNumerique(0)
-                        ->setDateCandidature($faker->dateTimeBetween('-1 month', 'now'));
-            $manager->persist($candidature);
-        }
 
         $manager->flush();
     }
