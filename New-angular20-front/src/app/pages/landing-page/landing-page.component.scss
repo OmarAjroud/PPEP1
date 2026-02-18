@@ -1,0 +1,291 @@
+/* ============ HERO SECTION ============ */
+.hero-section {
+    min-height: 90vh;
+    background-color: #003366;
+    background-image:
+        linear-gradient(135deg, rgba(0, 51, 102, 0.92), rgba(0, 86, 179, 0.85)),
+        url('/assets/images/atfp.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin-top: -70px;
+    padding-top: 70px;
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    line-height: 0;
+
+    svg {
+        width: 100%;
+        height: 100px;
+    }
+}
+
+.opacity-85 {
+    opacity: 0.85;
+}
+
+.z-index-1 {
+    z-index: 1;
+}
+
+/* ============ ANIMATIONS ============ */
+.animate-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============ ABOUT SNAPSHOT ============ */
+.about-card {
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    background: white;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 51, 102, 0.12) !important;
+    }
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ============ FEATURES ============ */
+.feature-card {
+    border-radius: 16px;
+    transition: all 0.35s ease;
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 51, 102, 0.15);
+        border-color: rgba(0, 86, 179, 0.3);
+    }
+}
+
+.feature-icon-ring {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+    color: #0056b3;
+    border: 2px solid rgba(0, 86, 179, 0.15);
+    transition: all 0.3s ease;
+
+    .feature-card:hover & {
+        background: linear-gradient(135deg, #0056b3, #003366);
+        color: white;
+        border-color: transparent;
+        transform: scale(1.1);
+    }
+}
+
+/* ============ STATS SECTION ============ */
+.stats-section {
+    background: linear-gradient(135deg, #003366 0%, #0056b3 100%);
+    padding: 4rem 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(255, 153, 0, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    }
+}
+
+.stat-item {
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-4px);
+    }
+}
+
+.tracking-wider {
+    letter-spacing: 0.08em;
+}
+
+/* ============ HOW IT WORKS ============ */
+.step-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0, 51, 102, 0.12);
+    }
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0056b3, #003366);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+}
+
+/* ============ SECTORS ============ */
+.sector-card {
+    border-radius: 12px;
+    background: white;
+    transition: all 0.3s ease;
+    cursor: default;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 51, 102, 0.1) !important;
+        border-color: rgba(0, 86, 179, 0.2) !important;
+    }
+}
+
+.sector-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(0, 86, 179, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    .sector-card:hover & {
+        background: rgba(0, 86, 179, 0.15);
+        transform: scale(1.05);
+    }
+}
+
+/* ============ TESTIMONIALS ============ */
+.testimonial-card {
+    border-radius: 16px;
+    background: white;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 51, 102, 0.1) !important;
+    }
+}
+
+.avatar-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 86, 179, 0.1), rgba(0, 86, 179, 0.05));
+    color: #0056b3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(0, 86, 179, 0.15);
+}
+
+/* ============ CTA SECTION ============ */
+.cta-section {
+    background: linear-gradient(135deg, #003366, #0056b3);
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 70%, rgba(255, 153, 0, 0.1) 0%, transparent 60%);
+    }
+}
+
+/* ============ FOOTER ============ */
+.footer-section {
+    background: #0a1628;
+}
+
+.footer-links {
+    li {
+        margin-bottom: 0.5rem;
+
+        a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: #ff9900;
+                padding-inline-start: 4px;
+            }
+        }
+    }
+}
+
+.footer-contact {
+    li {
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+.social-icons a {
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #ff9900;
+    }
+}
+
+.filter-white {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+}

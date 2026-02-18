@@ -16,23 +16,26 @@ class OffreController extends AbstractController
     #[Route('/offres', name: 'api_offres_search', methods: ['POST', 'GET'])]
     public function search(Request $request, OffreRepository $offreRepository): JsonResponse
     {
-        // Get query parameters
-        $specialite = $request->query->get('specialite_refIn') ?? $request->request->get('specialite_refIn');
-        $centre = $request->query->get('centre_refIn') ?? $request->request->get('centre_refIn');
+        // Get query parameters (IDs)
+        $specialiteId = $request->query->get('specialite_refIn') ?? $request->request->get('specialite_refIn');
+        $centreId = $request->query->get('centre_refIn') ?? $request->request->get('centre_refIn');
         $start = (int) ($request->query->get('start') ?? $request->request->get('start', 0));
         $length = (int) ($request->query->get('length') ?? $request->request->get('length', 10));
 
         // Build query
         $qb = $offreRepository->createQueryBuilder('o');
+        $qb->leftJoin('o.specialite', 's')
+           ->leftJoin('o.centre', 'c')
+           ->leftJoin('o.diplome', 'd');
 
-        if ($specialite) {
-            $qb->andWhere('o.specialite LIKE :specialite')
-               ->setParameter('specialite', '%' . $specialite . '%');
+        if ($specialiteId) {
+            $qb->andWhere('s.id = :specId')
+               ->setParameter('specId', $specialiteId);
         }
 
-        if ($centre) {
-            $qb->andWhere('o.centre LIKE :centre')
-               ->setParameter('centre', '%' . $centre . '%');
+        if ($centreId) {
+            $qb->andWhere('c.id = :centreId')
+               ->setParameter('centreId', $centreId);
         }
 
         $qb->setFirstResult($start)
@@ -44,9 +47,9 @@ class OffreController extends AbstractController
         $data = array_map(function (Offre $offre) {
             return [
                 'id' => $offre->getId(),
-                'specialite' => $offre->getSpecialite(),
-                'centre' => $offre->getCentre(),
-                'diplome' => $offre->getDiplome(),
+                'specialite' => $offre->getSpecialite() ? $offre->getSpecialite()->getLibelle() : '', 
+                'centre' => $offre->getCentre() ? $offre->getCentre()->getNom() : '',
+                'diplome' => $offre->getDiplome() ? $offre->getDiplome()->getLibelle() : '',
                 'debutformation' => $offre->getDebutformation()?->format('Y-m-d'),
                 'finformation' => $offre->getFinformation()?->format('Y-m-d'),
                 'nbplaces' => $offre->getNbplaces(),
@@ -74,9 +77,9 @@ class OffreController extends AbstractController
 
         return $this->json([
             'id' => $offre->getId(),
-            'specialite' => $offre->getSpecialite(),
-            'centre' => $offre->getCentre(),
-            'diplome' => $offre->getDiplome(),
+            'specialite' => $offre->getSpecialite() ? $offre->getSpecialite()->getLibelle() : '',
+            'centre' => $offre->getCentre() ? $offre->getCentre()->getNom() : '',
+            'diplome' => $offre->getDiplome() ? $offre->getDiplome()->getLibelle() : '',
             'debutformation' => $offre->getDebutformation()?->format('Y-m-d'),
             'finformation' => $offre->getFinformation()?->format('Y-m-d'),
             'nbplaces' => $offre->getNbplaces(),

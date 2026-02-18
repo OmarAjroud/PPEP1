@@ -1,58 +1,107 @@
-<div class="container py-4">
+<div class="container py-5" [dir]="lang.dir()">
     <!-- Header -->
-    <div class="d-flex align-items-center mb-4">
-        <a class="btn btn-outline-secondary me-3" routerLink="/home"><i class="bi bi-arrow-left"></i> Retour</a>
-        <h2 class="mb-0">Mes Candidatures (My Applications)</h2>
+    <div class="d-flex align-items-center mb-4 text-white">
+        <a class="btn btn-light btn-sm rounded-pill shadow-sm me-3 text-primary fw-bold" routerLink="/landing">
+            <i class="bi bi-arrow-left"></i> {{ lang.t().profile.actions.cancel }}
+        </a>
+        <h2 class="mb-0 fw-bold text-dark">{{ lang.t().applications.title }} <span class="fw-light ms-2 text-muted">/ {{
+                lang.currentLang() === 'fr' ? 'مطالب الترشح' : 'Candidatures' }}</span>
+        </h2>
     </div>
 
-    <!-- List -->
+    <!-- Loading State -->
     <div *ngIf="isLoading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">...</span>
         </div>
+        <p class="mt-3 text-muted">{{ lang.t().search.results.loading }}</p>
     </div>
 
-    <div *ngIf="!isLoading && applications.length === 0" class="alert alert-info text-center">
-        Aucune candidature trouvée.
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && applications.length === 0"
+        class="alert glass-card text-center border-0 py-5 animate-fade">
+        <div class="mb-3">
+            <i class="bi bi-folder-x fs-1 text-muted opacity-50"></i>
+        </div>
+        <h5 class="text-muted fw-bold">{{ lang.t().applications.empty }}</h5>
+        <p class="mb-3 text-muted">{{ lang.t().applications.emptySubtitle }}</p>
+        <a routerLink="/choixoffre" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-search me-2"></i> {{ lang.t().applications.searchButton }}
+        </a>
     </div>
 
+    <!-- Application List -->
     <div class="row g-4" *ngIf="!isLoading && applications.length > 0">
-        <div class="col-12" *ngFor="let app of applications">
-            <div class="card shadow-sm border-start border-5"
-                [ngClass]="{'border-success': !isDraft(app.etatnumerique), 'border-warning': isDraft(app.etatnumerique)}">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <span class="badge mb-2"
-                                [ngClass]="{'bg-success': !isDraft(app.etatnumerique), 'bg-warning text-dark': isDraft(app.etatnumerique)}">
-                                {{app.etat}}
-                            </span>
-                            <h5 class="card-title text-primary mb-0">{{app.specialite}}</h5>
-                            <small class="text-muted">{{app.centre}}</small>
-                        </div>
-                        <span class="badge bg-secondary">{{app.session}}</span>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                        <div class="col-md-6">
-                            <small class="text-muted d-block"><strong>Diplôme:</strong> {{app.diplome}}</small>
-                            <small class="text-muted d-block"><strong>Début:</strong> {{app.debutformation}}</small>
-                        </div>
-                        <div class="col-md-6">
-                            <small class="text-muted d-block"><strong>Hébergement:</strong> <span
-                                    class="badge bg-info text-dark">{{app.hebergement}}</span></small>
-                            <small class="text-muted d-block"><strong>Bourse:</strong> <span
-                                    class="badge bg-info text-dark">{{app.bourse}}</span></small>
+        <div class="col-lg-6" *ngFor="let app of applications">
+            <div class="card glass-card h-100 border-0 shadow-lg animate-fade transition-hover">
+                <div
+                    class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-start">
+                    <div>
+                        <span class="badge rounded-pill px-3 py-2 mb-2"
+                            [ngClass]="isDraft(app.etatnumerique) ? 'bg-warning-subtle text-warning-emphasis' : 'bg-success-subtle text-success-emphasis'">
+                            <i class="bi"
+                                [ngClass]="isDraft(app.etatnumerique) ? 'bi-hourglass-split' : 'bi-check-circle-fill'"></i>
+                            {{ isDraft(app.etatnumerique) ? lang.t().applications.status.draft :
+                            lang.t().applications.status.submitted }}
+                        </span>
+                        <h5 class="card-title fw-bold text-dark mb-1">{{app.offre?.specialite}}</h5>
+                        <div class="text-muted small">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i> {{app.offre?.centre}}
                         </div>
                     </div>
+                </div>
 
+                <div class="card-body px-4 pt-2">
+                    <hr class="opacity-10 my-3">
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="text-muted d-block"><i class="bi bi-mortarboard me-1"></i> {{
+                                    lang.t().search.filters.diploma }}</small>
+                                <span class="fw-medium text-dark">{{app.offre?.diplome}}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="text-muted d-block"><i class="bi bi-calendar-event me-1"></i>
+                                    {{ lang.t().search.columns.date }}</small>
+                                <span class="fw-medium text-dark">{{app.offre?.debutformation}}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="text-muted d-block"><i class="bi bi-house me-1"></i> {{
+                                    lang.t().applications.columns.housing }}</small>
+                                <span class="badge bg-info-subtle text-info-emphasis">{{app.offre?.hebergement}}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="text-muted d-block"><i class="bi bi-cash-coin me-1"></i> {{
+                                    lang.t().applications.columns.scholarship }}</small>
+                                <span class="badge bg-info-subtle text-info-emphasis">{{app.offre?.bourse}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 px-4 pb-4">
                     <!-- Actions for Drafts -->
                     <div class="d-flex justify-content-end gap-2" *ngIf="isDraft(app.etatnumerique)">
-                        <button class="btn btn-success btn-sm" (click)="confirmDraft(app.idoffre || app.id)">
-                            <i class="bi bi-check-lg me-1"></i> Confirmer
+                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                            (click)="deleteDraft(app.offre?.id || 0)">
+                            <i class="bi bi-trash me-1"></i> {{ lang.t().applications.actions.delete }}
                         </button>
-                        <button class="btn btn-danger btn-sm" (click)="deleteDraft(app.idoffre || app.id)">
-                            <i class="bi bi-trash me-1"></i> Supprimer
+                        <button class="btn btn-success btn-sm rounded-pill px-4 shadow-sm"
+                            (click)="confirmDraft(app.id)">
+                            <i class="bi bi-check-lg me-1"></i> {{ lang.t().applications.actions.confirm }}
+                        </button>
+                    </div>
+                    <!-- Actions for Submitted -->
+                    <div class="d-flex justify-content-end gap-2" *ngIf="!isDraft(app.etatnumerique)">
+                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 w-100" disabled>
+                            <i class="bi bi-printer me-1"></i> {{ lang.t().applications.actions.printReceipt }}
                         </button>
                     </div>
                 </div>

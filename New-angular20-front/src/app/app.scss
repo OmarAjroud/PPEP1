@@ -1,0 +1,35 @@
+// Custom floating navbar
+.glass-navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 1rem 1rem 0 1rem; // Margin top/left/right only
+    width: auto;
+    left: 0;
+    right: 0;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid #ff9900; // Restore orange accent line
+}
+
+// Mobile Menu Scroll Fix
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 1rem 0;
+
+        // Ensure dropdown doesn't get cut by overflow
+        .dropdown-menu {
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            margin-top: 0;
+        }
+    }
+}
+
+// Basic layout adjustments for fixed navbar
+.main-content {
+    margin-top: 100px;
+}

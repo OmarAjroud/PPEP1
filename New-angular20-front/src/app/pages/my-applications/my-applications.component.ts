@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { OffreModel } from '../../models/offre.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-my-applications',
@@ -13,6 +14,7 @@ import { OffreModel } from '../../models/offre.model';
 })
 export class MyApplicationsComponent implements OnInit {
     api = inject(ApiService);
+    lang = inject(LanguageService);
     applications: OffreModel[] = [];
     isLoading = true;
 

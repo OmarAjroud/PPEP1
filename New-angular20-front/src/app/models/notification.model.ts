@@ -4,4 +4,5 @@ export interface NotificationModel {
     message: string;
     date: string;
     read: boolean;
+    dateEnvoi?: string;
 }

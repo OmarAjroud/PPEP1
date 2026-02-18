@@ -17,6 +17,15 @@ export class DashboardComponent implements OnInit {
     isLoading = true;
 
     ngOnInit() {
+        this.loadNotifications();
+    }
+
+    refreshNotifications() {
+        this.loadNotifications();
+    }
+
+    private loadNotifications() {
+        this.isLoading = true;
         this.api.getNotifications().subscribe({
             next: (data) => {
                 this.notifications = data;

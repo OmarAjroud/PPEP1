@@ -1,0 +1,251 @@
+<!-- ===================== HERO SECTION ===================== -->
+<section class="hero-section d-flex align-items-center justify-content-center text-center text-white"
+    [dir]="lang.dir()">
+    <div class="container position-relative z-index-1">
+        <h1 class="display-3 fw-bold mb-3 animate-up">
+            {{ lang.t().landing.heroTitle }}
+        </h1>
+        <p class="lead mb-4 opacity-85 animate-up delay-1">
+            {{ lang.t().landing.heroSubtitle }}
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap animate-up delay-2">
+            <a routerLink="/search" class="btn btn-light btn-lg text-primary fw-bold px-4 shadow-lg rounded-pill">
+                <i class="bi bi-search me-2"></i> {{ lang.t().landing.ctaSearch }}
+            </a>
+            <a routerLink="/inscription" class="btn btn-secondary btn-lg fw-bold px-4 shadow-lg rounded-pill">
+                <i class="bi bi-person-plus me-2"></i> {{ lang.t().landing.ctaRegister }}
+            </a>
+        </div>
+    </div>
+    <!-- Wave Separator -->
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,80 C360,0 720,120 1440,40 L1440,120 L0,120 Z" fill="#f8f9fa" />
+        </svg>
+    </div>
+</section>
+
+<!-- ===================== ABOUT SNAPSHOT ===================== -->
+<section class="py-5 bg-light" [dir]="lang.dir()">
+    <div class="container py-4 reveal">
+        <div class="section-header">
+            <h2>{{ lang.t().landing.aboutTitle }}</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <div class="about-card card h-100 border-0 shadow-sm p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-circle bg-primary text-white me-3">
+                            <i class="bi bi-bullseye fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-primary">{{ lang.t().landing.aboutMission }}</h4>
+                    </div>
+                    <p class="text-muted mb-0">{{ lang.t().landing.aboutMissionDesc }}</p>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="about-card card h-100 border-0 shadow-sm p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-circle bg-warning text-white me-3">
+                            <i class="bi bi-eye fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-primary">{{ lang.t().landing.aboutVision }}</h4>
+                    </div>
+                    <p class="text-muted mb-0">{{ lang.t().landing.aboutVisionDesc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FEATURES (WHY CHOOSE ATFP) ===================== -->
+<section class="py-5" [dir]="lang.dir()">
+    <div class="container py-4 reveal">
+        <div class="section-header">
+            <h2>{{ lang.t().landing.whyTitle }}</h2>
+            <p>{{ lang.t().landing.whySubtitle }}</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3" *ngFor="let f of lang.t().landing.features; let i = index">
+                <div class="card h-100 glass-card text-center p-4 feature-card">
+                    <div class="feature-icon-ring mx-auto mb-3">
+                        <i class="bi fs-2" [ngClass]="{
+                            'bi-award': i === 0,
+                            'bi-tools': i === 1,
+                            'bi-globe2': i === 2,
+                            'bi-briefcase': i === 3
+                        }"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">{{ f.title }}</h5>
+                    <p class="text-muted small mb-0">{{ f.desc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="py-5 text-white stats-section position-relative overflow-hidden" [dir]="lang.dir()">
+    <div class="container position-relative z-index-1 reveal">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="display-4 fw-bold text-warning mb-1">136</div>
+                    <div class="fw-semibold text-uppercase tracking-wider small">{{ lang.t().landing.stats.centers }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="display-4 fw-bold text-warning mb-1">400+</div>
+                    <div class="fw-semibold text-uppercase tracking-wider small">{{ lang.t().landing.stats.specs }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="display-4 fw-bold text-warning mb-1">100k+</div>
+                    <div class="fw-semibold text-uppercase tracking-wider small">{{ lang.t().landing.stats.students }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="display-4 fw-bold text-warning mb-1">14</div>
+                    <div class="fw-semibold text-uppercase tracking-wider small">{{ lang.t().landing.stats.sectors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="py-5 bg-light" [dir]="lang.dir()">
+    <div class="container py-4 reveal">
+        <div class="section-header">
+            <h2>{{ lang.t().landing.howTitle }}</h2>
+            <p>{{ lang.t().landing.howSubtitle }}</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4" *ngFor="let s of lang.t().landing.steps; let i = index">
+                <div class="step-card text-center p-4">
+                    <div class="step-number mx-auto mb-3">{{ i + 1 }}</div>
+                    <div class="step-icon mb-3">
+                        <i class="bi fs-1 text-primary" [ngClass]="'bi-' + s.icon"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">{{ s.title }}</h5>
+                    <p class="text-muted small mb-0">{{ s.desc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SECTORS ===================== -->
+<section class="py-5" [dir]="lang.dir()">
+    <div class="container py-4 reveal">
+        <div class="section-header">
+            <h2>{{ lang.t().landing.sectorsTitle }}</h2>
+            <p>{{ lang.t().landing.sectorsSubtitle }}</p>
+        </div>
+        <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3" *ngFor="let sec of lang.t().landing.sectorsList">
+                <div class="sector-card card h-100 text-center p-3 border-0 shadow-sm">
+                    <div class="sector-icon mx-auto mb-2">
+                        <i class="bi fs-2 text-primary" [ngClass]="'bi-' + sec.icon"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0 small">{{ sec.title }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="py-5 bg-light" [dir]="lang.dir()">
+    <div class="container py-4 reveal">
+        <div class="section-header">
+            <h2>{{ lang.t().landing.testimonialsTitle }}</h2>
+            <p>{{ lang.t().landing.testimonialsSubtitle }}</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4" *ngFor="let t of lang.t().landing.testimonials">
+                <div class="testimonial-card card h-100 border-0 shadow-sm p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-circle me-3">
+                            <i class="bi bi-person fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0">{{ t.name }}</h6>
+                            <small class="text-muted">{{ t.role }}</small>
+                        </div>
+                    </div>
+                    <p class="text-muted fst-italic mb-0">
+                        <i class="bi bi-quote text-primary opacity-50 fs-4"></i>
+                        {{ t.quote }}
+                    </p>
+                    <div class="mt-3 text-warning">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="py-5 cta-section text-center text-white" [dir]="lang.dir()">
+    <div class="container py-5 reveal">
+        <h2 class="display-5 fw-bold mb-3">{{ lang.t().landing.finalCtaTitle }}</h2>
+        <p class="lead mb-4 opacity-75">{{ lang.t().landing.finalCtaSubtitle }}</p>
+        <a routerLink="/login" class="btn btn-light btn-lg px-5 rounded-pill shadow fw-bold text-primary">
+            {{ lang.t().landing.finalCtaButton }} <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer-section py-5" [dir]="lang.dir()">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Brand Column -->
+            <div class="col-lg-4 mb-3">
+                <img src="/assets/images/logo_atfp_h.png" alt="ATFP Logo" height="45" class="mb-3 filter-white">
+                <p class="text-white-50 small">{{ lang.t().landing.footerAbout }}</p>
+            </div>
+            <!-- Quick Links -->
+            <div class="col-6 col-lg-4">
+                <h6 class="text-warning fw-bold mb-3 text-uppercase">{{ lang.t().landing.footerLinks }}</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a routerLink="/about">{{ lang.t().nav.about }}</a></li>
+                    <li><a routerLink="/search">{{ lang.t().nav.search }}</a></li>
+                    <li><a routerLink="/inscription">{{ lang.t().landing.ctaRegister }}</a></li>
+                    <li><a routerLink="/login">{{ lang.t().nav.login }}</a></li>
+                </ul>
+            </div>
+            <!-- Contact -->
+            <div class="col-6 col-lg-4">
+                <h6 class="text-warning fw-bold mb-3 text-uppercase">{{ lang.t().landing.footerContact }}</h6>
+                <ul class="list-unstyled footer-contact">
+                    <li><i class="bi bi-geo-alt me-2"></i>{{ lang.t().landing.footerAddress }}</li>
+                    <li><i class="bi bi-telephone me-2"></i>{{ lang.t().landing.footerPhone }}</li>
+                    <li><i class="bi bi-envelope me-2"></i>{{ lang.t().landing.footerEmail }}</li>
+                </ul>
+                <div class="social-icons mt-3">
+                    <a href="#" class="me-3"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="#" class="me-3"><i class="bi bi-linkedin fs-5"></i></a>
+                    <a href="#"><i class="bi bi-youtube fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <p class="text-center text-white-50 small mb-0">
+            {{ lang.t().footer.rights }}
+        </p>
+    </div>
+</footer>

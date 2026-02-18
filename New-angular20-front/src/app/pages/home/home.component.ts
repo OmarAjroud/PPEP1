@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { UserStore } from '../../stores/user.store';
+import { RouterModule } from '@angular/router';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-home',
@@ -11,11 +11,5 @@ import { UserStore } from '../../stores/user.store';
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-    userStore = inject(UserStore);
-    router = inject(Router);
-
-    logout() {
-        this.userStore.logout();
-        this.router.navigate(['/login']);
-    }
+    lang = inject(LanguageService);
 }

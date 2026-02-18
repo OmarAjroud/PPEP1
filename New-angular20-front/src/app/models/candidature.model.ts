@@ -1,3 +1,3 @@
-export class Candidature {
-    candidatures: number[];
+export interface CandidaturePayload {
+    candidatures: string[];
 }

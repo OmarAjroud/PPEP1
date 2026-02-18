@@ -1,67 +1,61 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-android2 me-2"></i>ATFP
-        </a>
-        <div class="d-flex text-white align-items-center">
-            <span class="me-3" *ngIf="userStore.user()">Bienvenue</span>
-            <button class="btn btn-outline-light btn-sm" (click)="logout()">Déconnexion</button>
-        </div>
-    </div>
-</nav>
-
-<div class="container text-center">
-    <!-- Header Image -->
-    <div class="row justify-content-center mb-5">
-        <div class="col-md-6">
-            <img src="assets/images/atfp.png" class="img-fluid" alt="ATFP Logo" style="max-height: 150px;">
-        </div>
+<div class="container py-5 mt-5" [dir]="lang.dir()">
+    <!-- Welcome Header -->
+    <div class="text-center mb-5 animate-fade">
+        <h1 class="display-4 fw-bold text-primary mb-3">{{ lang.t().home.welcome }}</h1>
+        <p class="lead text-muted">{{ lang.t().home.subtitle }}</p>
     </div>
 
-    <!-- Menu Grid (Replacing FAB) -->
-    <div class="row g-4 justify-content-center">
+    <!-- Menu Grid -->
+    <div class="row g-4 justify-content-center animate-fade delay-1">
 
         <!-- Choix Offre -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 shadow-sm hover-card" routerLink="/choixoffre" style="cursor: pointer;">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-book fs-1 text-dark mb-2"></i>
-                    <h5 class="card-title">العروض</h5>
-                    <small class="text-muted">Offers</small>
+            <div class="card h-100 glass-card text-center p-4" routerLink="/choixoffre" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="mb-3 text-primary">
+                        <i class="bi bi-search fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ lang.t().home.cards.offers.title }}</h5>
+                    <small class="text-muted">{{ lang.t().home.cards.offers.subtitle }}</small>
                 </div>
             </div>
         </div>
 
         <!-- Details (Profile) -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 shadow-sm hover-card" routerLink="/details" style="cursor: pointer;">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-person fs-1 text-primary mb-2"></i>
-                    <h5 class="card-title">ملفي</h5>
-                    <small class="text-muted">My Profile</small>
+            <div class="card h-100 glass-card text-center p-4" routerLink="/details" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="mb-3 text-success">
+                        <i class="bi bi-person-badge fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ lang.t().home.cards.profile.title }}</h5>
+                    <small class="text-muted">{{ lang.t().home.cards.profile.subtitle }}</small>
                 </div>
             </div>
         </div>
 
         <!-- Dashboard (Notifications) -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 shadow-sm hover-card" routerLink="/dashboard" style="cursor: pointer;">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-bell-fill fs-1 text-danger mb-2"></i>
-                    <h5 class="card-title">إشعارات</h5>
-                    <small class="text-muted">Notifications</small>
+            <div class="card h-100 glass-card text-center p-4" routerLink="/dashboard" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="mb-3 text-warning">
+                        <i class="bi bi-bell-fill fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ lang.t().home.cards.notifications.title }}</h5>
+                    <small class="text-muted">{{ lang.t().home.cards.notifications.subtitle }}</small>
                 </div>
             </div>
         </div>
 
         <!-- Offre (My Applications) -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 shadow-sm hover-card" routerLink="/offre" style="cursor: pointer;">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-journal-text fs-1 text-danger mb-2"></i>
-                    <h5 class="card-title">ترشحاتي</h5>
-                    <small class="text-muted">My Applications</small>
+            <div class="card h-100 glass-card text-center p-4" routerLink="/offre" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="mb-3 text-info">
+                        <i class="bi bi-journal-check fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ lang.t().home.cards.applications.title }}</h5>
+                    <small class="text-muted">{{ lang.t().home.cards.applications.subtitle }}</small>
                 </div>
             </div>
         </div>

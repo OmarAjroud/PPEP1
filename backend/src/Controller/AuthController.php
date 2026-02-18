@@ -182,13 +182,67 @@ class AuthController extends AbstractController
 
         return $this->json([
             'id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'cin' => $user->getCin(),
-            'nom' => $user->getNom(),
-            'prenom' => $user->getPrenom(),
-            'telMobile' => $user->getTelMobile(),
-            'adresse' => $user->getAdresse(),
-            'codePostal' => $user->getCodePostal(),
+            'credential' => [
+                'email' => $user->getEmail(),
+                'cin' => $user->getCin(),
+                'nomAr' => $user->getNom(),
+                'prenomAr' => $user->getPrenom(),
+            ],
+            'donnee' => [
+                'TelMobile' => $user->getTelMobile(),
+                'Adresse' => $user->getAdresse(),
+                'CodePostal' => $user->getCodePostal(),
+            ]
         ]);
+    }
+
+    #[Route('/api/profile/updateDonneepersonnel', name: 'api_update_personal_info', methods: ['POST'])]
+    public function updatePersonalInfo(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) return $this->json(['error' => 'Unauthorized'], 401);
+
+        $data = $request->request->all();
+        $donnee = $data['donnee_personnelle'] ?? null;
+
+        if ($donnee) {
+            if (!empty($donnee['TelMobile'])) $user->setTelMobile($donnee['TelMobile']);
+            if (!empty($donnee['Adresse'])) $user->setAdresse($donnee['Adresse']);
+            if (!empty($donnee['CodePostal'])) $user->setCodePostal($donnee['CodePostal']);
+            
+            // Also update Candidate if needed (optional, but good for consistency)
+            // For now, User entity holds these fields too.
+            
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return $this->json(['success' => true]);
+    }
+
+    #[Route('/api/profile/updateCredential', name: 'api_update_credential', methods: ['POST'])]
+    public function updateCredential(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) return $this->json(['error' => 'Unauthorized'], 401);
+
+        $data = $request->request->all();
+        // Check for 'Cridential' (legacy typo support) or 'Credential'
+        $cred = $data['Cridential'] ?? $data['Credential'] ?? null;
+        
+        if ($cred && !empty($cred['email'])) {
+            $email = $cred['email'];
+            // Check uniqueness
+            $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+            if ($existing && $existing->getId() !== $user->getId()) {
+                return $this->json(['error' => 'Email already used'], 409);
+            }
+            
+            $user->setEmail($email);
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return $this->json(['success' => true]);
     }
 }

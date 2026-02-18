@@ -1,80 +1,111 @@
-<div class="container py-4">
+<div class="container py-5" [dir]="lang.dir()">
     <!-- Header -->
-    <div class="d-flex align-items-center mb-4">
-        <a class="btn btn-outline-secondary me-3" routerLink="/home"><i class="bi bi-arrow-left"></i> Retour</a>
-        <h2 class="mb-0">Rechercher des Offres (Search)</h2>
+    <div class="d-flex align-items-center mb-4 text-white">
+        <a class="btn btn-light btn-sm rounded-pill shadow-sm me-3 text-primary fw-bold" routerLink="/landing">
+            <i class="bi bi-arrow-left"></i> {{ lang.t().profile.actions.cancel }}
+        </a>
+        <h2 class="mb-0 fw-bold text-dark">{{ lang.t().search.title }} <span class="fw-light ms-2 text-muted">/ {{
+                lang.currentLang() === 'fr' ? 'البحث عن تكوين' : 'Recherche' }}</span></h2>
     </div>
 
     <!-- Filter Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">Filtres de recherche</h5>
+    <div class="card glass-card border-0 shadow-lg mb-5 animate-fade">
+        <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
+            <h5 class="mb-0 fw-bold text-primary">
+                <i class="bi bi-funnel-fill me-2"></i> {{ lang.t().search.filters.title }}
+            </h5>
         </div>
-        <div class="card-body">
+        <div class="card-body px-4 pb-4">
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Diplôme</label>
-                    <select class="form-select" [(ngModel)]="selectedDiplome" (change)="onDiplomeChange()">
-                        <option value="">-- Sélectionner --</option>
-                        <option *ngFor="let d of diplomes" [value]="d.id">{{d.libelle_Ar}} ({{d.libelle_Fr}})</option>
+                    <label class="form-label fw-medium">{{ lang.t().search.filters.diploma }}</label>
+                    <select class="form-select shadow-sm" [(ngModel)]="selectedDiplome" (change)="onDiplomeChange()">
+                        <option value="">-- {{ lang.t().search.filters.all }} --</option>
+                        <option *ngFor="let d of diplomes" [value]="d.id">{{ lang.currentLang() === 'ar' ? (d.libelle_Ar
+                            || d.libelle_Fr || d.libelle)
+                            : (d.libelle_Fr || d.libelle_Ar || d.libelle) }}</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Spécialité</label>
-                    <select class="form-select" [(ngModel)]="selectedSpecialite" (change)="onSpecialiteChange()"
-                        [disabled]="!selectedDiplome">
-                        <option value="">-- Sélectionner --</option>
-                        <option *ngFor="let s of specialites" [value]="s.id">{{s.libelle_Ar}}</option>
+                    <label class="form-label fw-medium">{{ lang.t().search.filters.specialty }}</label>
+                    <select class="form-select shadow-sm" [(ngModel)]="selectedSpecialite"
+                        (change)="onSpecialiteChange()" [disabled]="!selectedDiplome">
+                        <option value="">-- {{ lang.t().search.filters.all }} --</option>
+                        <option *ngFor="let s of specialites" [value]="s.id">{{ lang.currentLang() === 'ar' ?
+                            (s.libelle_Ar || s.libelle_Fr || s.libelle)
+                            : (s.libelle_Fr || s.libelle_Ar || s.libelle) }}</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Centre</label>
-                    <select class="form-select" [(ngModel)]="selectedCentre" [disabled]="!selectedSpecialite">
-                        <option value="">-- Sélectionner --</option>
-                        <option *ngFor="let c of centres" [value]="c.id">{{c.libelle_Ar}}</option>
+                    <label class="form-label fw-medium">{{ lang.t().search.filters.center }}</label>
+                    <select class="form-select shadow-sm" [(ngModel)]="selectedCentre" [disabled]="!selectedSpecialite">
+                        <option value="">-- {{ lang.t().search.filters.all }} --</option>
+                        <option *ngFor="let c of centres" [value]="c.id">{{ lang.currentLang() === 'ar' ? (c.libelle_Ar
+                            || c.libelle_Fr || c.libelle)
+                            : (c.libelle_Fr || c.libelle_Ar || c.libelle) }}</option>
                     </select>
                 </div>
             </div>
-            <div class="mt-3 text-end">
-                <button class="btn btn-primary" (click)="search()"
+            <div class="mt-4 text-end">
+                <button class="btn btn-primary px-4 rounded-pill fw-bold shadow-sm" (click)="search()"
                     [disabled]="!selectedDiplome && !selectedSpecialite && !selectedCentre">
-                    <i class="bi bi-search me-1"></i> Rechercher
+                    <i class="bi bi-search me-2"></i> {{ lang.t().search.buttons.search }}
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Results -->
-    <div *ngIf="hasSearched">
+    <div *ngIf="hasSearched" class="animate-fade delay-1">
+
         <div *ngIf="isLoading" class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">...</span>
             </div>
+            <p class="mt-3 text-muted">{{ lang.t().search.results.loading }}</p>
         </div>
 
-        <div *ngIf="!isLoading && offers.length === 0" class="alert alert-info text-center">
-            Aucune offre trouvée pour ces critères.
+        <div *ngIf="!isLoading && offers.length === 0" class="alert alert-light text-center shadow-sm border-0 py-5">
+            <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+            <h5 class="text-muted">{{ lang.t().search.results.noResults }}</h5>
+            <p class="mb-0 text-muted small">Essayez de modifier vos critères de recherche.</p>
         </div>
 
         <div class="row g-4" *ngIf="!isLoading && offers.length > 0">
             <div class="col-md-6 col-lg-4" *ngFor="let offer of offers">
-                <div class="card h-100 shadow-sm border-0 offer-card">
-                    <div class="card-body">
-                        <span class="badge bg-info mb-2">{{offer.diplome}}</span>
-                        <h5 class="card-title text-primary">{{offer.specialite}}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill text-danger"></i>
-                            {{offer.centre}}</h6>
+                <div class="card h-100 glass-card border-0 offer-card position-relative overflow-hidden">
+                    <div class="card-body p-4">
+                        <span
+                            class="badge bg-primary-subtle text-primary border border-primary-subtle mb-3 px-3 py-2 rounded-pill">
+                            {{offer.diplome}}
+                        </span>
 
-                        <p class="card-text mt-3">
-                            <small class="d-block text-muted"><strong>Début:</strong> {{offer.debutformation}}</small>
-                            <small class="d-block text-muted"><strong>Places:</strong> {{offer.nbplaces}}</small>
-                            <small class="d-block text-muted"><strong>Hébergement:</strong> <span
-                                    class="badge bg-warning text-dark">{{offer.foyer}}</span></small>
-                        </p>
+                        <h5 class="card-title fw-bold text-dark mb-3">{{offer.specialite}}</h5>
+
+                        <div class="d-flex align-items-center text-muted mb-3">
+                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                            <span class="small fw-medium">{{offer.centre}}</span>
+                        </div>
+
+                        <hr class="opacity-10 my-3">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted"><i class="bi bi-calendar-event me-1"></i> {{
+                                lang.t().search.columns.date }}:</small>
+                            <small class="fw-bold text-dark">{{offer.debutformation}}</small>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted"><i class="bi bi-people me-1"></i> Places:</small>
+                            <small class="fw-bold text-dark">{{offer.nbplaces}}</small>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted"><i class="bi bi-house me-1"></i> Hébergement:</small>
+                            <span class="badge bg-warning text-dark">{{offer.foyer}}</span>
+                        </div>
                     </div>
-                    <div class="card-footer bg-white border-top-0 d-grid">
-                        <button class="btn btn-outline-success" (click)="apply(offer.id)">
-                            <i class="bi bi-check-circle me-2"></i> Postuler / Choisir
+                    <div class="card-footer bg-transparent border-top-0 p-4 pt-0">
+                        <button class="btn btn-outline-primary w-100 rounded-pill fw-bold" (click)="apply(offer.id)">
+                            <i class="bi bi-check-circle me-2"></i> {{ lang.t().search.buttons.apply }}
                         </button>
                     </div>
                 </div>

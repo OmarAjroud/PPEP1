@@ -25,4 +25,18 @@ export interface OffreModel {
 
     // Legacy / Alternative casing
     etatNumerique?: number;
+
+    // Nested Offre Object (from History API)
+    offre?: {
+        id: number;
+        specialite?: string;
+        centre?: string;
+        diplome?: string;
+        debutformation?: string;
+        finformation?: string;
+        session?: string;
+        hebergement?: string;
+        bourse?: string;
+        nbplaces?: number;
+    };
 }

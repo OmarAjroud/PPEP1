@@ -16,14 +16,17 @@ class Offre
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $specialite = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Specialite $specialite = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $centre = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Centre $centre = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $diplome = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Diplome $diplome = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $debutformation = null;
@@ -71,36 +74,36 @@ class Offre
         return $this->id;
     }
 
-    public function getSpecialite(): ?string
+    public function getSpecialite(): ?Specialite
     {
         return $this->specialite;
     }
 
-    public function setSpecialite(string $specialite): static
+    public function setSpecialite(?Specialite $specialite): static
     {
         $this->specialite = $specialite;
 
         return $this;
     }
 
-    public function getCentre(): ?string
+    public function getCentre(): ?Centre
     {
         return $this->centre;
     }
 
-    public function setCentre(string $centre): static
+    public function setCentre(?Centre $centre): static
     {
         $this->centre = $centre;
 
         return $this;
     }
 
-    public function getDiplome(): ?string
+    public function getDiplome(): ?Diplome
     {
         return $this->diplome;
     }
 
-    public function setDiplome(string $diplome): static
+    public function setDiplome(?Diplome $diplome): static
     {
         $this->diplome = $diplome;
 
@@ -248,6 +251,7 @@ class Offre
     public function removeCandidature(Candidature $candidature): static
     {
         if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
             if ($candidature->getOffre() === $this) {
                 $candidature->setOffre(null);
             }

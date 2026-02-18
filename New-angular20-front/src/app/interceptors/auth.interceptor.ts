@@ -7,7 +7,8 @@ import { catchError, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const userStore = inject(UserStore);
     const router = inject(Router);
-    const token = userStore.token();
+    // Direct localStorage access to ensure we get the token set by ApiService immediately before
+    const token = localStorage.getItem('auth_token');
 
     let requestToHandle = req;
 

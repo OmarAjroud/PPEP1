@@ -194,4 +194,11 @@ class ReferenceController extends AbstractController
         
         return $this->json(['exist' => $exists !== null]);
     }
+
+    #[Route('/candidate/CheckNumInscription/{num}', name: 'check_num_inscription', methods: ['GET'])]
+    public function checkNumInscription(string $num, CandidateRepository $repo): JsonResponse
+    {
+        $candidate = $repo->findOneBy(['numInscription' => $num]);
+        return $this->json(['exist' => $candidate !== null]);
+    }
 }

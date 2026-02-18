@@ -1,25 +1,27 @@
-<div class="login-page">
+<div class="login-page" [dir]="lang.dir()">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5 col-xl-4">
-                <div class="card shadow-lg border-0">
-
-                    <div class="card-header text-center">
-                        <div class="brand-icon mb-3">
-                            <i class="bi bi-person-badge"></i>
+            <div class="col-md-6 col-lg-5 col-xl-4 align-self-center">
+                <div class="card glass-card border-0 p-4">
+                    <div class="card-header border-0 bg-transparent text-center pb-0">
+                        <div class="brand-icon mb-3 text-primary animate-up">
+                            <i class="bi bi-person-badge fs-1"></i>
                         </div>
-                        <h3>Connexion ATFP</h3>
-                        <p class="subtitle">Portail de la Formation Professionnelle</p>
+                        <h3 class="fw-bold text-dark mb-1">{{ lang.t().login.title }}</h3>
+                        <p class="text-muted small">{{ lang.t().login.subtitle }}</p>
                     </div>
 
-                    <div class="card-body p-4 p-md-5">
+                    <div class="card-body px-0 pt-4">
                         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
                             <div class="form-group mb-4">
-                                <label for="username" class="form-label">Identifiant (CIN / Matricule)</label>
+                                <label for="username" class="form-label fw-medium small text-muted text-uppercase">{{
+                                    lang.t().login.emailLabel }}</label>
                                 <div class="input-group">
-                                    <input type="text" id="username" class="form-control shadow-none"
-                                        formControlName="username" placeholder="Entrez votre identifiant"
+                                    <span class="input-group-text bg-light text-muted"><i
+                                            class="bi bi-person"></i></span>
+                                    <input type="text" id="username" class="form-control bg-light shadow-none"
+                                        formControlName="username" placeholder="CIN ou Matricule"
                                         [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
                                 </div>
                                 <div class="invalid-feedback">
@@ -28,9 +30,11 @@
                             </div>
 
                             <div class="form-group mb-4">
-                                <label for="password" class="form-label">Mot de passe</label>
+                                <label for="password" class="form-label fw-medium small text-muted text-uppercase">{{
+                                    lang.t().login.passwordLabel }}</label>
                                 <div class="input-group">
-                                    <input type="password" id="password" class="form-control shadow-none"
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+                                    <input type="password" id="password" class="form-control bg-light shadow-none"
                                         formControlName="password" placeholder="••••••••"
                                         [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                                 </div>
@@ -39,32 +43,31 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="errorMessage" class="alert alert-danger animate__animated animate__shakeX"
+                            <div *ngIf="errorMessage"
+                                class="alert alert-danger d-flex align-items-center animate__animated animate__shakeX small py-2"
                                 role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                {{ errorMessage }}
+                                <div>{{ errorMessage }}</div>
                             </div>
 
-                            <div class="d-grid mt-2">
-                                <button type="submit" class="btn btn-primary btn-lg"
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold"
                                     [disabled]="loginForm.invalid || isLoading">
                                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"
                                         role="status"></span>
-                                    {{ isLoading ? 'Chargement...' : 'Se connecter' }}
+                                    {{ isLoading ? '...' : lang.t().login.loginButton }}
                                 </button>
                             </div>
 
                         </form>
                     </div>
 
-                    <div class="card-footer border-0 text-center pb-4">
-                        <p class="mb-2 text-muted small">Agence Tunisienne de la Formation Professionnelle</p>
-                        <div class="footer-actions">
-                            <a routerLink="/inscription" class="link-primary text-decoration-none fw-bold">Créer un
-                                compte</a>
-                            <span class="mx-2 text-muted">|</span>
-                            <a routerLink="/forgot-password" class="link-secondary text-decoration-none small">Mot de
-                                passe oublié ?</a>
+                    <div class="card-footer border-0 bg-transparent text-center pt-0 pb-2">
+                        <div class="d-flex justify-content-between align-items-center mt-3 small">
+                            <a routerLink="/inscription" class="text-primary text-decoration-none fw-bold">{{
+                                lang.t().login.registerLink }}</a>
+                            <a routerLink="/forgot-password" class="text-muted text-decoration-none">{{
+                                lang.t().login.forgotPassword }}</a>
                         </div>
                     </div>
 

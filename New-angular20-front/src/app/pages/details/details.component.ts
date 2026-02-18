@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { ProfileModel } from '../../models/profile.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-details',
@@ -14,6 +15,7 @@ import { ProfileModel } from '../../models/profile.model';
 })
 export class DetailsComponent implements OnInit {
     api = inject(ApiService);
+    lang = inject(LanguageService);
 
 
 
@@ -45,8 +47,8 @@ export class DetailsComponent implements OnInit {
                 // Pre-fill edit data
                 if (data.donnee) {
                     this.editData.adresse = data.donnee.Adresse;
-                    this.editData.codePostal = data.donnee.CodePostal;
-                    this.editData.telMobile = data.donnee.TelMobile;
+                    this.editData.codePostal = String(data.donnee.CodePostal || '');
+                    this.editData.telMobile = String(data.donnee.TelMobile || '');
                 }
                 if (data.credential) {
                     this.newEmail = data.credential.email;

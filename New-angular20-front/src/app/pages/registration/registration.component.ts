@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CustomValidators } from '../../validators/custom.validators';
 import { ProfileModel } from '../../models/profile.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-registration',
@@ -17,6 +18,7 @@ export class RegistrationComponent implements OnInit {
     private fb = inject(FormBuilder);
     private api = inject(ApiService);
     private router = inject(Router);
+    lang = inject(LanguageService);
 
     // Stepper State
     currentStep = 1;

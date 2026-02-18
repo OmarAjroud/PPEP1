@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { OffreModel } from '../../models/offre.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-offer-search',
@@ -14,6 +15,7 @@ import { OffreModel } from '../../models/offre.model';
 })
 export class OfferSearchComponent implements OnInit {
     api = inject(ApiService);
+    lang = inject(LanguageService);
 
     // Filter Lists
     diplomes: any[] = [];

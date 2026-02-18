@@ -1,8 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ProfileModel } from '../models/profile.model';
+import { OffreModel } from '../models/offre.model';
 
 @Injectable({
     providedIn: 'root'
@@ -13,15 +14,50 @@ export class ApiService {
 
 
 
+    // --- STATE MANAGEMENT ---
+    currentUser = signal<ProfileModel | null>(null);
+
+    constructor() {
+        // Try to recover user from localStorage if token exists
+        const token = localStorage.getItem('auth_token');
+        console.log('ApiService Init: Token present?', !!token);
+        if (token) {
+            this.getUserProfile().subscribe({
+                next: (profile) => {
+                    console.log('User Profile Loaded:', profile);
+                    this.currentUser.set(profile);
+                },
+                error: (err) => {
+                    console.error('User Profile Load Failed:', err);
+                    this.logout() // Invalid token
+                }
+            });
+        }
+    }
+
     // 1. Login
-    login(credentials: { username: string, password: string }): Observable<any> {
+    login(credentials: { username: string, password: string }): Observable<{ token: string }> {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
-        return this.http.post(`${this.apiUrl}/api/login_check`, JSON.stringify(credentials), { headers });
+        return this.http.post<{ token: string }>(`${this.apiUrl}/api/login_check`, JSON.stringify(credentials), { headers }).pipe(
+            tap((response) => {
+                if (response.token) {
+                    localStorage.setItem('auth_token', response.token);
+                    // Fetch profile immediately after login to set user state
+                    this.getUserProfile().subscribe(profile => this.currentUser.set(profile));
+                }
+            })
+        );
+    }
+
+    logout() {
+        localStorage.removeItem('auth_token');
+        this.currentUser.set(null);
+        // Optional: Navigate to login
     }
 
     // 2. Get User Profile
-    getUserProfile(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/api/candidate/profile`);
+    getUserProfile(): Observable<ProfileModel> {
+        return this.http.get<ProfileModel>(`${this.apiUrl}/api/candidate/profile`);
     }
 
     // 3. Update Personal Info (FormData)
@@ -46,8 +82,8 @@ export class ApiService {
     }
 
     // 6. Get History (Historique)
-    getApplicationHistory(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/api/candidate/candidatures/historique`);
+    getApplicationHistory(): Observable<OffreModel[]> {
+        return this.http.get<OffreModel[]>(`${this.apiUrl}/api/candidate/candidatures/historique`);
     }
 
     // 7. Get Governorates (Public)
@@ -57,7 +93,7 @@ export class ApiService {
     }
 
     // 8. Search Offers
-    searchOffers(specialite?: string, centre?: string, keyword?: string, start: number = 0, length: number = 10): Observable<any> {
+    searchOffers(specialite?: string, centre?: string, keyword?: string, start: number = 0, length: number = 10): Observable<OffreModel[]> {
         let params = new HttpParams()
             .set('start', start)
             .set('length', length);
@@ -66,7 +102,7 @@ export class ApiService {
         if (centre) params = params.set('centre_refIn', centre);
         if (keyword) params = params.set('lowerOffre', keyword);
 
-        return this.http.post(`${this.apiUrl}/api/offres`, null, { params });
+        return this.http.post<OffreModel[]>(`${this.apiUrl}/api/offres`, null, { params });
     }
 
     // 9. Create Candidature (Apply)
@@ -82,7 +118,7 @@ export class ApiService {
     }
 
     // 10. Confirm Drafts (Validate Many)
-    validateDrafts(candidatureObj: any): Observable<any> {
+    validateDrafts(candidatureObj: { candidatures: string[] }): Observable<any> {
         // Legacy sends { candidatures: [id1, id2] } wrapped in 'Candidature' object structure
         return this.http.post(`${this.apiUrl}/api/candidate/candidature/validateMany`, JSON.stringify(candidatureObj));
     }
@@ -95,14 +131,14 @@ export class ApiService {
     // --- REGISTRATION / INSCRIPTION ENDPOINTS ---
 
     // Check Email Availability
-    checkEmail(email: string): Observable<any> {
-        return this.http.get(`${this.apiUrl}/public/candidate/CheckMail/${email}`);
+    checkEmail(email: string): Observable<{ exist: boolean }> {
+        return this.http.get<{ exist: boolean }>(`${this.apiUrl}/public/candidate/CheckMail/${email}`);
     }
 
     // Check Inscription Number
-    checkNumInscription(numInscription: string, municipalite: string, annee: number): Observable<any> {
+    checkNumInscription(numInscription: string, municipalite: string, annee: number): Observable<{ exist: boolean }> {
         // Note: Legacy service had conflicting methods 'checkNumInscription' and 'checkIdentifiant'
-        return this.http.get(`${this.apiUrl}/public/candidate/CheckNumInscription/${numInscription}`);
+        return this.http.get<{ exist: boolean }>(`${this.apiUrl}/public/candidate/CheckNumInscription/${numInscription}`);
     }
 
     // Check Full Identity (Year, Num, Municipality)

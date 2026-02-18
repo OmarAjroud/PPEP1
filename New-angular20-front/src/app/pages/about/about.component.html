@@ -1,0 +1,102 @@
+<div class="container py-5" [dir]="lang.dir()">
+    <!-- Header -->
+    <div class="text-center mb-5 animate-up">
+        <h1 class="display-4 fw-bold text-primary mb-3">{{ lang.t().about.title }}</h1>
+        <p class="lead text-muted">{{ lang.t().about.subtitle }}</p>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 animate-up delay-1">
+            <div class="glass-card h-100 p-4 border-start border-5 border-primary">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-bullseye fs-1 text-primary me-3"></i>
+                    <div>
+                        <h3 class="fw-bold mb-1">{{ lang.t().about.missionTitle }}</h3>
+                    </div>
+                </div>
+                <!-- Only one text block needed, service handles language -->
+                <p class="text-muted">
+                    {{ lang.t().about.missionDesc }}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 animate-up delay-2">
+            <div class="glass-card h-100 p-4 border-start border-5 border-warning">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-lightbulb fs-1 text-warning me-3"></i>
+                    <div>
+                        <h3 class="fw-bold mb-1">{{ lang.t().about.visionTitle }}</h3>
+                    </div>
+                </div>
+                <p class="text-muted">
+                    {{ lang.t().about.visionDesc }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Figures (Stats) -->
+    <div class="glass-panel p-5 mb-5 text-center animate-up delay-3">
+        <h2 class="fw-bold mb-5">{{ lang.t().about.statsTitle }}</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="display-4 fw-bold text-primary counter">136</div>
+                <div class="fs-5 fw-bold mt-2">{{ lang.t().landing.stats.centers }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="display-4 fw-bold text-success counter">400+</div>
+                <div class="fs-5 fw-bold mt-2">{{ lang.t().landing.stats.specs }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="display-4 fw-bold text-warning counter">12</div>
+                <div class="fs-5 fw-bold mt-2">{{ lang.t().about.sectors }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="display-4 fw-bold text-info counter">1993</div>
+                <div class="fs-5 fw-bold mt-2">{{ lang.t().about.creationDate }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Structure -->
+    <div class="row align-items-center animate-up delay-4">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <img src="/assets/images/atfp.png" alt="ATFP Building" class="img-fluid rounded-4 shadow-lg">
+        </div>
+        <div class="col-lg-7 ps-lg-5">
+            <h2 class="fw-bold mb-3">{{ lang.t().about.structureTitle }}</h2>
+            <h3 class="text-muted mb-4">{{ lang.t().about.structureSubtitle }}</h3>
+
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <i class="bi bi-building-check fs-2 text-primary"></i>
+                </div>
+                <div class="ms-3">
+                    <h5 class="fw-bold">{{ lang.t().about.structureSubtitle }}</h5>
+                    <p class="text-muted mb-0">{{ lang.t().about.structureDesc }}</p>
+                </div>
+            </div>
+
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <i class="bi bi-gear-wide-connected fs-2 text-primary"></i>
+                </div>
+                <div class="ms-3">
+                    <h5 class="fw-bold">{{ lang.t().about.partnershipTitle }}</h5>
+                    <p class="text-muted mb-0">{{ lang.t().about.partnershipDesc }}</p>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <i class="bi bi-globe fs-2 text-primary"></i>
+                </div>
+                <div class="ms-3">
+                    <h5 class="fw-bold">{{ lang.t().about.coopTitle }}</h5>
+                    <p class="text-muted mb-0">{{ lang.t().about.coopDesc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

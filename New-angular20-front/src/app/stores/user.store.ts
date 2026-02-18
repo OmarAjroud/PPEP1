@@ -11,7 +11,7 @@ export class UserStore {
     // State Signals
     // Initialize token only if in browser
     readonly token = signal<string | null>(
-        isPlatformBrowser(this.platformId) ? localStorage.getItem('usertoken') : null
+        isPlatformBrowser(this.platformId) ? localStorage.getItem('auth_token') : null
     );
 
     readonly user = signal<ProfileModel | null>(null);
@@ -25,9 +25,9 @@ export class UserStore {
             if (isPlatformBrowser(this.platformId)) {
                 const currentToken = this.token();
                 if (currentToken) {
-                    localStorage.setItem('usertoken', currentToken);
+                    localStorage.setItem('auth_token', currentToken);
                 } else {
-                    localStorage.removeItem('usertoken');
+                    localStorage.removeItem('auth_token');
                 }
             }
         });
@@ -35,6 +35,7 @@ export class UserStore {
 
     // Actions
     setToken(token: string) {
+        console.log('UserStore: Setting token', token ? 'Present' : 'Null');
         this.token.set(token);
     }
 
@@ -46,7 +47,7 @@ export class UserStore {
         this.token.set(null);
         this.user.set(null);
         if (isPlatformBrowser(this.platformId)) {
-            localStorage.clear();
+            localStorage.removeItem('auth_token');
         }
     }
 }
