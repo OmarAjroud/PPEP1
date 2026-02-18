@@ -172,14 +172,14 @@ class ReferenceController extends AbstractController
 
     // --- Validation APIs ---
 
-    #[Route('/checkEmail/{email}', name: 'check_email', methods: ['GET'])]
+    #[Route('/candidate/CheckMail/{email}', name: 'check_email', methods: ['GET'])]
     public function checkEmail(string $email, UserRepository $repo): JsonResponse
     {
         $user = $repo->findOneBy(['email' => $email]);
         return $this->json(['exist' => $user !== null]);
     }
-    
-    #[Route('/checkIdentifiant/{annee}/{num}/{mun}', name: 'check_identifiant', methods: ['GET'])]
+
+    #[Route('/candidate/CheckIdentifiant/{annee}/{num}/{mun}', name: 'check_identifiant', methods: ['GET'])]
     public function checkIdentifiant(int $annee, string $num, int $mun, CandidateRepository $repo): JsonResponse
     {
         // Check if candidate exists with these birth details
