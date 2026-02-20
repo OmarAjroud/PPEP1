@@ -1,51 +1,65 @@
-/* My Applications Styles */
-.glass-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+/* ============ MY APPLICATIONS ============ */
+
+/* Application Cards */
+.application-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 51, 102, 0.06);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.35s ease;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        border-radius: 4px 0 0 4px;
+    }
+
+    &.status-draft::before {
+        background: linear-gradient(180deg, #ffc107, #e0a800);
+    }
+
+    &.status-submitted::before {
+        background: linear-gradient(180deg, #198754, #146c43);
+    }
 
     &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 51, 102, 0.12);
     }
 }
 
-.status-badge {
-    padding: 0.5em 1em;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.85rem;
+/* Info Blocks */
+.info-block {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 0.75rem;
+    transition: background 0.2s ease;
 
-    &.draft {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeeba;
-    }
-
-    &.submitted {
-        background-color: #d1e7dd;
-        color: #0f5132;
-        border: 1px solid #badbcc;
+    &:hover {
+        background: #edf2f7;
     }
 }
 
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+/* Empty State */
+.empty-state {
+    background: white;
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 
-    &:last-child {
-        border-bottom: none;
-    }
-
-    .label {
-        color: #6c757d;
-        font-size: 0.9rem;
-    }
-
-    .value {
-        font-weight: 600;
-        color: #212529;
+    .empty-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(0, 86, 179, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
     }
 }

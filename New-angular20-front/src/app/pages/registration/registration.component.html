@@ -31,7 +31,7 @@
         </div>
 
         <!-- Form Card -->
-        <div class="card glass-card border-0 shadow-lg p-3 p-md-4">
+        <div class="registration-card border-0 shadow-lg p-3 p-md-4 position-relative">
             <div class="card-body">
                 <form [formGroup]="regForm" (ngSubmit)="onSubmit()">
 
@@ -100,15 +100,19 @@
                             <div class="col-md-6">
                                 <label class="form-label">{{ lang.t().search.filters.gov }} (Naissance)</label>
                                 <select class="form-select" formControlName="govBread" (change)="onBirthGovChange()">
+                                    <option value="" disabled selected>-- Choisir --</option>
                                     <option *ngFor="let g of govs" [value]="g.id">{{ lang.currentLang() === 'ar' ?
-                                        g.libelle_Ar : g.libelle_Fr }}</option>
+                                        (g.libelle_Ar || g.libelle_Fr || g.libelle) : (g.libelle_Fr || g.libelle_Ar ||
+                                        g.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Municipalité</label>
                                 <select class="form-select" formControlName="munBread" (change)="checkBirthDetails()">
+                                    <option value="" disabled selected>-- Choisir --</option>
                                     <option *ngFor="let m of municipalitiesBirth" [value]="m.id">{{ lang.currentLang()
-                                        === 'ar' ? m.libelle_Ar : m.libelle_Fr }}
+                                        === 'ar' ? (m.libelle_Ar || m.libelle_Fr || m.libelle) : (m.libelle_Fr ||
+                                        m.libelle_Ar || m.libelle) }}
                                     </option>
                                 </select>
                             </div>
@@ -164,14 +168,16 @@
                                 <select class="form-select" formControlName="govAddress"
                                     (change)="onAddressGovChange()">
                                     <option *ngFor="let g of govs" [value]="g.id">{{ lang.currentLang() === 'ar' ?
-                                        g.libelle_Ar : g.libelle_Fr }}</option>
+                                        (g.libelle_Ar || g.libelle_Fr || g.libelle) : (g.libelle_Fr || g.libelle_Ar ||
+                                        g.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Délégation</label>
                                 <select class="form-select" formControlName="delAddress">
                                     <option *ngFor="let d of delegations" [value]="d.id">{{ lang.currentLang() === 'ar'
-                                        ? d.libelle_Ar : d.libelle_Fr }}</option>
+                                        ? (d.libelle_Ar || d.libelle_Fr || d.libelle) : (d.libelle_Fr || d.libelle_Ar ||
+                                        d.libelle) }}</option>
                                 </select>
                             </div>
 
@@ -213,7 +219,8 @@
                                 <select class="form-select" formControlName="niveauScolaire"
                                     [class.is-invalid]="regForm.get('niveauScolaire')?.invalid && regForm.get('niveauScolaire')?.touched">
                                     <option *ngFor="let n of niveaux" [value]="n.id">{{ lang.currentLang() === 'ar' ?
-                                        n.libelle_Ar : n.libelle_Fr }}</option>
+                                        (n.libelle_Ar || n.libelle_Fr || n.libelle) : (n.libelle_Fr || n.libelle_Ar ||
+                                        n.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -262,7 +269,8 @@
                                 <label class="form-label">Diplôme Obtenu</label>
                                 <select class="form-select" formControlName="prevDiplome" (change)="onDiplomeChange()">
                                     <option *ngFor="let d of diplomes" [value]="d.id">{{ lang.currentLang() === 'ar' ?
-                                        d.libelle_Ar : d.libelle_Fr }}</option>
+                                        (d.libelle_Ar || d.libelle_Fr || d.libelle) : (d.libelle_Fr || d.libelle_Ar ||
+                                        d.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -270,14 +278,16 @@
                                 <select class="form-select" formControlName="prevSpecialite"
                                     (change)="onPrevSpecialityChange()">
                                     <option *ngFor="let s of specialites" [value]="s.id">{{ lang.currentLang() === 'ar'
-                                        ? s.libelle_Ar : s.libelle_Fr }}</option>
+                                        ? (s.libelle_Ar || s.libelle_Fr || s.libelle) : (s.libelle_Fr || s.libelle_Ar ||
+                                        s.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">{{ lang.t().search.filters.center }}</label>
                                 <select class="form-select" formControlName="prevCentre">
                                     <option *ngFor="let c of centres" [value]="c.id">{{ lang.currentLang() === 'ar' ?
-                                        c.libelle_Ar : c.libelle_Fr }}</option>
+                                        (c.libelle_Ar || c.libelle_Fr || c.libelle) : (c.libelle_Fr || c.libelle_Ar ||
+                                        c.libelle) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">

@@ -1,1 +1,80 @@
-/* Details Styles */
+/* ============ PROFILE / DETAILS ============ */
+
+/* Page Header */
+.page-header {
+    margin-bottom: 1.5rem;
+
+    h2 {
+        font-weight: 700;
+    }
+}
+
+/* Profile Main Card */
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 51, 102, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+
+    .card-header {
+        background: transparent;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        padding: 1.5rem 1.5rem 1rem;
+    }
+}
+
+/* Info Fields */
+.info-field {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #edf2f7;
+    }
+
+    .field-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+    }
+
+    .field-value {
+        font-weight: 600;
+        color: #212529;
+        font-size: 1.05rem;
+    }
+}
+
+/* Account Sidebar */
+.account-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 51, 102, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.avatar-section {
+    background: linear-gradient(135deg, rgba(25, 135, 84, 0.08), rgba(25, 135, 84, 0.03));
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+
+    .avatar-ring {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba(25, 135, 84, 0.1);
+        border: 2px solid rgba(25, 135, 84, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.75rem;
+        color: #198754;
+    }
+}

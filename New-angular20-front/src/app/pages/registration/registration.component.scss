@@ -1,54 +1,125 @@
-/* Registration Styles */
+/* ============ REGISTRATION PAGE ============ */
 .registration-wrapper {
     min-height: 100vh;
-    background: radial-gradient(circle at 10% 20%, rgb(0, 51, 102) 0%, rgb(0, 86, 179) 90%);
+    background: linear-gradient(135deg, #001a33 0%, #003366 40%, #0056b3 100%);
     padding: 20px 0;
+    position: relative;
+    overflow: hidden;
+
+    /* Floating orbs */
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.12;
+    }
+
+    &::before {
+        width: 350px;
+        height: 350px;
+        background: #ff9900;
+        top: 10%;
+        right: -100px;
+    }
+
+    &::after {
+        width: 250px;
+        height: 250px;
+        background: #0056b3;
+        bottom: 10%;
+        left: -80px;
+    }
 }
 
 .registration-container {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
+/* Glass Stepper */
 .glass-stepper {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 50px;
-    padding: 10px 20px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 12px 24px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .step-indicator {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 2px solid #dee2e6;
-    background: white;
-    color: #6c757d;
-    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 700;
+    font-size: 0.85rem;
     z-index: 2;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     &.active {
-        background: #0d6efd;
-        /* Primary Blue */
-        color: white;
-        border-color: #0d6efd;
-        box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+        background: white;
+        color: #0056b3;
+        border-color: white;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
     }
 
     &.completed {
         background: #198754;
-        /* Success Green */
         color: white;
         border-color: #198754;
+        box-shadow: 0 0 12px rgba(25, 135, 84, 0.4);
     }
 }
 
 .progress-container {
     top: 50%;
     transform: translateY(-50%);
-    width: 100%;
-    z-index: 1;
-    padding: 0 10px;
+    left: 19px;
+    right: 19px;
+    z-index: 0;
+}
+
+/* Form Card */
+.registration-card {
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0056b3, #ff9900, #0056b3);
+        background-size: 200% 100%;
+        animation: shimmerBar 3s ease-in-out infinite;
+    }
+
+    .card-body {
+        position: relative;
+    }
+}
+
+@keyframes shimmerBar {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }

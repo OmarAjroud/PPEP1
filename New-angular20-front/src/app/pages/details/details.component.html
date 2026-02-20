@@ -19,7 +19,7 @@
 
         <!-- Info Card -->
         <div class="col-lg-8">
-            <div class="card glass-card border-0 shadow-lg h-100">
+            <div class="profile-card h-100">
                 <div
                     class="card-header bg-transparent border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold text-primary">
@@ -36,37 +36,37 @@
                     <!-- View Mode -->
                     <div class="row g-3" *ngIf="!editMode">
                         <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block mb-1">{{ lang.t().profile.labels.name }}</small>
-                                <span class="fw-bold fs-5 text-dark">{{profile.credential.nomAr}}
-                                    {{profile.credential.prenomAr}}</span>
+                            <div class="info-field">
+                                <div class="field-label">{{ lang.t().profile.labels.name }}</div>
+                                <div class="field-value">{{profile.credential.nomAr}}
+                                    {{profile.credential.prenomAr}}</div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block mb-1">{{ lang.t().profile.labels.cin }}</small>
-                                <span class="fw-bold fs-5 text-dark">{{profile.credential.cin}}</span>
+                            <div class="info-field">
+                                <div class="field-label">{{ lang.t().profile.labels.cin }}</div>
+                                <div class="field-value">{{profile.credential.cin}}</div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <hr class="text-muted opacity-25">
                         </div>
                         <div class="col-md-6">
-                            <div class="detail-item">
-                                <small class="text-muted d-block">{{ lang.t().profile.labels.address }}</small>
-                                <strong class="text-dark">{{profile.donnee.Adresse}}</strong>
+                            <div class="info-field">
+                                <div class="field-label">{{ lang.t().profile.labels.address }}</div>
+                                <div class="field-value">{{profile.donnee.Adresse}}</div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="detail-item">
-                                <small class="text-muted d-block">{{ lang.t().profile.labels.postalCode }}</small>
-                                <strong class="text-dark">{{profile.donnee.CodePostal}}</strong>
+                            <div class="info-field">
+                                <div class="field-label">{{ lang.t().profile.labels.postalCode }}</div>
+                                <div class="field-value">{{profile.donnee.CodePostal}}</div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="detail-item">
-                                <small class="text-muted d-block">{{ lang.t().profile.labels.phone }}</small>
-                                <strong class="text-dark">{{profile.donnee.TelMobile}}</strong>
+                            <div class="info-field">
+                                <div class="field-label">{{ lang.t().profile.labels.phone }}</div>
+                                <div class="field-value">{{profile.donnee.TelMobile}}</div>
                             </div>
                         </div>
                     </div>
@@ -119,16 +119,16 @@
 
         <!-- Account Card -->
         <div class="col-lg-4">
-            <div class="card glass-card border-0 shadow-lg h-100">
+            <div class="account-card h-100">
                 <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
                     <h5 class="mb-0 fw-bold text-success">
                         <i class="bi bi-shield-lock-fill me-2"></i> {{ lang.t().profile.account }}
                     </h5>
                 </div>
                 <div class="card-body px-4 pb-4 pt-3">
-                    <div class="p-3 bg-success-subtle rounded mb-4 text-center">
-                        <div class="mb-2">
-                            <i class="bi bi-person-circle fs-1 text-success"></i>
+                    <div class="avatar-section mb-4">
+                        <div class="avatar-ring">
+                            <i class="bi bi-person-circle fs-1"></i>
                         </div>
                         <small class="text-success fw-bold">{{ lang.t().profile.verified }}</small>
                     </div>

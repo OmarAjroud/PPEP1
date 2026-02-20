@@ -15,9 +15,9 @@
     <!-- Quick Actions -->
     <div class="row g-4 mb-5 animate-fade delay-1">
         <div class="col-md-4">
-            <div class="card glass-card h-100 quick-action-card p-4 text-center" routerLink="/choixoffre">
+            <div class="quick-action-card h-100 p-4 text-center" routerLink="/choixoffre">
                 <div class="card-body">
-                    <div class="action-icon">
+                    <div class="action-icon-ring">
                         <i class="bi bi-search"></i>
                     </div>
                     <h5 class="fw-bold">Trouver une Formation</h5>
@@ -26,9 +26,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card glass-card h-100 quick-action-card p-4 text-center" routerLink="/offre">
+            <div class="quick-action-card h-100 p-4 text-center" routerLink="/offre">
                 <div class="card-body">
-                    <div class="action-icon">
+                    <div class="action-icon-ring">
                         <i class="bi bi-file-earmark-text"></i>
                     </div>
                     <h5 class="fw-bold">Mes Candidatures</h5>
@@ -37,9 +37,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card glass-card h-100 quick-action-card p-4 text-center" routerLink="/details">
+            <div class="quick-action-card h-100 p-4 text-center" routerLink="/details">
                 <div class="card-body">
-                    <div class="action-icon">
+                    <div class="action-icon-ring">
                         <i class="bi bi-person-gear"></i>
                     </div>
                     <h5 class="fw-bold">Mon Profil</h5>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Notifications Section -->
-    <div class="card glass-card border-0 shadow-lg animate-fade delay-2">
+    <div class="notification-card animate-fade delay-2">
         <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
             <h5 class="mb-0 fw-bold text-primary">
                 <i class="bi bi-bell-fill me-2"></i> Notifications
@@ -64,8 +64,10 @@
                 </div>
             </div>
 
-            <div *ngIf="!isLoading && notifications.length === 0" class="text-center p-5 text-muted">
-                <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
+            <div *ngIf="!isLoading && notifications.length === 0" class="empty-notif text-center text-muted">
+                <div class="empty-icon">
+                    <i class="bi bi-inbox fs-2 text-muted"></i>
+                </div>
                 <p>Aucune nouvelle notification.</p>
             </div>
 

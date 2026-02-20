@@ -1,19 +1,19 @@
 <div class="container py-5 mt-5" [dir]="lang.dir()">
-    <!-- Welcome Header -->
-    <div class="text-center mb-5 animate-fade">
-        <h1 class="display-4 fw-bold text-primary mb-3">{{ lang.t().home.welcome }}</h1>
-        <p class="lead text-muted">{{ lang.t().home.subtitle }}</p>
+    <!-- Welcome Banner -->
+    <div class="welcome-banner text-center mb-5 animate-up">
+        <h1 class="display-5 fw-bold mb-2">{{ lang.t().home.welcome }}</h1>
+        <p class="lead mb-0">{{ lang.t().home.subtitle }}</p>
     </div>
 
-    <!-- Menu Grid -->
-    <div class="row g-4 justify-content-center animate-fade delay-1">
+    <!-- Dashboard Cards -->
+    <div class="row g-4 justify-content-center">
 
-        <!-- Choix Offre -->
+        <!-- Search Offers -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 glass-card text-center p-4" routerLink="/choixoffre" style="cursor: pointer;">
+            <div class="dashboard-card text-center p-4" routerLink="/choixoffre" style="--card-accent: #0056b3;">
                 <div class="card-body">
-                    <div class="mb-3 text-primary">
-                        <i class="bi bi-search fs-1"></i>
+                    <div class="card-icon-ring blue">
+                        <i class="bi bi-search fs-2"></i>
                     </div>
                     <h5 class="fw-bold mb-1">{{ lang.t().home.cards.offers.title }}</h5>
                     <small class="text-muted">{{ lang.t().home.cards.offers.subtitle }}</small>
@@ -21,12 +21,12 @@
             </div>
         </div>
 
-        <!-- Details (Profile) -->
+        <!-- Profile -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 glass-card text-center p-4" routerLink="/details" style="cursor: pointer;">
+            <div class="dashboard-card text-center p-4" routerLink="/details" style="--card-accent: #198754;">
                 <div class="card-body">
-                    <div class="mb-3 text-success">
-                        <i class="bi bi-person-badge fs-1"></i>
+                    <div class="card-icon-ring green">
+                        <i class="bi bi-person-badge fs-2"></i>
                     </div>
                     <h5 class="fw-bold mb-1">{{ lang.t().home.cards.profile.title }}</h5>
                     <small class="text-muted">{{ lang.t().home.cards.profile.subtitle }}</small>
@@ -34,12 +34,12 @@
             </div>
         </div>
 
-        <!-- Dashboard (Notifications) -->
+        <!-- Notifications -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 glass-card text-center p-4" routerLink="/dashboard" style="cursor: pointer;">
+            <div class="dashboard-card text-center p-4" routerLink="/dashboard" style="--card-accent: #ff9900;">
                 <div class="card-body">
-                    <div class="mb-3 text-warning">
-                        <i class="bi bi-bell-fill fs-1"></i>
+                    <div class="card-icon-ring orange">
+                        <i class="bi bi-bell-fill fs-2"></i>
                     </div>
                     <h5 class="fw-bold mb-1">{{ lang.t().home.cards.notifications.title }}</h5>
                     <small class="text-muted">{{ lang.t().home.cards.notifications.subtitle }}</small>
@@ -47,12 +47,12 @@
             </div>
         </div>
 
-        <!-- Offre (My Applications) -->
+        <!-- Applications -->
         <div class="col-6 col-md-3">
-            <div class="card h-100 glass-card text-center p-4" routerLink="/offre" style="cursor: pointer;">
+            <div class="dashboard-card text-center p-4" routerLink="/offre" style="--card-accent: #0dcaf0;">
                 <div class="card-body">
-                    <div class="mb-3 text-info">
-                        <i class="bi bi-journal-check fs-1"></i>
+                    <div class="card-icon-ring cyan">
+                        <i class="bi bi-journal-check fs-2"></i>
                     </div>
                     <h5 class="fw-bold mb-1">{{ lang.t().home.cards.applications.title }}</h5>
                     <small class="text-muted">{{ lang.t().home.cards.applications.subtitle }}</small>

@@ -18,10 +18,9 @@
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="!isLoading && applications.length === 0"
-        class="alert glass-card text-center border-0 py-5 animate-fade">
-        <div class="mb-3">
-            <i class="bi bi-folder-x fs-1 text-muted opacity-50"></i>
+    <div *ngIf="!isLoading && applications.length === 0" class="empty-state text-center border-0 animate-fade">
+        <div class="empty-icon">
+            <i class="bi bi-folder-x fs-1 text-muted"></i>
         </div>
         <h5 class="text-muted fw-bold">{{ lang.t().applications.empty }}</h5>
         <p class="mb-3 text-muted">{{ lang.t().applications.emptySubtitle }}</p>
@@ -33,7 +32,8 @@
     <!-- Application List -->
     <div class="row g-4" *ngIf="!isLoading && applications.length > 0">
         <div class="col-lg-6" *ngFor="let app of applications">
-            <div class="card glass-card h-100 border-0 shadow-lg animate-fade transition-hover">
+            <div class="application-card h-100 position-relative animate-fade"
+                [ngClass]="isDraft(app.etatnumerique) ? 'status-draft' : 'status-submitted'">
                 <div
                     class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-start">
                     <div>
