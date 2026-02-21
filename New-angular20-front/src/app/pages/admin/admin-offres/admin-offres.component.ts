@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
 import { LanguageService } from '../../../services/language.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
     selector: 'app-admin-offres',
@@ -15,6 +16,7 @@ import { LanguageService } from '../../../services/language.service';
 export class AdminOffresComponent implements OnInit {
     api = inject(ApiService);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
     offres = signal<any[]>([]);
     loading = signal(true);
@@ -91,16 +93,26 @@ export class AdminOffresComponent implements OnInit {
             next: () => {
                 this.saving.set(false);
                 this.showModal.set(false);
+                this.toast.success(this.editingOffre() ? this.lang.t().toast.admin.offerUpdateSuccess : this.lang.t().toast.admin.offerCreateSuccess);
                 this.loadOffres();
             },
-            error: () => this.saving.set(false)
+            error: () => {
+                this.saving.set(false);
+                this.toast.error(this.lang.t().toast.admin.saveError);
+            }
         });
     }
 
-    deleteOffre(id: number) {
-        if (!confirm('Supprimer cette offre ?')) return;
+    async deleteOffre(id: number) {
+        const confirmed = await this.toast.confirm('Supprimer cette offre ?', { type: 'danger' });
+        if (!confirmed) return;
+
         this.api.deleteOffre(id).subscribe({
-            next: () => this.offres.update(list => list.filter(o => o.id !== id))
+            next: () => {
+                this.offres.update(list => list.filter(o => o.id !== id));
+                this.toast.success('Offre supprimée.');
+            },
+            error: () => this.toast.error('Erreur lors de la suppression.')
         });
     }
 }

@@ -6,6 +6,7 @@ import { ApiService } from '../../services/api.service';
 import { CustomValidators } from '../../validators/custom.validators';
 import { ProfileModel } from '../../models/profile.model';
 import { LanguageService } from '../../services/language.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-registration',
@@ -19,6 +20,7 @@ export class RegistrationComponent implements OnInit {
     private api = inject(ApiService);
     private router = inject(Router);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
     // Stepper State
     currentStep = 1;
@@ -154,7 +156,7 @@ export class RegistrationComponent implements OnInit {
             const file = event.target.files[0];
             // Max 2MB check
             if (file.size > 2 * 1024 * 1024) {
-                alert('File too large (Max 2MB)');
+                this.toast.error(this.lang.t().toast.registration.fileTooLarge);
                 this.regForm.patchValue({ fileExtract: null });
             } else {
                 this.regForm.patchValue({ fileExtract: file });
@@ -294,7 +296,7 @@ export class RegistrationComponent implements OnInit {
 
         // Final Validation Check (in case user skipped steps somehow)
         if (!this.isEmailAvailable || !this.isBirthDetailsValid) {
-            alert('Veuillez vérifier les erreurs dans le formulaire (Email ou extrait de naissance).');
+            this.toast.error(this.lang.t().toast.registration.formErrors);
             return;
         }
 
@@ -353,13 +355,13 @@ export class RegistrationComponent implements OnInit {
         this.api.registerCandidate(formData).subscribe({
             next: (response) => {
                 this.isLoading = false;
-                alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+                this.toast.success(this.lang.t().toast.registration.success, 5000);
                 this.router.navigate(['/login']);
             },
             error: (err) => {
                 console.error(err);
                 this.isLoading = false;
-                alert("Une erreur s'est produite lors de l'inscription.");
+                this.toast.error(this.lang.t().toast.registration.error);
             }
         });
     }

@@ -247,4 +247,12 @@ export class ApiService {
     deleteUser(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/api/admin/user/${id}`);
     }
+
+    getAdminUserDetail(id: number): Observable<any> {
+        return this.http.get(`${this.apiUrl}/api/admin/user/${id}`);
+    }
+
+    markNotificationRead(id: number): Observable<any> {
+        return this.http.put(`${this.apiUrl}/api/notification/${id}/read`, {});
+    }
 }

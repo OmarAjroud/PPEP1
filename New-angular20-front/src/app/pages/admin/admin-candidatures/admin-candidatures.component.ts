@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
 import { LanguageService } from '../../../services/language.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
     selector: 'app-admin-candidatures',
@@ -15,11 +16,16 @@ import { LanguageService } from '../../../services/language.service';
 export class AdminCandidaturesComponent implements OnInit {
     api = inject(ApiService);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
     candidatures = signal<any[]>([]);
     loading = signal(true);
     filterStatus = signal('all');
     actionLoading = signal<number | null>(null);
+
+    // User detail modal
+    selectedUser = signal<any>(null);
+    userLoading = signal(false);
 
     pendingCount = computed(() => this.candidatures().filter(c => c.etat === 'en_attente').length);
     acceptedCount = computed(() => this.candidatures().filter(c => c.etat === 'accepte').length);
@@ -46,6 +52,22 @@ export class AdminCandidaturesComponent implements OnInit {
         return this.candidatures().filter(c => c.etat === status);
     }
 
+    viewUser(userId: number) {
+        this.userLoading.set(true);
+        this.selectedUser.set(null);
+        this.api.getAdminUserDetail(userId).subscribe({
+            next: (data) => {
+                this.selectedUser.set(data);
+                this.userLoading.set(false);
+            },
+            error: () => this.userLoading.set(false)
+        });
+    }
+
+    closeUserModal() {
+        this.selectedUser.set(null);
+    }
+
     accept(id: number) {
         this.actionLoading.set(id);
         this.api.acceptCandidature(id).subscribe({
@@ -54,8 +76,12 @@ export class AdminCandidaturesComponent implements OnInit {
                     list.map(c => c.id === id ? { ...c, etat: 'accepte' } : c)
                 );
                 this.actionLoading.set(null);
+                this.toast.success(this.lang.t().toast.admin.acceptCandidatureSuccess);
             },
-            error: () => this.actionLoading.set(null)
+            error: () => {
+                this.actionLoading.set(null);
+                this.toast.error(this.lang.t().toast.admin.acceptCandidatureError);
+            }
         });
     }
 
@@ -67,20 +93,29 @@ export class AdminCandidaturesComponent implements OnInit {
                     list.map(c => c.id === id ? { ...c, etat: 'refuse' } : c)
                 );
                 this.actionLoading.set(null);
+                this.toast.success(this.lang.t().toast.admin.rejectCandidatureSuccess);
             },
-            error: () => this.actionLoading.set(null)
+            error: () => {
+                this.actionLoading.set(null);
+                this.toast.error(this.lang.t().toast.admin.rejectCandidatureError);
+            }
         });
     }
 
-    delete(id: number) {
-        if (!confirm('Supprimer cette candidature ?')) return;
+    async delete(id: number) {
+        const confirmed = await this.toast.confirm(this.lang.t().toast.admin.deleteCandidatureConfirm, { type: 'danger' });
+        if (!confirmed) return;
         this.actionLoading.set(id);
         this.api.deleteCandidature(id).subscribe({
             next: () => {
                 this.candidatures.update(list => list.filter(c => c.id !== id));
                 this.actionLoading.set(null);
+                this.toast.success(this.lang.t().toast.admin.deleteCandidatureSuccess);
             },
-            error: () => this.actionLoading.set(null)
+            error: () => {
+                this.actionLoading.set(null);
+                this.toast.error(this.lang.t().toast.admin.deleteError);
+            }
         });
     }
 

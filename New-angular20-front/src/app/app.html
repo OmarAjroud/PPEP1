@@ -63,6 +63,16 @@
                         {{ lang.t().nav.login }}
                     </a>
                 </li>
+                <!-- Notification Bell (visible when logged in) -->
+                <li class="nav-item ms-lg-2" *ngIf="api.isAuthenticated()">
+                    <a class="nav-link position-relative notif-bell-link" routerLink="/dashboard"
+                        (click)="isMenuCollapsed.set(true)" title="Notifications">
+                        <i class="bi bi-bell-fill fs-5"></i>
+                        <span class="notif-badge" *ngIf="notifCount() > 0">
+                            {{ notifCount() > 9 ? '9+' : notifCount() }}
+                        </span>
+                    </a>
+                </li>
 
                 <li class="nav-item dropdown ms-lg-2" *ngIf="api.isAuthenticated()">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="javascript:void(0)"
@@ -115,3 +125,5 @@
 <div class="container-fluid p-0 main-content">
     <router-outlet></router-outlet>
 </div>
+
+<app-toast-container></app-toast-container>

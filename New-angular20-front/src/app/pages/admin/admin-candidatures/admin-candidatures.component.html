@@ -60,7 +60,12 @@
                     <tr *ngFor="let c of filtered; let i = index" class="animate-row"
                         [style.animation-delay]="(i * 0.03) + 's'">
                         <td class="text-muted">{{ c.id }}</td>
-                        <td class="fw-medium">{{ c.user?.prenom }} {{ c.user?.nom }}</td>
+                        <td>
+                            <a class="fw-medium text-primary text-decoration-none" role="button"
+                                (click)="viewUser(c.user?.id)" style="cursor:pointer;">
+                                {{ c.user?.prenom }} {{ c.user?.nom }}
+                            </a>
+                        </td>
                         <td class="text-muted small">{{ c.user?.email }}</td>
                         <td>{{ c.offre?.specialite || '—' }}</td>
                         <td>{{ c.offre?.centre || '—' }}</td>
@@ -72,6 +77,9 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm" *ngIf="actionLoading() !== c.id">
+                                <button class="btn btn-outline-info" title="Voir profil" (click)="viewUser(c.user?.id)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
                                 <button *ngIf="c.etat !== 'accepte'" class="btn btn-outline-success" title="Accepter"
                                     (click)="accept(c.id)">
                                     <i class="bi bi-check-lg"></i>
@@ -96,6 +104,177 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- User Detail Modal -->
+<div class="modal-backdrop fade show" *ngIf="selectedUser() || userLoading()" (click)="closeUserModal()"></div>
+<div class="modal fade show d-block" tabindex="-1" *ngIf="selectedUser() || userLoading()">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-person-badge me-2"></i>
+                    {{ selectedUser()?.credential?.prenomAr }} {{ selectedUser()?.credential?.nomAr }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeUserModal()"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Loading -->
+                <div *ngIf="userLoading()" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+
+                <div *ngIf="selectedUser() && !userLoading()" class="d-flex flex-column gap-4">
+                    <!-- Personal Info -->
+                    <div>
+                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-person me-2"></i>Informations
+                            Personnelles</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Nom</small>
+                                    <span class="fw-medium">{{ selectedUser().credential?.nomAr || '—' }} {{
+                                        selectedUser().credential?.prenomAr || '' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">CIN</small>
+                                    <span class="fw-medium">{{ selectedUser().credential?.cin || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Date Naissance</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.DateNaissance || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Genre</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.Genre || '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25 m-0">
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-telephone me-2"></i>Coordonnées</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Email</small>
+                                    <span class="fw-medium text-break">{{ selectedUser().credential?.email || '—'
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Tél Mobile</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.TelMobile || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Tél Fixe</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.TelFixe || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Adresse</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.Adresse || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Gouvernorat</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.Gouvernorat || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Délégation</small>
+                                    <span class="fw-medium">{{ selectedUser().donnee?.Delegation || '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25 m-0">
+
+                    <!-- Birth Info -->
+                    <div>
+                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-file-earmark-person me-2"></i>Extrait de
+                            Naissance</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Année</small>
+                                    <span class="fw-medium">{{ selectedUser().extrait?.Annee || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">N° Inscription</small>
+                                    <span class="fw-medium">{{ selectedUser().extrait?.NumInscription || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Municipalité</small>
+                                    <span class="fw-medium">{{ selectedUser().extrait?.Municipalite || '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25 m-0">
+
+                    <!-- Education -->
+                    <div>
+                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-journal-text me-2"></i>Parcours Scolaire
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Établissement</small>
+                                    <span class="fw-medium">{{ selectedUser().formation?.Etablissement || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Type Établissement</small>
+                                    <span class="fw-medium">{{ selectedUser().formation?.TypeEtablissement || '—'
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Niveau Scolaire</small>
+                                    <span class="fw-medium">{{ selectedUser().formation?.NiveauScolaire || '—' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <small class="text-muted d-block">Année Abandon</small>
+                                    <span class="fw-medium">{{ selectedUser().formation?.AnneeAbandonScolaire || '—'
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary rounded-pill px-4"
+                    (click)="closeUserModal()">Fermer</button>
+            </div>
         </div>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Candidature;
+use App\Entity\Notification;
 use App\Entity\Offre;
 use App\Repository\CandidatureRepository;
 use App\Repository\CentreRepository;
@@ -88,6 +89,18 @@ class AdminController extends AbstractController
         if (!$c) return $this->json(['error' => 'Not found'], 404);
 
         $c->setEtat('accepte');
+
+        // Create notification for the candidate
+        $offre = $c->getOffre();
+        $specialite = $offre?->getSpecialite()?->getLibelle() ?? 'N/A';
+        $centre = $offre?->getCentre()?->getNom() ?? 'N/A';
+
+        $notification = new Notification();
+        $notification->setUser($c->getUser());
+        $notification->setSujet('Candidature Acceptée');
+        $notification->setMessage("Votre candidature pour la spécialité \"$specialite\" au centre \"$centre\" a été acceptée. Félicitations !");
+        $em->persist($notification);
+
         $em->flush();
 
         return $this->json(['success' => true, 'etat' => 'accepte']);
@@ -100,6 +113,18 @@ class AdminController extends AbstractController
         if (!$c) return $this->json(['error' => 'Not found'], 404);
 
         $c->setEtat('refuse');
+
+        // Create notification for the candidate
+        $offre = $c->getOffre();
+        $specialite = $offre?->getSpecialite()?->getLibelle() ?? 'N/A';
+        $centre = $offre?->getCentre()?->getNom() ?? 'N/A';
+
+        $notification = new Notification();
+        $notification->setUser($c->getUser());
+        $notification->setSujet('Candidature Refusée');
+        $notification->setMessage("Votre candidature pour la spécialité \"$specialite\" au centre \"$centre\" a été refusée.");
+        $em->persist($notification);
+
         $em->flush();
 
         return $this->json(['success' => true, 'etat' => 'refuse']);
@@ -270,5 +295,49 @@ class AdminController extends AbstractController
         $em->flush();
 
         return $this->json(['success' => true]);
+    }
+
+    // ─── USER DETAIL ────────────────────────────────────────
+
+    #[Route('/user/{id}', name: 'admin_user_detail', methods: ['GET'])]
+    public function getUserDetail(int $id, UserRepository $userRepo): JsonResponse
+    {
+        $user = $userRepo->find($id);
+        if (!$user) return $this->json(['error' => 'Not found'], 404);
+
+        $candidate = $user->getCandidate();
+
+        return $this->json([
+            'id' => $user->getId(),
+            'roles' => $user->getRoles(),
+            'credential' => [
+                'email' => $user->getEmail(),
+                'cin' => $user->getCin(),
+                'nomAr' => $user->getNom(),
+                'prenomAr' => $user->getPrenom(),
+            ],
+            'donnee' => [
+                'TelMobile' => $user->getTelMobile(),
+                'TelFixe' => $candidate?->getTelFixe(),
+                'Adresse' => $user->getAdresse(),
+                'CodePostal' => $user->getCodePostal(),
+                'Genre' => $candidate?->getGenre(),
+                'DateNaissance' => $candidate?->getDateNaissance()?->format('Y-m-d'),
+                'Gouvernorat' => $candidate?->getGouvernorat()?->getLibelle(),
+                'Delegation' => $candidate?->getDelegation()?->getLibelle(),
+            ],
+            'extrait' => [
+                'Annee' => $candidate?->getAnneeNaissance(),
+                'NumInscription' => $candidate?->getNumInscription(),
+                'Municipalite' => $candidate?->getLieuNaissance()?->getLibelle(),
+            ],
+            'formation' => [
+                'Etablissement' => $candidate?->getEtablissement(),
+                'TypeEtablissement' => $candidate?->getTypeEtablissement(),
+                'NiveauScolaire' => $candidate?->getNiveauScolaire()?->getLibelle(),
+                'AnneeAbandonScolaire' => $candidate?->getAnneeAbandon(),
+            ],
+            'candidatures_count' => $user->getCandidatures()->count(),
+        ]);
     }
 }

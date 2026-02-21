@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { OffreModel } from '../../models/offre.model';
 import { LanguageService } from '../../services/language.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-offer-search',
@@ -16,6 +17,7 @@ import { LanguageService } from '../../services/language.service';
 export class OfferSearchComponent implements OnInit {
     api = inject(ApiService);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
     // Filter Lists
     diplomes: any[] = [];
@@ -84,16 +86,17 @@ export class OfferSearchComponent implements OnInit {
         });
     }
 
-    apply(offerId: number) {
-        if (!confirm('Voulez-vous postuler à cette offre ? (Are you sure you want to apply?)')) return;
+    async apply(offerId: number) {
+        const confirmed = await this.toast.confirm(this.lang.t().toast.offers.applyConfirm, { type: 'info' });
+        if (!confirmed) return;
 
         this.api.applyToOffer(offerId.toString()).subscribe({
             next: () => {
-                alert('Candidature réussie ! (Application Successful)');
+                this.toast.success(this.lang.t().toast.offers.applySuccess);
             },
             error: (err) => {
                 console.error(err);
-                alert('Erreur lors de la candidature.');
+                this.toast.error(this.lang.t().toast.offers.applyError);
             }
         });
     }

@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { ProfileModel } from '../../models/profile.model';
 import { LanguageService } from '../../services/language.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-details',
@@ -16,6 +17,7 @@ import { LanguageService } from '../../services/language.service';
 export class DetailsComponent implements OnInit {
     api = inject(ApiService);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
 
 
@@ -66,22 +68,28 @@ export class DetailsComponent implements OnInit {
         this.api.updatePersonalInfo(this.editData.telMobile, this.editData.adresse, this.editData.codePostal)
             .subscribe({
                 next: () => {
-                    alert('Informations mises à jour !');
+                    this.toast.success(this.lang.t().toast.profile.updateInfoSuccess);
                     this.editMode = false;
                     this.loadProfile();
                 },
-                error: (err) => console.error(err)
+                error: (err) => {
+                    console.error(err);
+                    this.toast.error(this.lang.t().toast.profile.updateInfoError);
+                }
             });
     }
 
     updateEmail() {
         this.api.updateEmail(this.newEmail).subscribe({
             next: () => {
-                alert('Email mis à jour !');
+                this.toast.success(this.lang.t().toast.profile.updateEmailSuccess);
                 this.editEmailMode = false;
                 this.loadProfile();
             },
-            error: (err) => console.error(err)
+            error: (err) => {
+                console.error(err);
+                this.toast.error(this.lang.t().toast.profile.updateEmailError);
+            }
         });
     }
 }

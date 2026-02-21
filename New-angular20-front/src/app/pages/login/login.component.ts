@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LanguageService } from '../../services/language.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
     private authService = inject(AuthService);
     private router = inject(Router);
     lang = inject(LanguageService);
+    toast = inject(ToastService);
 
     errorMessage = '';
     isLoading = false;
@@ -39,16 +41,16 @@ export class LoginComponent {
                 next: (response) => {
                     this.isLoading = false;
                     if (response.token) {
-                        // Navigate to Home
+                        this.toast.success(this.lang.t().toast.auth.loginSuccess);
                         this.router.navigate(['/home']);
                     } else {
-                        this.errorMessage = 'Login succeeded but no token returned.';
+                        this.toast.error(this.lang.t().toast.auth.noToken);
                     }
                 },
                 error: (err) => {
                     this.isLoading = false;
                     console.error(err);
-                    this.errorMessage = 'Identifiants incorrects ou problème de connexion.';
+                    this.toast.error(this.lang.t().toast.auth.loginError);
                 }
             });
         }

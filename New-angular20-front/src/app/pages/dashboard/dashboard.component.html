@@ -1,27 +1,108 @@
 <div class="container py-5 dashboard-container">
     <!-- Welcome Header -->
-    <div class="d-flex justify-content-between align-items-center mb-5 animate-fade">
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-fade">
         <div>
-            <h2 class="fw-bold text-dark mb-1">Tableau de Bord</h2>
-            <p class="text-muted mb-0">Bienvenue sur votre espace candidat ATFP.</p>
+            <h2 class="fw-bold text-dark mb-1">{{ lang.t().dashboard.title }}</h2>
+            <p class="text-muted mb-0">{{ lang.t().dashboard.subtitle }}</p>
         </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-outline-primary rounded-pill px-4" (click)="refreshNotifications()">
-                <i class="bi bi-arrow-clockwise me-2"></i> Actualiser
+    </div>
+
+    <!-- ★ NOTIFICATIONS — Hero Section ★ -->
+    <div class="notification-hero mb-5 animate-fade delay-1">
+        <div class="notif-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <div class="notif-icon-ring">
+                    <i class="bi bi-bell-fill"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0 fw-bold">{{ lang.t().dashboard.notifications.title }}</h4>
+                    <small class="text-muted" *ngIf="!isLoading">
+                        <ng-container *ngIf="notifications.length === 0">{{ lang.t().dashboard.notifications.none
+                            }}</ng-container>
+                        <ng-container *ngIf="notifications.length > 0">
+                            {{ unreadCount > 0 ? unreadCount + ' ' + (unreadCount > 1 ?
+                            lang.t().dashboard.notifications.unreadPlural || lang.t().dashboard.notifications.unread :
+                            lang.t().dashboard.notifications.unread) : lang.t().dashboard.notifications.allRead }}
+                            · {{ notifications.length }} {{ lang.t().dashboard.notifications.total }}
+                        </ng-container>
+                    </small>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 d-flex align-items-center gap-2"
+                (click)="refreshNotifications()" [disabled]="isLoading">
+                <i class="bi bi-arrow-clockwise" [class.spin]="isLoading"></i>
+                {{ lang.t().dashboard.notifications.refresh }}
             </button>
+        </div>
+
+        <div class="notif-body">
+            <!-- Loading -->
+            <div *ngIf="isLoading" class="text-center py-5">
+                <div class="spinner-grow text-primary" role="status" style="width: 2rem; height: 2rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-3 mb-0 small">{{ lang.t().dashboard.notifications.loading }}</p>
+            </div>
+
+            <!-- Empty state -->
+            <div *ngIf="!isLoading && notifications.length === 0" class="empty-state text-center">
+                <div class="empty-illustration">
+                    <i class="bi bi-inbox"></i>
+                </div>
+                <h6 class="fw-bold text-dark mt-3 mb-1">{{ lang.t().dashboard.notifications.allUpToDate }}</h6>
+                <p class="text-muted small mb-0">{{ lang.t().dashboard.notifications.emptySubtitle }}</p>
+            </div>
+
+            <!-- Notification items -->
+            <div class="notif-list" *ngIf="!isLoading && notifications.length > 0">
+                <div class="notif-item" *ngFor="let notif of notifications; let i = index"
+                    [style.animation-delay]="(i * 0.06) + 's'" [class.notif-unread]="!notif.read"
+                    [class.notif-read]="notif.read" [class.notif-accepted]="notif.sujet.includes('Acceptée')"
+                    [class.notif-rejected]="notif.sujet.includes('Refusée')" (mouseenter)="markAsRead(notif)">
+                    <!-- Unread dot -->
+                    <div class="unread-dot" *ngIf="!notif.read"></div>
+                    <div class="notif-item-icon">
+                        <i class="bi" [ngClass]="{
+                            'bi-check-circle-fill text-success': notif.sujet.includes('Acceptée'),
+                            'bi-x-circle-fill text-danger': notif.sujet.includes('Refusée'),
+                            'bi-info-circle-fill text-primary': !notif.sujet.includes('Acceptée') && !notif.sujet.includes('Refusée')
+                        }"></i>
+                    </div>
+                    <div class="notif-item-content flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="fw-bold mb-0">{{notif.sujet}}</h6>
+                            <span class="badge rounded-pill px-2 py-1" [ngClass]="{
+                                'bg-success-subtle text-success-emphasis': notif.sujet.includes('Acceptée'),
+                                'bg-danger-subtle text-danger-emphasis': notif.sujet.includes('Refusée'),
+                                'bg-primary-subtle text-primary-emphasis': !notif.sujet.includes('Acceptée') && !notif.sujet.includes('Refusée')
+                            }">
+                                {{ notif.sujet.includes('Acceptée') ? lang.t().dashboard.notifications.accepted :
+                                (notif.sujet.includes('Refusée') ?
+                                lang.t().dashboard.notifications.rejected : lang.t().dashboard.notifications.info) }}
+                            </span>
+                        </div>
+                        <p class="mb-1 notif-message">{{notif.message}}</p>
+                        <small class="text-muted d-flex align-items-center gap-1" *ngIf="notif.dateEnvoi">
+                            <i class="bi bi-clock"></i> {{notif.dateEnvoi | date:'dd/MM/yyyy HH:mm'}}
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Quick Actions -->
-    <div class="row g-4 mb-5 animate-fade delay-1">
+    <h5 class="fw-bold text-dark mb-3 animate-fade delay-2"><i class="bi bi-lightning-fill text-warning me-2"></i>{{
+        lang.t().dashboard.quickActions.title }}</h5>
+    <div class="row g-4 mb-4 animate-fade delay-2">
         <div class="col-md-4">
             <div class="quick-action-card h-100 p-4 text-center" routerLink="/choixoffre">
                 <div class="card-body">
                     <div class="action-icon-ring">
                         <i class="bi bi-search"></i>
                     </div>
-                    <h5 class="fw-bold">Trouver une Formation</h5>
-                    <p class="text-muted small mb-0">Parcourez les offres disponibles et postulez.</p>
+                    <h5 class="fw-bold">{{ lang.t().dashboard.quickActions.search }}</h5>
+                    <p class="text-muted small mb-0">{{ lang.t().dashboard.quickActions.searchSub }}</p>
                 </div>
             </div>
         </div>
@@ -31,8 +112,8 @@
                     <div class="action-icon-ring">
                         <i class="bi bi-file-earmark-text"></i>
                     </div>
-                    <h5 class="fw-bold">Mes Candidatures</h5>
-                    <p class="text-muted small mb-0">Suivez l'état de vos demandes en temps réel.</p>
+                    <h5 class="fw-bold">{{ lang.t().dashboard.quickActions.apps }}</h5>
+                    <p class="text-muted small mb-0">{{ lang.t().dashboard.quickActions.appsSub }}</p>
                 </div>
             </div>
         </div>
@@ -42,50 +123,10 @@
                     <div class="action-icon-ring">
                         <i class="bi bi-person-gear"></i>
                     </div>
-                    <h5 class="fw-bold">Mon Profil</h5>
-                    <p class="text-muted small mb-0">Mettez à jour vos informations personnelles.</p>
+                    <h5 class="fw-bold">{{ lang.t().dashboard.quickActions.profile }}</h5>
+                    <p class="text-muted small mb-0">{{ lang.t().dashboard.quickActions.profileSub }}</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Notifications Section -->
-    <div class="notification-card animate-fade delay-2">
-        <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
-            <h5 class="mb-0 fw-bold text-primary">
-                <i class="bi bi-bell-fill me-2"></i> Notifications
-            </h5>
-        </div>
-        <div class="card-body px-4 pb-4">
-
-            <div *ngIf="isLoading" class="text-center p-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Chargement...</span>
-                </div>
-            </div>
-
-            <div *ngIf="!isLoading && notifications.length === 0" class="empty-notif text-center text-muted">
-                <div class="empty-icon">
-                    <i class="bi bi-inbox fs-2 text-muted"></i>
-                </div>
-                <p>Aucune nouvelle notification.</p>
-            </div>
-
-            <div class="notification-list" *ngIf="!isLoading && notifications.length > 0">
-                <div class="notification-item p-3 d-flex align-items-start" *ngFor="let notif of notifications">
-                    <div class="icon-box me-3 flex-shrink-0">
-                        <i class="bi bi-chat-dots-fill fs-5"></i>
-                    </div>
-                    <div>
-                        <h6 class="fw-bold mb-1 text-dark">{{notif.sujet}}</h6>
-                        <p class="mb-0 text-muted small">{{notif.message}}</p>
-                        <small class="text-muted opacity-75 mt-1 d-block" *ngIf="notif.dateEnvoi">
-                            <i class="bi bi-clock me-1"></i> {{notif.dateEnvoi | date:'short'}}
-                        </small>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

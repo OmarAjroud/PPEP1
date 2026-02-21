@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { NotificationModel } from '../../models/notification.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,8 +14,13 @@ import { NotificationModel } from '../../models/notification.model';
 })
 export class DashboardComponent implements OnInit {
     private api = inject(ApiService);
+    lang = inject(LanguageService);
     notifications: NotificationModel[] = [];
     isLoading = true;
+
+    get unreadCount(): number {
+        return this.notifications.filter(n => !n.read).length;
+    }
 
     ngOnInit() {
         this.loadNotifications();
@@ -22,6 +28,14 @@ export class DashboardComponent implements OnInit {
 
     refreshNotifications() {
         this.loadNotifications();
+    }
+
+    markAsRead(notif: NotificationModel) {
+        if (notif.read) return; // Already read
+        notif.read = true;
+        this.api.markNotificationRead(notif.id).subscribe({
+            error: () => { notif.read = false; } // Revert on error
+        });
     }
 
     private loadNotifications() {

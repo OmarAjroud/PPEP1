@@ -29,104 +29,80 @@
         </a>
     </div>
 
-    <!-- Application List -->
-    <div class="row g-4" *ngIf="!isLoading && applications.length > 0">
-        <div class="col-lg-6" *ngFor="let app of applications">
-            <div class="application-card h-100 position-relative animate-fade"
-                [ngClass]="app.etat === 'draft' ? 'status-draft' : (app.etat === 'accepte' ? 'status-accepted' : (app.etat === 'refuse' ? 'status-rejected' : 'status-submitted'))">
-                <div
-                    class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-start">
-                    <div>
-                        <span class="badge rounded-pill px-3 py-2 mb-2" [ngClass]="{
-                                'bg-warning-subtle text-warning-emphasis': app.etat === 'draft',
-                                'bg-info-subtle text-info-emphasis': app.etat === 'en_attente',
-                                'bg-primary-subtle text-primary-emphasis': app.etat === 'valide',
-                                'bg-success-subtle text-success-emphasis': app.etat === 'accepte',
-                                'bg-danger-subtle text-danger-emphasis': app.etat === 'refuse'
-                            }">
-                            <i class="bi" [ngClass]="{
-                                    'bi-hourglass-split': app.etat === 'draft',
-                                    'bi-clock-history': app.etat === 'en_attente',
-                                    'bi-send-check': app.etat === 'valide',
-                                    'bi-check-circle-fill': app.etat === 'accepte',
-                                    'bi-x-circle-fill': app.etat === 'refuse'
-                                }"></i>
-                            {{ app.etat === 'draft' ? lang.t().applications.status.draft :
-                            app.etat === 'en_attente' ? lang.t().applications.status.pending :
-                            app.etat === 'accepte' ? lang.t().applications.status.accepted :
-                            app.etat === 'refuse' ? lang.t().applications.status.rejected :
-                            lang.t().applications.status.submitted }}
-                        </span>
-                        <h5 class="card-title fw-bold text-dark mb-1">{{app.offre?.specialite}}</h5>
-                        <div class="text-muted small">
-                            <i class="bi bi-geo-alt-fill text-danger me-1"></i> {{app.offre?.centre}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body px-4 pt-2">
-                    <hr class="opacity-10 my-3">
-
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <div class="p-2 bg-light rounded">
-                                <small class="text-muted d-block"><i class="bi bi-mortarboard me-1"></i> {{
-                                    lang.t().search.filters.diploma }}</small>
-                                <span class="fw-medium text-dark">{{app.offre?.diplome}}</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-2 bg-light rounded">
-                                <small class="text-muted d-block"><i class="bi bi-calendar-event me-1"></i>
-                                    {{ lang.t().search.columns.date }}</small>
-                                <span class="fw-medium text-dark">{{app.offre?.debutformation}}</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-2 bg-light rounded">
-                                <small class="text-muted d-block"><i class="bi bi-house me-1"></i> {{
-                                    lang.t().applications.columns.housing }}</small>
-                                <span class="badge bg-info-subtle text-info-emphasis">{{app.offre?.hebergement}}</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-2 bg-light rounded">
-                                <small class="text-muted d-block"><i class="bi bi-cash-coin me-1"></i> {{
-                                    lang.t().applications.columns.scholarship }}</small>
-                                <span class="badge bg-info-subtle text-info-emphasis">{{app.offre?.bourse}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-footer bg-transparent border-0 px-4 pb-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <i class="bi bi-clock me-1"></i> {{app.dateCandidature | date:'dd/MM/yyyy HH:mm'}}
-                        </small>
-                        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                                'bg-warning-subtle text-warning-emphasis': app.etat === 'draft',
-                                'bg-info-subtle text-info-emphasis': app.etat === 'en_attente',
-                                'bg-primary-subtle text-primary-emphasis': app.etat === 'valide',
-                                'bg-success-subtle text-success-emphasis': app.etat === 'accepte',
-                                'bg-danger-subtle text-danger-emphasis': app.etat === 'refuse'
-                            }">
-                            <i class="bi me-1" [ngClass]="{
-                                    'bi-hourglass-split': app.etat === 'draft',
-                                    'bi-clock-history': app.etat === 'en_attente',
-                                    'bi-send-check': app.etat === 'valide',
-                                    'bi-check-circle-fill': app.etat === 'accepte',
-                                    'bi-x-circle-fill': app.etat === 'refuse'
-                                }"></i>
-                            {{ app.etat === 'draft' ? lang.t().applications.status.draft :
-                            app.etat === 'en_attente' ? lang.t().applications.status.pending :
-                            app.etat === 'accepte' ? lang.t().applications.status.accepted :
-                            app.etat === 'refuse' ? lang.t().applications.status.rejected :
-                            lang.t().applications.status.submitted }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+    <!-- Application Table -->
+    <div class="glass-card p-0 overflow-hidden animate-fade" *ngIf="!isLoading && applications.length > 0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>{{ lang.t().search.filters.specialty }}</th>
+                        <th>{{ lang.t().search.filters.center }}</th>
+                        <th>{{ lang.t().search.filters.diploma }}</th>
+                        <th>{{ lang.t().search.columns.date }}</th>
+                        <th class="text-center">{{ lang.t().applications.columns.housing }}</th>
+                        <th class="text-center">{{ lang.t().applications.columns.scholarship }}</th>
+                        <th>{{ lang.currentLang() === 'fr' ? 'Date Candidature' : 'تاريخ الترشح' }}</th>
+                        <th class="text-center">{{ lang.currentLang() === 'fr' ? 'Statut' : 'الحالة' }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let app of applications; let i = index" class="animate-row"
+                        [style.animation-delay]="(i * 0.03) + 's'">
+                        <td class="fw-medium text-dark">{{app.offre?.specialite || '—'}}</td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{app.offre?.centre || '—'}}
+                            </span>
+                        </td>
+                        <td>
+                            <span
+                                class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 rounded-pill">
+                                {{app.offre?.diplome || '—'}}
+                            </span>
+                        </td>
+                        <td class="text-muted small">{{app.offre?.debutformation || '—'}}</td>
+                        <td class="text-center">
+                            <span class="badge bg-info-subtle text-info-emphasis px-2 py-1">{{app.offre?.hebergement ||
+                                '—'}}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info-subtle text-info-emphasis px-2 py-1">{{app.offre?.bourse ||
+                                '—'}}</span>
+                        </td>
+                        <td class="text-muted small">
+                            <i class="bi bi-clock me-1"></i>{{app.dateCandidature | date:'dd/MM/yyyy HH:mm'}}
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                                    'bg-warning-subtle text-warning-emphasis': app.etat === 'draft',
+                                    'bg-info-subtle text-info-emphasis': app.etat === 'en_attente',
+                                    'bg-primary-subtle text-primary-emphasis': app.etat === 'valide',
+                                    'bg-success-subtle text-success-emphasis': app.etat === 'accepte',
+                                    'bg-danger-subtle text-danger-emphasis': app.etat === 'refuse'
+                                }">
+                                <i class="bi me-1" [ngClass]="{
+                                        'bi-hourglass-split': app.etat === 'draft',
+                                        'bi-clock-history': app.etat === 'en_attente',
+                                        'bi-send-check': app.etat === 'valide',
+                                        'bi-check-circle-fill': app.etat === 'accepte',
+                                        'bi-x-circle-fill': app.etat === 'refuse'
+                                    }"></i>
+                                {{ app.etat === 'draft' ? lang.t().applications.status.draft :
+                                app.etat === 'en_attente' ? lang.t().applications.status.pending :
+                                app.etat === 'accepte' ? lang.t().applications.status.accepted :
+                                app.etat === 'refuse' ? lang.t().applications.status.rejected :
+                                lang.t().applications.status.submitted }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="applications.length === 0">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            {{ lang.t().applications.empty }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
