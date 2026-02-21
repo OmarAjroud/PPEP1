@@ -61,7 +61,7 @@ export class RegistrationComponent implements OnInit {
         genre: ['male', Validators.required],
         adresse: ['', Validators.required],
         codePostal: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
-        telFixe: ['', [Validators.pattern('^[0-9]{8}$')]],
+        telFixe: ['', [Validators.pattern('^([0-9]{8})?$')]], // Optional — validate only if filled
         telMobile: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
         govAddress: ['', Validators.required],
         delAddress: ['', Validators.required], // Delegation
@@ -134,9 +134,9 @@ export class RegistrationComponent implements OnInit {
         const diplomeId = this.regForm.get('prevDiplome')?.value;
         if (diplomeId) {
             this.api.getAllSpecialitesAncienneFormationByDiplome(diplomeId).subscribe(data => {
-                // Legacy uses 'spcialitescoloairesaf'
-                // We'll store it in a specific list or reuse specialites if appropriate
-                // For now assuming a separate list logic isn't strictly defined in my local lists
+                this.specialites = data; // Update specialites dropdown based on chosen diplome
+                this.regForm.patchValue({ prevSpecialite: '' }); // Reset selection
+                this.centres = []; // Also reset centres
             });
         }
     }

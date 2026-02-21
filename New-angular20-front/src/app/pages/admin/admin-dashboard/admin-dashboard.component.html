@@ -1,0 +1,106 @@
+<div class="container-fluid py-4 mt-5" [dir]="lang.dir()">
+    <div class="d-flex align-items-center mb-4">
+        <div class="admin-icon-ring me-3">
+            <i class="bi bi-shield-lock-fill fs-3"></i>
+        </div>
+        <div>
+            <h2 class="fw-bold mb-0">{{ lang.t().admin.dashboard.title }}</h2>
+            <p class="text-muted mb-0">{{ lang.t().admin.dashboard.subtitle }}</p>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div *ngIf="!loading() && stats()" class="row g-4 mb-4">
+        <!-- Users -->
+        <div class="col-6 col-lg-3">
+            <div class="stat-card glass-card p-4 text-center animate-up" style="--delay: 0">
+                <div class="stat-icon-ring bg-primary-subtle text-primary mx-auto mb-3">
+                    <i class="bi bi-people-fill fs-3"></i>
+                </div>
+                <h2 class="fw-bold mb-1">{{ stats().users }}</h2>
+                <small class="text-muted">{{ lang.t().admin.dashboard.users }}</small>
+            </div>
+        </div>
+        <!-- Pending -->
+        <div class="col-6 col-lg-3">
+            <div class="stat-card glass-card p-4 text-center animate-up" style="--delay: 1">
+                <div class="stat-icon-ring bg-warning-subtle text-warning mx-auto mb-3">
+                    <i class="bi bi-clock-history fs-3"></i>
+                </div>
+                <h2 class="fw-bold mb-1">{{ stats().pending }}</h2>
+                <small class="text-muted">{{ lang.t().admin.dashboard.pending }}</small>
+            </div>
+        </div>
+        <!-- Accepted -->
+        <div class="col-6 col-lg-3">
+            <div class="stat-card glass-card p-4 text-center animate-up" style="--delay: 2">
+                <div class="stat-icon-ring bg-success-subtle text-success mx-auto mb-3">
+                    <i class="bi bi-check-circle-fill fs-3"></i>
+                </div>
+                <h2 class="fw-bold mb-1">{{ stats().accepted }}</h2>
+                <small class="text-muted">{{ lang.t().admin.dashboard.accepted }}</small>
+            </div>
+        </div>
+        <!-- Offres -->
+        <div class="col-6 col-lg-3">
+            <div class="stat-card glass-card p-4 text-center animate-up" style="--delay: 3">
+                <div class="stat-icon-ring bg-info-subtle text-info mx-auto mb-3">
+                    <i class="bi bi-journal-text fs-3"></i>
+                </div>
+                <h2 class="fw-bold mb-1">{{ stats().offres }}</h2>
+                <small class="text-muted">{{ lang.t().admin.dashboard.offres }}</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4" *ngIf="!loading()">
+        <div class="col-md-4">
+            <div class="quick-action glass-card p-4 animate-up" style="--delay: 4" routerLink="/admin/candidatures">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon-ring bg-warning-subtle text-warning me-3">
+                        <i class="bi bi-inbox-fill fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ lang.t().admin.nav.candidatures }}</h5>
+                        <small class="text-muted">{{ lang.t().admin.dashboard.manageCandidatures }}</small>
+                    </div>
+                    <i class="bi bi-chevron-right ms-auto fs-4 text-muted"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="quick-action glass-card p-4 animate-up" style="--delay: 5" routerLink="/admin/offres">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon-ring bg-info-subtle text-info me-3">
+                        <i class="bi bi-journal-plus fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ lang.t().admin.nav.offres }}</h5>
+                        <small class="text-muted">{{ lang.t().admin.dashboard.manageOffres }}</small>
+                    </div>
+                    <i class="bi bi-chevron-right ms-auto fs-4 text-muted"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="quick-action glass-card p-4 animate-up" style="--delay: 6" routerLink="/admin/users">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon-ring bg-primary-subtle text-primary me-3">
+                        <i class="bi bi-person-gear fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ lang.t().admin.nav.users }}</h5>
+                        <small class="text-muted">{{ lang.t().admin.dashboard.manageUsers }}</small>
+                    </div>
+                    <i class="bi bi-chevron-right ms-auto fs-4 text-muted"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/candidate')]
 class CandidatureController extends AbstractController
@@ -18,6 +19,7 @@ class CandidatureController extends AbstractController
     public function create(
         Request $request,
         OffreRepository $offreRepository,
+        CandidatureRepository $candRepo,
         EntityManagerInterface $em
     ): JsonResponse {
         $user = $this->getUser();
@@ -64,10 +66,17 @@ class CandidatureController extends AbstractController
             return $this->json(['error' => 'Offre not found'], 404);
         }
 
+        // Check for duplicate application
+        $existing = $candRepo->findOneBy(['user' => $user, 'offre' => $offre]);
+        if ($existing) {
+            return $this->json(['error' => 'Vous avez déjà postulé à cette offre.'], 409);
+        }
+
         $candidature = new Candidature();
         $candidature->setUser($user);
         $candidature->setOffre($offre);
-        $candidature->setEtat('draft');
+        $candidature->setEtat('en_attente');
+        $candidature->setDateCandidature(new \DateTime());
 
         $em->persist($candidature);
         $em->flush();
@@ -94,7 +103,7 @@ class CandidatureController extends AbstractController
             $offre = $candidature->getOffre();
             return [
                 'id' => $candidature->getId(),
-                'dateCandidature' => $candidature->getDateCandidature()->format('Y-m-d H:i:s'),
+                'dateCandidature' => $candidature->getDateCandidature()?->format('Y-m-d H:i:s'),
                 'etat' => $candidature->getEtat(),
                 'etatnumerique' => $candidature->getEtatNumerique(),
                 'offre' => [
@@ -116,11 +125,9 @@ class CandidatureController extends AbstractController
     }
 
     #[Route('/candidature/validateMany', name: 'api_candidature_validate_many', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function validateMany(Request $request, CandidatureRepository $repo, EntityManagerInterface $em): JsonResponse
     {
-        $user = $this->getUser();
-        if (!$user) return $this->json(['error' => 'Unauthorized'], 401);
-
         $data = json_decode($request->getContent(), true);
         $ids = $data['candidatures'] ?? [];
 
@@ -130,8 +137,9 @@ class CandidatureController extends AbstractController
 
         foreach ($ids as $id) {
             $candidature = $repo->find($id);
-            if ($candidature && $candidature->getUser() === $user) {
-                $candidature->setEtat('valide'); 
+            if ($candidature) {
+                $candidature->setEtat('valide');
+                $candidature->setEtatNumerique(1);
                 $em->persist($candidature);
             }
         }
@@ -141,21 +149,19 @@ class CandidatureController extends AbstractController
     }
 
     #[Route('/candidature/offre/{id}', name: 'api_candidature_delete_by_offre', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function deleteDraft(int $id, OffreRepository $offreRepo, CandidatureRepository $candRepo, EntityManagerInterface $em): JsonResponse
     {
-        $user = $this->getUser();
-        if (!$user) return $this->json(['error' => 'Unauthorized'], 401);
-
-        // Find candidature for this offer and user
+        // Find candidature for this offer
         $offre = $offreRepo->find($id);
         if (!$offre) return $this->json(['error' => 'Offre not found'], 404);
 
-        $candidature = $candRepo->findOneBy(['user' => $user, 'offre' => $offre]);
+        $candidatures = $candRepo->findBy(['offre' => $offre]);
 
-        if ($candidature) {
+        foreach ($candidatures as $candidature) {
             $em->remove($candidature);
-            $em->flush();
         }
+        $em->flush();
 
         return $this->json(['success' => true]);
     }

@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
-import { OffreModel } from '../../models/offre.model';
 import { LanguageService } from '../../services/language.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { LanguageService } from '../../services/language.service';
 export class MyApplicationsComponent implements OnInit {
     api = inject(ApiService);
     lang = inject(LanguageService);
-    applications: OffreModel[] = [];
+    applications: any[] = []; // API returns candidature objects: { id, etat, etatnumerique, dateCandidature, offre: {...} }
     isLoading = true;
 
     ngOnInit() {
@@ -33,46 +32,6 @@ export class MyApplicationsComponent implements OnInit {
                 console.error(err);
                 this.isLoading = false;
             }
-        });
-    }
-
-    // Helpers to check status
-    canConfirm(etatNumerique: number | undefined): boolean {
-        return (etatNumerique || 0) === 0;
-    }
-
-    isDraft(etatNumerique: number | undefined): boolean {
-        return (etatNumerique || 0) === 0;
-    }
-
-    // Actions
-    // Note: API for 'verifier' (Confirm) and 'verifier2' (Delete Draft) need to be mapped.
-    // I didn't see explicit 'verifier' endpoints in AuthService earlier, wait.
-    // AuthService.approuvercandidaturebrouillon (Validate Many) ?
-    // AuthService.supprimercandidaturebrouillon (Delete Draft) -> I have this one!
-
-    confirmDraft(offerId: string | number) {
-        if (!confirm('Confirmer cette candidature ?')) return;
-
-        const payload = { candidatures: [String(offerId)] }; // Wrapping as expected by legacy backend
-        this.api.validateDrafts(payload).subscribe({
-            next: () => {
-                alert('Candidature confirmée');
-                this.loadApplications();
-            },
-            error: (err) => console.error(err)
-        });
-    }
-
-    deleteDraft(offerId: string | number) {
-        if (!confirm('Supprimer ce brouillon ?')) return;
-
-        this.api.deleteDraft(String(offerId)).subscribe({
-            next: () => {
-                alert('Brouillon supprimé');
-                this.loadApplications();
-            },
-            error: (err) => console.error(err)
         });
     }
 }

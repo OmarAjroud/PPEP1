@@ -85,12 +85,15 @@ class AuthController extends AbstractController
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $files['extrais']['ExtraitDeNaissance'];
             if ($file) {
-                $newFilename = uniqid().'.'.$file->guessExtension();
+                // Use getClientOriginalExtension() — guessExtension() requires php_fileinfo which may be disabled
+                $ext = $file->getClientOriginalExtension() ?: 'bin';
+                $newFilename = uniqid() . '.' . $ext;
                 try {
-                    $file->move(
-                        $this->getParameter('kernel.project_dir') . '/public/uploads/extraits',
-                        $newFilename
-                    );
+                    $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/extraits';
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0775, true);
+                    }
+                    $file->move($uploadDir, $newFilename);
                     $candidate->setExtraitNaissancePath('uploads/extraits/' . $newFilename);
                 } catch (\Exception $e) {
                     // Log error but continue
@@ -180,8 +183,11 @@ class AuthController extends AbstractController
             return $this->json(['error' => 'Unauthorized'], 401);
         }
 
+        $candidate = $user->getCandidate();
+
         return $this->json([
             'id' => $user->getId(),
+            'roles' => $user->getRoles(),
             'credential' => [
                 'email' => $user->getEmail(),
                 'cin' => $user->getCin(),
@@ -190,9 +196,31 @@ class AuthController extends AbstractController
             ],
             'donnee' => [
                 'TelMobile' => $user->getTelMobile(),
+                'TelFixe' => $candidate?->getTelFixe(),
                 'Adresse' => $user->getAdresse(),
                 'CodePostal' => $user->getCodePostal(),
-            ]
+                'Genre' => $candidate?->getGenre(),
+                'DateNaissance' => $candidate?->getDateNaissance()?->format('Y-m-d'),
+                'Gouvernorat' => $candidate?->getGouvernorat()?->getLibelle(),
+                'Delegation' => $candidate?->getDelegation()?->getLibelle(),
+            ],
+            'extrait' => [
+                'Annee' => $candidate?->getAnneeNaissance(),
+                'NumInscription' => $candidate?->getNumInscription(),
+                'Municipalite' => $candidate?->getLieuNaissance()?->getLibelle(),
+            ],
+            'formation' => [
+                'Etablissement' => $candidate?->getEtablissement(),
+                'TypeEtablissement' => $candidate?->getTypeEtablissement(),
+                'NiveauScolaire' => $candidate?->getNiveauScolaire()?->getLibelle(),
+                'AnneeAbandonScolaire' => $candidate?->getAnneeAbandon(),
+            ],
+            'ancienneFormation' => [
+                'Specialite' => $candidate?->getPreviousSpecialite()?->getId(),
+                'diplome' => $candidate?->getPreviousDiplome()?->getId(),
+                'Centre' => $candidate?->getPreviousCentre()?->getId(),
+                'anneeFin' => $candidate?->getPreviousAnneeFin(),
+            ],
         ]);
     }
 

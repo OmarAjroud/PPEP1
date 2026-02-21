@@ -1,0 +1,101 @@
+<div class="container-fluid py-4 mt-5" [dir]="lang.dir()">
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center">
+            <a routerLink="/admin" class="btn btn-outline-secondary btn-sm me-3">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold mb-0">{{ lang.t().admin.nav.candidatures }}</h2>
+                <p class="text-muted mb-0">{{ lang.t().admin.candidatures.subtitle }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <button class="btn btn-sm rounded-pill px-3" [class.btn-dark]="filterStatus() === 'all'"
+            [class.btn-outline-secondary]="filterStatus() !== 'all'" (click)="filterStatus.set('all')">
+            {{ lang.t().admin.candidatures.all }} ({{ candidatures().length }})
+        </button>
+        <button class="btn btn-sm rounded-pill px-3" [class.btn-warning]="filterStatus() === 'en_attente'"
+            [class.btn-outline-warning]="filterStatus() !== 'en_attente'" (click)="filterStatus.set('en_attente')">
+            <i class="bi bi-clock-history me-1"></i>{{ lang.t().admin.status.pending }}
+            ({{ pendingCount() }})
+        </button>
+        <button class="btn btn-sm rounded-pill px-3" [class.btn-success]="filterStatus() === 'accepte'"
+            [class.btn-outline-success]="filterStatus() !== 'accepte'" (click)="filterStatus.set('accepte')">
+            <i class="bi bi-check-circle me-1"></i>{{ lang.t().admin.status.accepted }}
+            ({{ acceptedCount() }})
+        </button>
+        <button class="btn btn-sm rounded-pill px-3" [class.btn-danger]="filterStatus() === 'refuse'"
+            [class.btn-outline-danger]="filterStatus() !== 'refuse'" (click)="filterStatus.set('refuse')">
+            <i class="bi bi-x-circle me-1"></i>{{ lang.t().admin.status.rejected }}
+            ({{ rejectedCount() }})
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!loading()" class="glass-card p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>{{ lang.t().admin.candidatures.candidate }}</th>
+                        <th>Email</th>
+                        <th>{{ lang.t().admin.candidatures.speciality }}</th>
+                        <th>{{ lang.t().admin.candidatures.center }}</th>
+                        <th>Date</th>
+                        <th>{{ lang.t().admin.candidatures.statusCol }}</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of filtered; let i = index" class="animate-row"
+                        [style.animation-delay]="(i * 0.03) + 's'">
+                        <td class="text-muted">{{ c.id }}</td>
+                        <td class="fw-medium">{{ c.user?.prenom }} {{ c.user?.nom }}</td>
+                        <td class="text-muted small">{{ c.user?.email }}</td>
+                        <td>{{ c.offre?.specialite || '—' }}</td>
+                        <td>{{ c.offre?.centre || '—' }}</td>
+                        <td class="text-muted small">{{ c.dateCandidature }}</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2" [ngClass]="statusBadgeClass(c.etat)">
+                                {{ statusLabel(c.etat) }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm" *ngIf="actionLoading() !== c.id">
+                                <button *ngIf="c.etat !== 'accepte'" class="btn btn-outline-success" title="Accepter"
+                                    (click)="accept(c.id)">
+                                    <i class="bi bi-check-lg"></i>
+                                </button>
+                                <button *ngIf="c.etat !== 'refuse'" class="btn btn-outline-danger" title="Refuser"
+                                    (click)="reject(c.id)">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" title="Supprimer" (click)="delete(c.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="actionLoading() === c.id" class="spinner-border spinner-border-sm text-primary"
+                                role="status"></div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filtered.length === 0">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            {{ lang.t().admin.candidatures.empty }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -33,15 +33,28 @@
     <div class="row g-4" *ngIf="!isLoading && applications.length > 0">
         <div class="col-lg-6" *ngFor="let app of applications">
             <div class="application-card h-100 position-relative animate-fade"
-                [ngClass]="isDraft(app.etatnumerique) ? 'status-draft' : 'status-submitted'">
+                [ngClass]="app.etat === 'draft' ? 'status-draft' : (app.etat === 'accepte' ? 'status-accepted' : (app.etat === 'refuse' ? 'status-rejected' : 'status-submitted'))">
                 <div
                     class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-start">
                     <div>
-                        <span class="badge rounded-pill px-3 py-2 mb-2"
-                            [ngClass]="isDraft(app.etatnumerique) ? 'bg-warning-subtle text-warning-emphasis' : 'bg-success-subtle text-success-emphasis'">
-                            <i class="bi"
-                                [ngClass]="isDraft(app.etatnumerique) ? 'bi-hourglass-split' : 'bi-check-circle-fill'"></i>
-                            {{ isDraft(app.etatnumerique) ? lang.t().applications.status.draft :
+                        <span class="badge rounded-pill px-3 py-2 mb-2" [ngClass]="{
+                                'bg-warning-subtle text-warning-emphasis': app.etat === 'draft',
+                                'bg-info-subtle text-info-emphasis': app.etat === 'en_attente',
+                                'bg-primary-subtle text-primary-emphasis': app.etat === 'valide',
+                                'bg-success-subtle text-success-emphasis': app.etat === 'accepte',
+                                'bg-danger-subtle text-danger-emphasis': app.etat === 'refuse'
+                            }">
+                            <i class="bi" [ngClass]="{
+                                    'bi-hourglass-split': app.etat === 'draft',
+                                    'bi-clock-history': app.etat === 'en_attente',
+                                    'bi-send-check': app.etat === 'valide',
+                                    'bi-check-circle-fill': app.etat === 'accepte',
+                                    'bi-x-circle-fill': app.etat === 'refuse'
+                                }"></i>
+                            {{ app.etat === 'draft' ? lang.t().applications.status.draft :
+                            app.etat === 'en_attente' ? lang.t().applications.status.pending :
+                            app.etat === 'accepte' ? lang.t().applications.status.accepted :
+                            app.etat === 'refuse' ? lang.t().applications.status.rejected :
                             lang.t().applications.status.submitted }}
                         </span>
                         <h5 class="card-title fw-bold text-dark mb-1">{{app.offre?.specialite}}</h5>
@@ -87,22 +100,30 @@
                 </div>
 
                 <div class="card-footer bg-transparent border-0 px-4 pb-4">
-                    <!-- Actions for Drafts -->
-                    <div class="d-flex justify-content-end gap-2" *ngIf="isDraft(app.etatnumerique)">
-                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3"
-                            (click)="deleteDraft(app.offre?.id || 0)">
-                            <i class="bi bi-trash me-1"></i> {{ lang.t().applications.actions.delete }}
-                        </button>
-                        <button class="btn btn-success btn-sm rounded-pill px-4 shadow-sm"
-                            (click)="confirmDraft(app.id)">
-                            <i class="bi bi-check-lg me-1"></i> {{ lang.t().applications.actions.confirm }}
-                        </button>
-                    </div>
-                    <!-- Actions for Submitted -->
-                    <div class="d-flex justify-content-end gap-2" *ngIf="!isDraft(app.etatnumerique)">
-                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 w-100" disabled>
-                            <i class="bi bi-printer me-1"></i> {{ lang.t().applications.actions.printReceipt }}
-                        </button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i> {{app.dateCandidature | date:'dd/MM/yyyy HH:mm'}}
+                        </small>
+                        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                                'bg-warning-subtle text-warning-emphasis': app.etat === 'draft',
+                                'bg-info-subtle text-info-emphasis': app.etat === 'en_attente',
+                                'bg-primary-subtle text-primary-emphasis': app.etat === 'valide',
+                                'bg-success-subtle text-success-emphasis': app.etat === 'accepte',
+                                'bg-danger-subtle text-danger-emphasis': app.etat === 'refuse'
+                            }">
+                            <i class="bi me-1" [ngClass]="{
+                                    'bi-hourglass-split': app.etat === 'draft',
+                                    'bi-clock-history': app.etat === 'en_attente',
+                                    'bi-send-check': app.etat === 'valide',
+                                    'bi-check-circle-fill': app.etat === 'accepte',
+                                    'bi-x-circle-fill': app.etat === 'refuse'
+                                }"></i>
+                            {{ app.etat === 'draft' ? lang.t().applications.status.draft :
+                            app.etat === 'en_attente' ? lang.t().applications.status.pending :
+                            app.etat === 'accepte' ? lang.t().applications.status.accepted :
+                            app.etat === 'refuse' ? lang.t().applications.status.rejected :
+                            lang.t().applications.status.submitted }}
+                        </span>
                     </div>
                 </div>
             </div>

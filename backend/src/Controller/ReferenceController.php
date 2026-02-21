@@ -14,7 +14,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/public')]
 class ReferenceController extends AbstractController
@@ -111,6 +111,7 @@ class ReferenceController extends AbstractController
         $result = array_map(fn($item) => [
             'id' => $item->getId(), 
             'libelle' => $item->getLibelle(),
+            'libelle_Fr' => $item->getLibelle(),
             'libelle_Ar' => $item->getLibelle()
         ], $data);
         return $this->json($result);
@@ -135,6 +136,7 @@ class ReferenceController extends AbstractController
         $result = array_map(fn($item) => [
             'id' => $item->getId(), 
             'libelle' => $item->getLibelle(),
+            'libelle_Fr' => $item->getLibelle(),
             'libelle_Ar' => $item->getLibelle()
         ], $data);
         return $this->json($result);
@@ -147,7 +149,9 @@ class ReferenceController extends AbstractController
         $result = array_map(fn($item) => [
             'id' => $item->getId(), 
             'nom' => $item->getNom(),
-            'libelle_Ar' => $item->getNom() // Map nom to libelle_Ar
+            'libelle' => $item->getNom(),
+            'libelle_Fr' => $item->getNom(),
+            'libelle_Ar' => $item->getNom()
         ], $data);
         return $this->json($result);
     }
@@ -165,6 +169,8 @@ class ReferenceController extends AbstractController
         $result = array_map(fn($item) => [
             'id' => $item->getId(), 
             'nom' => $item->getNom(),
+            'libelle' => $item->getNom(),
+            'libelle_Fr' => $item->getNom(),
             'libelle_Ar' => $item->getNom()
         ], $data);
         return $this->json($result);

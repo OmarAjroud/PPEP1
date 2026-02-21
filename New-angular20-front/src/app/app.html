@@ -57,28 +57,47 @@
                 </li>
 
                 <!-- Auth State -->
-                <li class="nav-item ms-lg-2" *ngIf="!api.currentUser()">
+                <li class="nav-item ms-lg-2" *ngIf="!api.isAuthenticated()">
                     <a class="btn btn-primary px-4 rounded-pill shadow-sm" routerLink="/login"
                         (click)="isMenuCollapsed.set(true)">
                         {{ lang.t().nav.login }}
                     </a>
                 </li>
 
-                <li class="nav-item dropdown ms-lg-2" *ngIf="api.currentUser()">
+                <li class="nav-item dropdown ms-lg-2" *ngIf="api.isAuthenticated()">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="javascript:void(0)"
                         role="button" (click)="toggleDropdown()" [class.show]="isDropdownOpen()">
-                        <img [src]="'/assets/images/' + (api.currentUser()?.donnee?.Genre === 'female' ? 'userf.png' : 'user.png')"
-                            alt="Profile" class="rounded-circle border border-2 border-white shadow-sm object-fit-cover"
-                            style="width: 40px; height: 40px; background-color: #e9ecef;">
-                        <span class="fw-bold text-dark d-none d-lg-block">
-                            {{api.currentUser()?.credential?.prenomAr}} {{api.currentUser()?.credential?.nomAr}}
-                        </span>
+                        <!-- While profile is loading, show neutral icon -->
+                        <ng-container *ngIf="!api.currentUser()">
+                            <div class="rounded-circle border border-2 border-white shadow-sm d-flex align-items-center justify-content-center"
+                                style="width: 40px; height: 40px; background-color: #e9ecef;">
+                                <i class="bi bi-person text-muted"></i>
+                            </div>
+                            <span class="fw-bold text-muted d-none d-lg-block">
+                                <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                            </span>
+                        </ng-container>
+                        <!-- Once profile is loaded, show correct avatar and name -->
+                        <ng-container *ngIf="api.currentUser()">
+                            <img [src]="'/assets/images/' + (api.currentUser()?.donnee?.Genre === 'female' ? 'userf.png' : 'user.png')"
+                                alt="Profile"
+                                class="rounded-circle border border-2 border-white shadow-sm object-fit-cover"
+                                style="width: 40px; height: 40px; background-color: #e9ecef;">
+                            <span class="fw-bold text-dark d-none d-lg-block">
+                                {{api.currentUser()?.credential?.prenomAr}} {{api.currentUser()?.credential?.nomAr}}
+                            </span>
+                        </ng-container>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" [class.show]="isDropdownOpen()">
                         <li><a class="dropdown-item" routerLink="/details"
                                 (click)="isDropdownOpen.set(false); isMenuCollapsed.set(true)"><i
                                     class="bi bi-person-gear me-2"></i>
                                 {{ lang.t().nav.profile }}
+                            </a></li>
+                        <li *ngIf="api.isAdmin()"><a class="dropdown-item" routerLink="/admin"
+                                (click)="isDropdownOpen.set(false); isMenuCollapsed.set(true)">
+                                <i class="bi bi-shield-lock me-2 text-primary"></i>
+                                {{ lang.t().admin.nav.dashboard }}
                             </a></li>
                         <li>
                             <hr class="dropdown-divider">

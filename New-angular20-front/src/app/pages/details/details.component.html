@@ -34,41 +34,164 @@
                 <div class="card-body px-4 pb-4 pt-3">
 
                     <!-- View Mode -->
-                    <div class="row g-3" *ngIf="!editMode">
-                        <div class="col-md-6">
-                            <div class="info-field">
-                                <div class="field-label">{{ lang.t().profile.labels.name }}</div>
-                                <div class="field-value">{{profile.credential.nomAr}}
-                                    {{profile.credential.prenomAr}}</div>
+                    <div *ngIf="!editMode" class="d-flex flex-column gap-4">
+
+                        <!-- Informations Personnelles -->
+                        <div>
+                            <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-person me-2"></i>{{
+                                lang.t().profile.personalInfo }}</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.name }}</div>
+                                        <div class="field-value">{{profile.credential.nomAr || '-'}}
+                                            {{profile.credential.prenomAr || ''}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.cin }}</div>
+                                        <div class="field-value">{{profile.credential.cin || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.birthDate }}</div>
+                                        <div class="field-value">{{profile.donnee.DateNaissance ?
+                                            (profile.donnee.DateNaissance | date:'dd/MM/yyyy') : '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.gender }}</div>
+                                        <div class="field-value">
+                                            <ng-container *ngIf="profile.donnee.Genre === 'male'">{{ lang.currentLang()
+                                                === 'fr' ? 'Homme' : 'ذكر' }}</ng-container>
+                                            <ng-container *ngIf="profile.donnee.Genre === 'female'">{{
+                                                lang.currentLang() === 'fr' ? 'Femme' : 'أنثى' }}</ng-container>
+                                            <ng-container
+                                                *ngIf="profile.donnee.Genre !== 'male' && profile.donnee.Genre !== 'female'">{{profile.donnee.Genre
+                                                || '-'}}</ng-container>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="info-field">
-                                <div class="field-label">{{ lang.t().profile.labels.cin }}</div>
-                                <div class="field-value">{{profile.credential.cin}}</div>
+
+                        <hr class="text-muted opacity-25 m-0">
+
+                        <!-- Coordonnées -->
+                        <div>
+                            <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-telephone me-2"></i>{{
+                                lang.t().profile.contactInfo }}</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.phone }}</div>
+                                        <div class="field-value">{{profile.donnee.TelMobile || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.telFixe }}</div>
+                                        <div class="field-value">{{profile.donnee.TelFixe || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.email }}</div>
+                                        <div class="field-value text-break">{{profile.credential.email || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.address }}</div>
+                                        <div class="field-value">{{profile.donnee.Adresse || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.postalCode }}</div>
+                                        <div class="field-value">{{profile.donnee.CodePostal || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.gouvernorat }}</div>
+                                        <div class="field-value">{{profile.donnee.Gouvernorat || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.delegation }}</div>
+                                        <div class="field-value">{{profile.donnee.Delegation || '-'}}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <hr class="text-muted opacity-25">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="info-field">
-                                <div class="field-label">{{ lang.t().profile.labels.address }}</div>
-                                <div class="field-value">{{profile.donnee.Adresse}}</div>
+
+                        <hr class="text-muted opacity-25 m-0">
+
+                        <!-- Données de Naissance (Extrait) -->
+                        <div>
+                            <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-file-earmark-person me-2"></i>{{
+                                lang.t().profile.birthInfo }}</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.birthYear }}</div>
+                                        <div class="field-value">{{profile.extrait.Annee || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.birthCertNumber }}</div>
+                                        <div class="field-value">{{profile.extrait.NumInscription || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.municipalite }}</div>
+                                        <div class="field-value">{{profile.extrait.Municipalite || '-'}}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="info-field">
-                                <div class="field-label">{{ lang.t().profile.labels.postalCode }}</div>
-                                <div class="field-value">{{profile.donnee.CodePostal}}</div>
+
+                        <hr class="text-muted opacity-25 m-0">
+
+                        <!-- Parcours Scolaire -->
+                        <div>
+                            <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-journal-text me-2"></i>{{
+                                lang.t().profile.educationInfo }}</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.etablissement }}</div>
+                                        <div class="field-value">{{profile.formation.Etablissement || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.typeEtablissement }}</div>
+                                        <div class="field-value">{{profile.formation.TypeEtablissement || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.niveauScolaire }}</div>
+                                        <div class="field-value">{{profile.formation.NiveauScolaire || '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <div class="field-label">{{ lang.t().profile.labels.anneeAbandon }}</div>
+                                        <div class="field-value">{{profile.formation.AnneeAbandonScolaire || '-'}}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="info-field">
-                                <div class="field-label">{{ lang.t().profile.labels.phone }}</div>
-                                <div class="field-value">{{profile.donnee.TelMobile}}</div>
-                            </div>
-                        </div>
+
                     </div>
 
                     <!-- Edit Form -->

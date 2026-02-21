@@ -1,0 +1,155 @@
+<div class="container-fluid py-4 mt-5" [dir]="lang.dir()">
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center">
+            <a routerLink="/admin" class="btn btn-outline-secondary btn-sm me-3">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold mb-0">{{ lang.t().admin.nav.offres }}</h2>
+                <p class="text-muted mb-0">{{ lang.t().admin.offres.subtitle }}</p>
+            </div>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4" (click)="openCreate()">
+            <i class="bi bi-plus-lg me-1"></i> {{ lang.t().admin.offres.create }}
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!loading()" class="glass-card p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>{{ lang.t().admin.offres.speciality }}</th>
+                        <th>{{ lang.t().admin.offres.center }}</th>
+                        <th>{{ lang.t().admin.offres.diploma }}</th>
+                        <th>{{ lang.t().admin.offres.startDate }}</th>
+                        <th>{{ lang.t().admin.offres.places }}</th>
+                        <th>{{ lang.t().admin.offres.candidaturesCount }}</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of offres(); let i = index" class="animate-row"
+                        [style.animation-delay]="(i * 0.03) + 's'">
+                        <td class="text-muted">{{ o.id }}</td>
+                        <td class="fw-medium">{{ o.specialite || '—' }}</td>
+                        <td>{{ o.centre || '—' }}</td>
+                        <td>{{ o.diplome || '—' }}</td>
+                        <td class="text-muted small">{{ o.debutformation }}</td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2 rounded-pill">
+                                {{ o.nbplaces || '—' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info-subtle text-info-emphasis px-3 py-2 rounded-pill">
+                                {{ o.candidatures_count }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-1" (click)="openEdit(o)">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteOffre(o.id)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="offres().length === 0">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-journal-x fs-1 d-block mb-2"></i>
+                            {{ lang.t().admin.offres.empty }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal-backdrop" *ngIf="showModal()" (click)="showModal.set(false)"></div>
+<div class="modal-panel glass-card" *ngIf="showModal()">
+    <div class="p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">
+                {{ editingOffre() ? lang.t().admin.offres.edit : lang.t().admin.offres.create }}
+            </h4>
+            <button class="btn btn-sm btn-outline-secondary" (click)="showModal.set(false)">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.speciality }}</label>
+                <select class="form-select" [(ngModel)]="form.specialite_id">
+                    <option value="">—</option>
+                    <option *ngFor="let s of specialites()" [value]="s.id">{{ s.libelle || s.nom }}</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.center }}</label>
+                <select class="form-select" [(ngModel)]="form.centre_id">
+                    <option value="">—</option>
+                    <option *ngFor="let c of centres()" [value]="c.id">{{ c.libelle || c.nom }}</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.diploma }}</label>
+                <select class="form-select" [(ngModel)]="form.diplome_id">
+                    <option value="">—</option>
+                    <option *ngFor="let d of diplomes()" [value]="d.id">{{ d.libelle || d.nom }}</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.places }}</label>
+                <input type="number" class="form-control" [(ngModel)]="form.nbplaces">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.startDate }}</label>
+                <input type="date" class="form-control" [(ngModel)]="form.debutformation">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.endDate }}</label>
+                <input type="date" class="form-control" [(ngModel)]="form.finformation">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.housing }}</label>
+                <select class="form-select" [(ngModel)]="form.hebergement">
+                    <option value="Oui">Oui</option>
+                    <option value="Non">Non</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small fw-medium">{{ lang.t().admin.offres.scholarship }}</label>
+                <select class="form-select" [(ngModel)]="form.bourse">
+                    <option value="Oui">Oui</option>
+                    <option value="Non">Non</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small fw-medium">Session</label>
+                <input type="text" class="form-control" [(ngModel)]="form.session">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4 gap-2">
+            <button class="btn btn-outline-secondary" (click)="showModal.set(false)">
+                {{ lang.t().profile.actions.cancel }}
+            </button>
+            <button class="btn btn-primary px-4" (click)="save()" [disabled]="saving()">
+                <span *ngIf="saving()" class="spinner-border spinner-border-sm me-1"></span>
+                {{ lang.t().profile.actions.save }}
+            </button>
+        </div>
+    </div>
+</div>

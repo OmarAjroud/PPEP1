@@ -1,14 +1,14 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { UserStore } from '../stores/user.store';
+import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    const userStore = inject(UserStore);
+    const api = inject(ApiService);
     const router = inject(Router);
-    // Direct localStorage access to ensure we get the token set by ApiService immediately before
-    const token = localStorage.getItem('auth_token');
+
+    const token = api.token();
 
     let requestToHandle = req;
 
@@ -24,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         catchError((error: HttpErrorResponse) => {
             if (error.status === 401) {
                 // Token expired or invalid
-                userStore.logout();
+                api.logout();
                 router.navigate(['/login']);
             }
             return throwError(() => error);

@@ -173,6 +173,7 @@ export const ALL_TRANSLATIONS = {
             subtitle: 'تتبع حالة مطالب الترشح الخاصة بك.',
             status: {
                 draft: 'مسودة',
+                pending: 'في الانتظار',
                 submitted: 'تم الإرسال',
                 accepted: 'مقبول',
                 rejected: 'مرفوض'
@@ -195,6 +196,9 @@ export const ALL_TRANSLATIONS = {
             title: 'الملف الشخصي',
             subtitle: 'إدارة معلوماتك الشخصية.',
             personalInfo: 'المعلومات الشخصية',
+            contactInfo: 'بيانات الاتصال',
+            birthInfo: 'بيانات الولادة',
+            educationInfo: 'المسار الدراسي',
             credentials: 'بيانات الدخول',
             account: 'الحساب',
             verified: 'حساب موثق',
@@ -204,10 +208,21 @@ export const ALL_TRANSLATIONS = {
                 email: 'البريد الإلكتروني',
                 currentEmail: 'البريد الإلكتروني الحالي',
                 newEmail: 'البريد الإلكتروني الجديد',
-                phone: 'الهاتف',
+                phone: 'الهاتف الجوال',
+                telFixe: 'الهاتف القار',
                 address: 'العنوان',
                 postalCode: 'الترقيم البريدي',
-                birthDate: 'تاريخ الولادة'
+                gouvernorat: 'الولاية',
+                delegation: 'المعتمدية',
+                municipalite: 'البلدية',
+                birthDate: 'تاريخ الولادة',
+                gender: 'الجنس',
+                birthYear: 'سنة الولادة',
+                birthCertNumber: 'رقم الترسيم بالولادة',
+                etablissement: 'المؤسسة التعليمية',
+                typeEtablissement: 'نوع المؤسسة',
+                niveauScolaire: 'المستوى الدراسي',
+                anneeAbandon: 'سنة الانقطاع'
             },
             actions: {
                 edit: 'تعديل',
@@ -231,6 +246,64 @@ export const ALL_TRANSLATIONS = {
                 next: 'التالي',
                 prev: 'السابق',
                 submit: 'تسجيل'
+            }
+        },
+        // Admin
+        admin: {
+            nav: {
+                dashboard: 'لوحة القيادة',
+                candidatures: 'الترشحات',
+                offres: 'العروض',
+                users: 'المستخدمون'
+            },
+            dashboard: {
+                title: 'لوحة الإدارة',
+                subtitle: 'نظرة عامة على المنظومة',
+                users: 'المستخدمون',
+                pending: 'قيد الانتظار',
+                accepted: 'مقبولة',
+                offres: 'العروض',
+                manageCandidatures: 'إدارة ملفات الترشح',
+                manageOffres: 'إدارة عروض التكوين',
+                manageUsers: 'إدارة المستخدمين'
+            },
+            candidatures: {
+                subtitle: 'إدارة جميع ملفات الترشح',
+                all: 'الكل',
+                candidate: 'المترشح',
+                speciality: 'الاختصاص',
+                center: 'المركز',
+                statusCol: 'الحالة',
+                empty: 'لا توجد ترشحات'
+            },
+            offres: {
+                subtitle: 'إدارة عروض التكوين',
+                create: 'إضافة عرض',
+                edit: 'تعديل العرض',
+                speciality: 'الاختصاص',
+                center: 'المركز',
+                diploma: 'الشهادة',
+                startDate: 'بداية التكوين',
+                endDate: 'نهاية التكوين',
+                places: 'الأماكن',
+                candidaturesCount: 'الترشحات',
+                housing: 'إقامة',
+                scholarship: 'منحة',
+                empty: 'لا توجد عروض'
+            },
+            users: {
+                subtitle: 'إدارة حسابات المستخدمين',
+                name: 'الاسم',
+                phone: 'الهاتف',
+                role: 'الدور',
+                candidaturesCount: 'ترشحات',
+                empty: 'لا يوجد مستخدمون'
+            },
+            status: {
+                pending: 'في الانتظار',
+                accepted: 'مقبولة',
+                rejected: 'مرفوضة',
+                draft: 'مسودة'
             }
         }
     },
@@ -408,6 +481,7 @@ export const ALL_TRANSLATIONS = {
             subtitle: 'Suivez le statut de vos demandes.',
             status: {
                 draft: 'Brouillon',
+                pending: 'En attente',
                 submitted: 'Envoyée',
                 accepted: 'Acceptée',
                 rejected: 'Refusée'
@@ -430,19 +504,33 @@ export const ALL_TRANSLATIONS = {
             title: 'Mon Profil',
             subtitle: 'Gérez vos informations personnelles.',
             personalInfo: 'Informations Personnelles',
+            contactInfo: 'Coordonnées',
+            birthInfo: 'Données de Naissance',
+            educationInfo: 'Parcours Scolaire',
             credentials: 'Identifiants',
             account: 'Compte',
             verified: 'Compte Vérifié',
             labels: {
                 name: 'Nom et Prénom',
-                cin: 'CIN',
+                cin: 'N° CIN',
                 email: 'Email',
                 currentEmail: 'Email Actuel',
                 newEmail: 'Nouvel Email',
-                phone: 'Téléphone',
+                phone: 'Mobile',
+                telFixe: 'Tél Fixe',
                 address: 'Adresse',
                 postalCode: 'Code Postal',
-                birthDate: 'Date de Naissance'
+                gouvernorat: 'Gouvernorat',
+                delegation: 'Délégation',
+                municipalite: 'Municipalité',
+                birthDate: 'Date de Naissance',
+                gender: 'Genre',
+                birthYear: 'Année de Naissance',
+                birthCertNumber: 'N° Inscription Extrait',
+                etablissement: 'Etablissement scolaire',
+                typeEtablissement: 'Type d\'établissement',
+                niveauScolaire: 'Niveau scolaire',
+                anneeAbandon: 'Année d\'abandon'
             },
             actions: {
                 edit: 'Modifier',
@@ -466,6 +554,64 @@ export const ALL_TRANSLATIONS = {
                 next: 'Suivant',
                 prev: 'Précédent',
                 submit: 'S\'inscrire'
+            }
+        },
+        // Admin
+        admin: {
+            nav: {
+                dashboard: 'Tableau de bord',
+                candidatures: 'Candidatures',
+                offres: 'Offres',
+                users: 'Utilisateurs'
+            },
+            dashboard: {
+                title: 'Administration',
+                subtitle: 'Vue d\'ensemble du système',
+                users: 'Utilisateurs',
+                pending: 'En attente',
+                accepted: 'Acceptées',
+                offres: 'Offres',
+                manageCandidatures: 'Gérer les candidatures',
+                manageOffres: 'Gérer les offres de formation',
+                manageUsers: 'Gérer les utilisateurs'
+            },
+            candidatures: {
+                subtitle: 'Gérer toutes les candidatures',
+                all: 'Tout',
+                candidate: 'Candidat',
+                speciality: 'Spécialité',
+                center: 'Centre',
+                statusCol: 'Statut',
+                empty: 'Aucune candidature'
+            },
+            offres: {
+                subtitle: 'Gérer les offres de formation',
+                create: 'Nouvelle offre',
+                edit: 'Modifier l\'offre',
+                speciality: 'Spécialité',
+                center: 'Centre',
+                diploma: 'Diplôme',
+                startDate: 'Début',
+                endDate: 'Fin',
+                places: 'Places',
+                candidaturesCount: 'Candidatures',
+                housing: 'Hébergement',
+                scholarship: 'Bourse',
+                empty: 'Aucune offre'
+            },
+            users: {
+                subtitle: 'Gérer les comptes utilisateurs',
+                name: 'Nom',
+                phone: 'Téléphone',
+                role: 'Rôle',
+                candidaturesCount: 'Candidatures',
+                empty: 'Aucun utilisateur'
+            },
+            status: {
+                pending: 'En attente',
+                accepted: 'Acceptée',
+                rejected: 'Refusée',
+                draft: 'Brouillon'
             }
         }
     }

@@ -1,0 +1,70 @@
+<div class="container-fluid py-4 mt-5" [dir]="lang.dir()">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-4">
+        <a routerLink="/admin" class="btn btn-outline-secondary btn-sm me-3">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <div>
+            <h2 class="fw-bold mb-0">{{ lang.t().admin.nav.users }}</h2>
+            <p class="text-muted mb-0">{{ lang.t().admin.users.subtitle }}</p>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!loading()" class="glass-card p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>{{ lang.t().admin.users.name }}</th>
+                        <th>Email</th>
+                        <th>CIN</th>
+                        <th>{{ lang.t().admin.users.phone }}</th>
+                        <th>{{ lang.t().admin.users.role }}</th>
+                        <th>{{ lang.t().admin.users.candidaturesCount }}</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let u of users(); let i = index" class="animate-row"
+                        [style.animation-delay]="(i * 0.03) + 's'">
+                        <td class="text-muted">{{ u.id }}</td>
+                        <td class="fw-medium">{{ u.prenom }} {{ u.nom }}</td>
+                        <td class="text-muted small">{{ u.email }}</td>
+                        <td class="text-muted small">{{ u.cin || '—' }}</td>
+                        <td>{{ u.tel || '—' }}</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2"
+                                [ngClass]="isAdmin(u) ? 'bg-danger-subtle text-danger-emphasis' : 'bg-secondary-subtle text-secondary-emphasis'">
+                                {{ isAdmin(u) ? 'Admin' : 'Candidat' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info-subtle text-info-emphasis px-3 py-2 rounded-pill">
+                                {{ u.candidatures_count }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(u.id)"
+                                [disabled]="isAdmin(u)" [title]="isAdmin(u) ? 'Cannot delete admin' : 'Supprimer'">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="users().length === 0">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-person-x fs-1 d-block mb-2"></i>
+                            {{ lang.t().admin.users.empty }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

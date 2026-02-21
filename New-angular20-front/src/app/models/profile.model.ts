@@ -5,6 +5,7 @@ import { ProfileFormationModel } from './profile-formation.model';
 import { ProfileAncienneFormation } from './profile-ancienne-formation.model';
 
 export class ProfileModel {
+    roles?: string[];
     credential: ProfileCredentialModel;
     extrait: ProfileExtraitModel;
     donnee: ProfileDonneeModel;
